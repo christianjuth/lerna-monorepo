@@ -14,7 +14,8 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+    "registry": "https://registry.yarnpkg.com",
+    "access": "public"
   },
   "scripts": {
     "build": "tsc",
@@ -27,5 +28,5 @@
   "devDependencies": {
     "ts-node": "^10.4.0"
   },
-  "gitHead": "60c6d95d1e71518cc7c101c49ab07a8e5359b11c"
+  "gitHead": "87080cff474d51a2a6615aa5b650bf268f9d1629"
 }
