@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --config nodemon.json",
-    "prepublishOnly": "build"
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "nodemon": "^2.0.15",
@@ -32,5 +32,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
-  }
+  },
+  "gitHead": "465add2aa77cd029d7caff383fc122e7a339480f"
 }
