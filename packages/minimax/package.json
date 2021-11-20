@@ -28,7 +28,6 @@
   "devDependencies": {
     "ts-node": "^10.4.0"
   },
-  "gitHead": "87080cff474d51a2a6615aa5b650bf268f9d1629",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
