@@ -3,7 +3,7 @@
   "version": "0.0.1-alpha.2",
   "description": "Minimax function",
   "author": "Christian Juth <cjuth2@gmail.com>",
-  "homepage": "",
+  "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
   "license": "MIT",
   "main": "lib/minimax.js",
   "directories": {
@@ -14,7 +14,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.yarnpkg.com",
+    "registry": "https://registry.npmjs.org",
     "access": "public"
   },
   "scripts": {
@@ -28,5 +28,9 @@
   "devDependencies": {
     "ts-node": "^10.4.0"
   },
-  "gitHead": "87080cff474d51a2a6615aa5b650bf268f9d1629"
+  "gitHead": "87080cff474d51a2a6615aa5b650bf268f9d1629",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
+  }
 }
