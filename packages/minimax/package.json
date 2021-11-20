@@ -19,7 +19,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon --config nodemon.json"
+    "dev": "nodemon --config nodemon.json",
+    "prepublishOnly": "build"
   },
   "dependencies": {
     "nodemon": "^2.0.15",
