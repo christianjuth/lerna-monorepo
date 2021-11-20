@@ -43,11 +43,11 @@ function minimaxInternal<T>({
   const childrenData = getNextGameState(node.gameState)
 
   if (childrenData === undefined || childrenData.length === 0) {
-    return staticEvaluator({ gameState: node.gameState, player, level })
+    return leafEvaluator({ gameState: node.gameState, player, level })
   } 
 
   if (maxDepth === 0 && leafEvaluator !== undefined) {
-    return leafEvaluator({ gameState: node.gameState, player, level })
+    return staticEvaluator({ gameState: node.gameState, player, level })
   } 
   
   else {

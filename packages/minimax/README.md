@@ -6,6 +6,7 @@
 
 ```javascript
 import { getNextMoves, evaluation, checkWinner } from '@christianjuth/tictactoe-engine'
+import { minimax } from '@christianjuth/minimax'
 
 const bestMove = minimax({
   // Get player who we are trying 
@@ -15,13 +16,19 @@ const bestMove = minimax({
   gameState: ['','','X','','','O','','',''],
   // Get next game states from the game
   // state paramater passed into this function
-  getChildren: (gameState) => {
+  getNextGameState: (gameState) => {
     return getNextMoves(gameState)
   },
   // Static evaluator can be called at any
   // level of the tree once the max depth
   // has been hit (see maxDepth option)
-  staticEvaluator: ({ gameState, player, level }) => {
+  staticEvaluator: ({ gameState, player }) => {
+    return evaluation(gameState, player)
+  },
+  // Leaf evaluator is only called at the root  
+  // of the tree once the tic tac toe  game has 
+  // reached an ending point (win, loss, or draw)
+  leafEvaluator: ({ gameState, player, level }) => {
     const winner = checkWinner(gameState)
     // Positive value if we won this game.
     // We divide by level to encourage paths
@@ -32,18 +39,16 @@ const bestMove = minimax({
     // Negative number if the opponent won
     return -1/level
   },
-  // Leaf evaluator is only called at the root  
-  // of the tree once the tic tac toe  game has 
-  // reached an ending point (win, loss, or draw)
-  leafEvaluator: ({ gameState, player }) => {
-    return evaluation(gameState, player)
-  },
   // Max depth to go into the tree before
   // staticEvaluator is used instead of leafEvaluator
   maxDepth: 1,
   // Randomize the order that next game states
   // appear in the tree below their parent game state.
   // This will affect the alpha/beta pruning of the tree.
-  randomizeNextGameStateOrder: true
+  randomizeNextGameStateOrder: true,
+  // Wether top level of the tree is trying to max or min
+  isMax: true
 })
+
+console.log(bestMove)
 ```
