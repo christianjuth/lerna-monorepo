@@ -1,0 +1,30 @@
+{
+  "name": "@christianjuth/minimax",
+  "version": "0.0.0",
+  "description": "Minimax function",
+  "author": "Christian Juth <cjuth2@gmail.com>",
+  "homepage": "",
+  "license": "MIT",
+  "main": "lib/minimax.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "nodemon --config nodemon.json"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.15",
+    "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "ts-node": "^10.4.0"
+  }
+}
