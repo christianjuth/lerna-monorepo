@@ -22,12 +22,11 @@
     "dev": "nodemon --config nodemon.json",
     "prepublishOnly": "npm run build"
   },
-  "dependencies": {
-    "nodemon": "^2.0.15",
-    "typescript": "^4.5.2"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "ts-node": "^10.4.0"
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2",
+    "nodemon": "^2.0.15"
   },
   "repository": {
     "type": "git",
