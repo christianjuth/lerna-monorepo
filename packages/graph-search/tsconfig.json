@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+
+    "typeRoots": ["./node-modules/@types/", "./src/@types/"],
+    "types": ["jest", "node", "@types/jest"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["./src"]
+}

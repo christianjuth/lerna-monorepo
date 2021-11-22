@@ -5,39 +5,43 @@
 ## Usage
 
 ```javascript
-import { getNextMoves, evaluation, checkWinner } from '@christianjuth/tictactoe-engine'
-import { minimax } from '@christianjuth/minimax'
+import {
+  getNextMoves,
+  evaluation,
+  checkWinner,
+} from "@christianjuth/tictactoe-engine";
+import { minimax } from "@christianjuth/minimax";
 
 const bestMove = minimax({
-  // Get player who we are trying 
+  // Get player who we are trying
   // to get the best move for
-  player: 'X', 
+  player: "X",
   // Initial game state
-  gameState: ['','','X','','','O','','',''],
+  gameState: ["", "", "X", "", "", "O", "", "", ""],
   // Get next game states from the game
   // state paramater passed into this function
   getNextGameState: (gameState) => {
-    return getNextMoves(gameState)
+    return getNextMoves(gameState);
   },
   // Static evaluator can be called at any
   // level of the tree once the max depth
   // has been hit (see maxDepth option)
   staticEvaluator: ({ gameState, player }) => {
-    return evaluation(gameState, player)
+    return evaluation(gameState, player);
   },
-  // Leaf evaluator is only called at the root  
-  // of the tree once the tic tac toe  game has 
+  // Leaf evaluator is only called at the root
+  // of the tree once the tic tac toe  game has
   // reached an ending point (win, loss, or draw)
   leafEvaluator: ({ gameState, player, level }) => {
-    const winner = checkWinner(gameState)
+    const winner = checkWinner(gameState);
     // Positive value if we won this game.
     // We divide by level to encourage paths
     // that lead to a win in less moves.
-    if (winner === player) return 1/level
+    if (winner === player) return 1 / level;
     // Zero means draw
-    if (!winner) return 0
+    if (!winner) return 0;
     // Negative number if the opponent won
-    return -1/level
+    return -1 / level;
   },
   // Max depth to go into the tree before
   // staticEvaluator is used instead of leafEvaluator
@@ -47,8 +51,8 @@ const bestMove = minimax({
   // This will affect the alpha/beta pruning of the tree.
   randomizeNextGameStateOrder: true,
   // Wether top level of the tree is trying to max or min
-  isMax: true
-})
+  isMax: true,
+});
 
-console.log(bestMove)
+console.log(bestMove);
 ```

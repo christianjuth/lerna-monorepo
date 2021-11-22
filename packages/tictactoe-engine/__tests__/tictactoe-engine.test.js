@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-const tictactoeEngine = require('..');
+const tictactoeEngine = require("..");
 
-describe('@christianjuth/tictactoe-engine', () => {
-    it('needs tests');
+describe("@christianjuth/tictactoe-engine", () => {
+  it("needs tests");
 });
