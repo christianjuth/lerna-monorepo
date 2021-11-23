@@ -1,6 +1,6 @@
 {
   "name": "@christianjuth/tictactoe-engine",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "> TODO: description",
   "author": "Christian Juth <cjuth2@gmail.com>",
   "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
@@ -11,7 +11,8 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "lib",
+    "build"
   ],
   "publishConfig": {
     "access": "public"
@@ -21,12 +22,22 @@
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
   },
   "scripts": {
-    "test": "jest --watch"
+    "asbuild:untouched": "asc assembly/index.ts --target debug",
+    "asbuild:optimized": "asc assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:optimized",
+    "build": "tsc && npm run asbuild",
+    "dev": "nodemon --config nodemon.json",
+    "prepublishOnly": "npm run build",
+    "test": "jest --watchAll"
   },
   "bugs": {
     "url": "https://github.com/christianjuth/lerna-monorepo/issues"
   },
   "dependencies": {
+    "@assemblyscript/loader": "^0.19.20",
     "@christianjuth/minimax": "^0.0.1-alpha.7"
+  },
+  "devDependencies": {
+    "assemblyscript": "^0.19.20"
   }
 }

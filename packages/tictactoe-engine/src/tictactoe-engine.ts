@@ -1,4 +1,8 @@
-import { evaluate } from "../wasm";
+// import { evaluate } from "../wasm";
+import { performance } from 'perf_hooks';
+import { evaluate } from './neural-network'
+// import minimax from '@christianjuth/minimax'
+import minimax from '../../minimax/src/minimax'
 
 type GameState = string[];
 
@@ -69,7 +73,7 @@ export function getNextMoves(gameState: GameState) {
   return nextGameStates;
 }
 
-export function getBestMove(gameState: GameState) {
+export function getBestMoveNuralNetwork(gameState: GameState) {
   const player = whosMove(gameState);
   const nextMoves = getNextMoves(gameState);
 
@@ -89,6 +93,53 @@ export function getBestMove(gameState: GameState) {
       return gameState;
     }
   }
+}
+
+export async function getBestMoveWasmNuralNetwork(gameState: GameState) {
+  const { evaluate } = await require('./wasm')
+
+  const player = whosMove(gameState);
+  const nextMoves = getNextMoves(gameState);
+
+  const evaluations: [number, GameState][] = [];
+  let maxEval = -1000;
+
+  for (const move of nextMoves) {
+    const evaluation = evaluate(
+      ...convertGameStateToNuralNetworkData(player, move)
+    );
+    evaluations.push([evaluation, move]);
+    maxEval = Math.max(maxEval, evaluation);
+  }
+
+  for (const [evaluation, gameState] of evaluations) {
+    if (evaluation === maxEval) {
+      return gameState;
+    }
+  }
+}
+
+export function getBestMovesMiniMax(gameState: GameState) {
+  const player = whosMove(gameState);
+
+  return minimax({
+    gameState,
+    player,
+    getNextGameState: getNextMoves,
+    leafEvaluator: ({ gameState, player, level }) => {
+      const winner = checkWinner(gameState)
+      // Positive value if we won this game.
+      // We divide by level to encourage paths
+      // that lead to a win in less moves.
+      if (winner === player) return 1/level
+      // Zero means draw
+      if (!winner) return 0
+      // Negative number if the opponent won
+      return -1/level
+    },
+    // hashGameState: (gameState) => gameState.join(','),
+    randomizeNextGameStateOrder: true
+  })
 }
 
 function getIntRepresentationOfCell(player: string) {
@@ -132,17 +183,22 @@ function convertGameStateToNuralNetworkData(
   return [getIntRepresentationOfCell(player), ...cells];
 }
 
-export function checkPerformance() {
+export async function checkPerformance() {
   let board = ["", "", "", "", "", "", "", "", ""];
+  getBestMoveWasmNuralNetwork(board)
 
   const runtimes: number[] = [];
 
   while (checkWinner(board) === undefined) {
     const t1 = performance.now();
-    board = getBestMove(board) ?? [];
+    // board = getBestMoveNuralNetwork(board) ?? [];
+    // board = await getBestMovesMiniMax(board) ?? [];
+    board = await getBestMovesMiniMax(board) ?? [];
     const t2 = performance.now();
     runtimes.push(t2 - t1);
   }
 
-  return runtimes.reduce((a, b) => a + b) / runtimes.length;
+  const perf = runtimes.reduce((a, b) => a + b) / runtimes.length;
+  console.log(perf)
+  return perf
 }

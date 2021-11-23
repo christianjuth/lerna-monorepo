@@ -6,7 +6,8 @@
   "scripts": {
     "build": "lerna run build",
     "prepare": "husky install",
-    "lintStaged": "lint-staged"
+    "lintStaged": "lint-staged",
+    "test": "lerna run jest"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

@@ -15,6 +15,7 @@ interface MinimaxConfig<T> {
   isMax?: boolean;
   maxDepth?: number;
   randomizeNextGameStateOrder?: boolean;
+  hashGameState?: (gameState: T) => string
 }
 
 interface MinimaxInternalConfig<T> extends Omit<MinimaxConfig<T>, "gameState"> {
@@ -22,6 +23,7 @@ interface MinimaxInternalConfig<T> extends Omit<MinimaxConfig<T>, "gameState"> {
   alpha?: number;
   beta?: number;
   level: number;
+  dictionary: Record<string, number>
 }
 
 class Node<T> {
@@ -46,15 +48,26 @@ function minimaxInternal<T>({
   beta = Number.MAX_SAFE_INTEGER,
   level,
   randomizeNextGameStateOrder = false,
+  dictionary,
+  hashGameState
 }: MinimaxInternalConfig<T>) {
   const childrenData = getNextGameState(node.gameState);
+  const gameStateId = hashGameState ? hashGameState(node.gameState) : null
 
-  if (childrenData === undefined || childrenData.length === 0) {
-    return leafEvaluator({ gameState: node.gameState, player, level });
-  }
-
-  if (maxDepth === 0 && leafEvaluator !== undefined) {
-    return staticEvaluator({ gameState: node.gameState, player, level });
+  if (gameStateId && dictionary[gameStateId]) {
+    const val = dictionary[gameStateId]
+    node.value = val
+    return val
+  } else if (childrenData === undefined || childrenData.length === 0) {
+    const val = leafEvaluator({ gameState: node.gameState, player, level });
+    gameStateId && (dictionary[gameStateId] = val)
+    node.value = val
+    return val
+  } else if (maxDepth === 0 && leafEvaluator !== undefined) {
+    const val = staticEvaluator({ gameState: node.gameState, player, level });
+    gameStateId && (dictionary[gameStateId] = val)
+    node.value = val
+    return val 
   } else {
     const values = [];
     const children = [];
@@ -80,6 +93,8 @@ function minimaxInternal<T>({
         alpha,
         beta,
         level: level + 1,
+        dictionary,
+        hashGameState
       });
       values.push(evaluation);
 
@@ -106,10 +121,12 @@ function minimaxInternal<T>({
 
 export function minimax<T>({ gameState, ...rest }: MinimaxConfig<T>) {
   const node = new Node<T>(gameState);
+  const dictionary: Record<string, number> = {}
 
   const choice = minimaxInternal<T>({
     node,
     level: 0,
+    dictionary,
     ...rest,
   });
 
