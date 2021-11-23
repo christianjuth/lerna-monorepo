@@ -1,6 +1,5 @@
 import { evaluate } from "./neural-network";
-// import minimax from "@christianjuth/minimax";
-import minimax from "../../minimax/src/minimax";
+import minimax from "@christianjuth/minimax";
 
 type GameState = string[];
 
