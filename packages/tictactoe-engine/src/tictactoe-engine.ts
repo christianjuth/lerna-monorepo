@@ -1,5 +1,6 @@
 import { evaluate } from "./neural-network";
-import minimax from "@christianjuth/minimax";
+// import minimax from "@christianjuth/minimax";
+import minimax from "../../minimax/src/minimax";
 
 type GameState = string[];
 
@@ -135,6 +136,7 @@ export function getBestMovesMiniMax(gameState: GameState) {
       return -(9 - level);
     },
     hashGameState: (gameState) => gameState.join(","),
+    randomizeNextGameStateOrder: true,
   });
 }
 
