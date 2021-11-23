@@ -7,11 +7,15 @@
     "build": "lerna run build",
     "prepare": "husky install",
     "lintStaged": "lint-staged",
-    "test": "lerna run jest"
+    "test": "lerna run jest",
+    "stop-if-git-changes": "git diff-index --quiet HEAD --",
+    "prerelease": "npm run stop-if-git-changes && lerna run build",
+    "release": "lerna publish"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.9",
+    "assemblyscript": "^0.19.20",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
     "lerna": "^4.0.0",
