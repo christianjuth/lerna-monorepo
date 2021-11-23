@@ -1,8 +1,5 @@
-// import { evaluate } from "../wasm";
-import { performance } from 'perf_hooks';
-import { evaluate } from './neural-network'
-// import minimax from '@christianjuth/minimax'
-import minimax from '../../minimax/src/minimax'
+import { evaluate } from "./neural-network";
+import minimax from "@christianjuth/minimax";
 
 type GameState = string[];
 
@@ -96,7 +93,7 @@ export function getBestMoveNuralNetwork(gameState: GameState) {
 }
 
 export async function getBestMoveWasmNuralNetwork(gameState: GameState) {
-  const { evaluate } = await require('./wasm')
+  const { evaluate } = await require("./wasm");
 
   const player = whosMove(gameState);
   const nextMoves = getNextMoves(gameState);
@@ -127,19 +124,19 @@ export function getBestMovesMiniMax(gameState: GameState) {
     player,
     getNextGameState: getNextMoves,
     leafEvaluator: ({ gameState, player, level }) => {
-      const winner = checkWinner(gameState)
+      const winner = checkWinner(gameState);
       // Positive value if we won this game.
       // We divide by level to encourage paths
       // that lead to a win in less moves.
-      if (winner === player) return 1/level
+      if (winner === player) return 1 / level;
       // Zero means draw
-      if (!winner) return 0
+      if (!winner) return 0;
       // Negative number if the opponent won
-      return -1/level
+      return -1 / level;
     },
     // hashGameState: (gameState) => gameState.join(','),
-    randomizeNextGameStateOrder: true
-  })
+    randomizeNextGameStateOrder: true,
+  });
 }
 
 function getIntRepresentationOfCell(player: string) {
@@ -183,22 +180,27 @@ function convertGameStateToNuralNetworkData(
   return [getIntRepresentationOfCell(player), ...cells];
 }
 
-export async function checkPerformance() {
+export async function checkPerformance(method = "miniMax") {
+  const { performance } = await require("perf_hooks");
   let board = ["", "", "", "", "", "", "", "", ""];
-  getBestMoveWasmNuralNetwork(board)
+  getBestMoveWasmNuralNetwork(board);
 
   const runtimes: number[] = [];
 
   while (checkWinner(board) === undefined) {
     const t1 = performance.now();
-    // board = getBestMoveNuralNetwork(board) ?? [];
-    // board = await getBestMovesMiniMax(board) ?? [];
-    board = await getBestMovesMiniMax(board) ?? [];
+    if (method === "nuralNetwork") {
+      board = getBestMoveNuralNetwork(board) ?? [];
+    } else if (method === "wasmNuralNetwork") {
+      board = (await getBestMoveWasmNuralNetwork(board)) ?? [];
+    } else {
+      board = getBestMovesMiniMax(board) ?? [];
+    }
     const t2 = performance.now();
     runtimes.push(t2 - t1);
   }
 
   const perf = runtimes.reduce((a, b) => a + b) / runtimes.length;
-  console.log(perf)
-  return perf
+  console.log(perf);
+  return perf;
 }
