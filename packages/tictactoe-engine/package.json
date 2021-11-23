@@ -25,7 +25,7 @@
     "asbuild:untouched": "asc assembly/index.ts --target debug",
     "asbuild:optimized": "asc assembly/index.ts --target release",
     "asbuild": "npm run asbuild:optimized",
-    "build": "tsc && npm run asbuild",
+    "build": "tsc",
     "dev": "nodemon --config nodemon.json",
     "prepublishOnly": "npm run build",
     "test": "jest --watchAll"
@@ -40,5 +40,5 @@
   "devDependencies": {
     "assemblyscript": "^0.19.20"
   },
-  "gitHead": "8a955745a09c4920817f7f6560fcd98271f168fb"
+  "gitHead": "c784e7c55da10f3a754bf0abf94c75a08e61e3d7"
 }
