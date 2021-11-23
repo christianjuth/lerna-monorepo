@@ -24,7 +24,6 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --config nodemon.json",
-    "prepublishOnly": "npm run build",
     "test": "jest --watchAll"
   },
   "bugs": {
