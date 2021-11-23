@@ -37,5 +37,6 @@
   "dependencies": {
     "heap": "^0.2.6",
     "uuid": "^8.3.2"
-  }
+  },
+  "gitHead": "8a955745a09c4920817f7f6560fcd98271f168fb"
 }

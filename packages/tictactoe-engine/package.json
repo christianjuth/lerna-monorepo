@@ -39,5 +39,6 @@
   },
   "devDependencies": {
     "assemblyscript": "^0.19.20"
-  }
+  },
+  "gitHead": "8a955745a09c4920817f7f6560fcd98271f168fb"
 }
