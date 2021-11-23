@@ -128,14 +128,13 @@ export function getBestMovesMiniMax(gameState: GameState) {
       // Positive value if we won this game.
       // We divide by level to encourage paths
       // that lead to a win in less moves.
-      if (winner === player) return 1 / level;
+      if (winner === player) return 9 - level;
       // Zero means draw
       if (!winner) return 0;
       // Negative number if the opponent won
-      return -1 / level;
+      return -(9 - level);
     },
-    // hashGameState: (gameState) => gameState.join(','),
-    randomizeNextGameStateOrder: true,
+    hashGameState: (gameState) => gameState.join(","),
   });
 }
 

@@ -1,7 +1,7 @@
 interface MinimaxConfig<T> {
   player: string;
   gameState: T;
-  leafEvaluator?: (obj: {
+  leafEvaluator: (obj: {
     gameState: T;
     player: string;
     level: number;
@@ -36,6 +36,26 @@ class Node<T> {
   }
 }
 
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length;
+  let randomIndex: number;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
 function minimaxInternal<T>({
   player = "",
   node,
@@ -44,26 +64,31 @@ function minimaxInternal<T>({
   getNextGameState,
   isMax = true,
   maxDepth = Number.MAX_SAFE_INTEGER,
-  alpha = Number.MIN_SAFE_INTEGER,
-  beta = Number.MAX_SAFE_INTEGER,
+  alpha = -Infinity,
+  beta = Infinity,
   level,
   randomizeNextGameStateOrder = false,
   dictionary,
   hashGameState,
 }: MinimaxInternalConfig<T>) {
   const childrenData = getNextGameState(node.gameState);
+  if (randomizeNextGameStateOrder) {
+    shuffle(childrenData);
+  }
   const gameStateId = hashGameState ? hashGameState(node.gameState) : null;
 
   if (gameStateId && dictionary[gameStateId]) {
     const val = dictionary[gameStateId];
     node.value = val;
     return val;
-  } else if (childrenData === undefined || childrenData.length === 0) {
+  }
+
+  if (childrenData === undefined || childrenData.length === 0) {
     const val = leafEvaluator({ gameState: node.gameState, player, level });
     gameStateId && (dictionary[gameStateId] = val);
     node.value = val;
     return val;
-  } else if (maxDepth === 0 && leafEvaluator !== undefined) {
+  } else if (maxDepth === 0 && staticEvaluator !== undefined) {
     const val = staticEvaluator({ gameState: node.gameState, player, level });
     gameStateId && (dictionary[gameStateId] = val);
     node.value = val;
@@ -75,12 +100,7 @@ function minimaxInternal<T>({
 
     for (const gameState of childrenData) {
       const child = new Node<T>(gameState);
-
-      if (randomizeNextGameStateOrder && Math.random() > 0.5) {
-        children.push(child);
-      } else {
-        children.unshift(child);
-      }
+      children.push(child);
 
       const evaluation = minimaxInternal<T>({
         player,
@@ -95,8 +115,13 @@ function minimaxInternal<T>({
         level: level + 1,
         dictionary,
         hashGameState,
+        randomizeNextGameStateOrder,
       });
       values.push(evaluation);
+
+      // if (isMax ? evaluation >= beta : evaluation <= alpha) {
+      //   break
+      // }
 
       if (isMax) {
         alpha = Math.max(alpha, evaluation);

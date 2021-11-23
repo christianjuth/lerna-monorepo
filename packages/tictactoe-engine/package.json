@@ -34,7 +34,8 @@
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.19.20",
-    "@christianjuth/minimax": "^0.0.1-alpha.11"
+    "@christianjuth/minimax": "^0.0.1-alpha.12"
   },
-  "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e"
+  "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e",
+  "sideEffects": false
 }
