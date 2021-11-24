@@ -1,14 +1,13 @@
 {
   "name": "@christianjuth/tictactoe-engine",
-  "version": "0.0.3-alpha.8",
+  "version": "0.0.3-alpha.9",
   "description": "> TODO: description",
   "author": "Christian Juth <cjuth2@gmail.com>",
   "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
   "license": "MIT",
   "main": "cjs/tictactoe-engine.js",
   "module": "esm/tictactoe-engine.js",
-  "directories": {
-  },
+  "directories": {},
   "files": [
     "cjs",
     "esm",
