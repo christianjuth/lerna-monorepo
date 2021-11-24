@@ -45,6 +45,8 @@ build/Release
 node_modules/
 jspm_packages/
 lib/
+esm/
+cjs/
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/

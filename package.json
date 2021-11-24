@@ -9,7 +9,7 @@
     "lintStaged": "lint-staged",
     "test": "lerna run jest",
     "stop-if-git-changes": "git diff-index --quiet HEAD --",
-    "prerelease": "npm run stop-if-git-changes && rimraf ./packages/**/lib/* && lerna run build",
+    "prerelease": "npm run stop-if-git-changes && rimraf ./packages/**/cjs/* && rimraf ./packages/**/esm/* && lerna run build",
     "release": "lerna publish"
   },
   "devDependencies": {
