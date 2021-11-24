@@ -1,0 +1,33 @@
+{
+  "name": "@christianjuth/genetics",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "Christian Juth <cjuth2@gmail.com>",
+  "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
+  "license": "MIT",
+  "main": "cjs/genetics.js",
+  "module": "esm/genetics.js",
+  "directories": {},
+  "files": [
+    "cjs",
+    "esm"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
+  },
+  "scripts": {
+    "build": "tsc --p ./tsconfig.browser.json && tsc --p ./tsconfig.node.json",
+    "dev": "nodemon --config nodemon.json",
+    "test": "jest --watchAll"
+  },
+  "bugs": {
+    "url": "https://github.com/christianjuth/lerna-monorepo/issues"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
+  }
+}

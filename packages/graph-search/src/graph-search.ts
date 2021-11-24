@@ -35,11 +35,11 @@ class Queue<T> implements List<T> {
   }
 }
 
-function getNodeKey(node: any) {
-  if (typeof node === "string" || typeof node === "number") {
-    return node;
-  } else if (typeof node === "object") {
+function getNodeKey(node: any): string {
+  if (typeof node === "object") {
     return node[GRAPH_SEARCH_ID] ?? (node[GRAPH_SEARCH_ID] = uuid());
+  } else {
+    return String(node);
   }
 }
 
