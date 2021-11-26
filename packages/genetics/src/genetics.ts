@@ -1,17 +1,5 @@
-import { v4 as uuid } from "uuid";
-
-const GENETICS_ID = "GRAPH_SEARCH_ID";
-
 type GeneRange = [number, number][];
 type Genes = number[];
-
-function getEntityId(entity: any): string {
-  if (typeof entity === "object") {
-    return entity[GENETICS_ID] ?? (entity[GENETICS_ID] = uuid());
-  } else {
-    return String(entity);
-  }
-}
 
 function randomNumber(min: number, max: number, forceInt = false) {
   const num = Math.round(Math.random() * (max - min) + min);
@@ -32,42 +20,14 @@ function mutate(
     return genes;
   }
 
-  const newGenes = [...genes];
   const index = randomNumber(0, genes.length - 1, forceGenesToBeInt);
-  newGenes[index] = randomNumber(...geneRanges[index], forceGenesToBeInt);
-  return newGenes;
+  genes[index] = randomNumber(...geneRanges[index], forceGenesToBeInt);
+  return genes;
 }
 
-function breed(parent1: Genes, parent2: Genes, forGenesToBeInts: boolean) {
-  const crossOver = randomNumber(0, parent1.length - 1, forGenesToBeInts);
+function breed(parent1: Genes, parent2: Genes) {
+  const crossOver = randomNumber(0, parent1.length - 1, true);
   return [...parent1.slice(0, crossOver), ...parent2.slice(crossOver)];
-}
-
-function sortByFitness<T>(
-  data: Genes[],
-  getFitness: (entity: T) => number,
-  spawn: (genes: Genes) => T
-) {
-  const fitnesses: Record<string, number> = {};
-  const genes: Record<string, Genes> = {};
-
-  const entities = data.map((gene) => {
-    const entity = spawn(gene);
-    const id = getEntityId(entity);
-    fitnesses[id] = getFitness(entity);
-    genes[id] = gene;
-    return entity;
-  });
-
-  entities.sort((a, b) => {
-    const aFitness = fitnesses[getEntityId(a)];
-    const bFitness = fitnesses[getEntityId(b)];
-    if (aFitness > bFitness) return -1;
-    if (bFitness < aFitness) return 1;
-    return 0;
-  });
-
-  return entities.map((entity) => genes[getEntityId(entity)]);
 }
 
 function nMostFit<T>(
@@ -77,7 +37,7 @@ function nMostFit<T>(
   spawn: (genes: Genes) => T
 ) {
   data = [...data];
-  const ouput = [];
+  const ouput: Genes[] = [];
   let mostFitOutput = -Infinity;
   const fitnesses = data.map((item) => getFitness(spawn(item)));
   n = Math.min(n, data.length);
@@ -164,7 +124,7 @@ export function evolve<T>({
   resetParents();
 
   let fitness = getFitness(
-    spawn(sortByFitness(parentsGenes, getFitness, spawn)[0])
+    spawn(nMostFit(1, parentsGenes, getFitness, spawn)[0])
   );
 
   let generation = 0;
@@ -178,33 +138,33 @@ export function evolve<T>({
       continue;
     }
 
-    let genes: Genes[] = Array(randomNumber(...population, true))
+    parentsGenes = Array(randomNumber(...population, true))
       .fill(0)
       .map(() =>
         mutate(
           mutationRate,
           forGenesToBeInts,
-          breed(
-            randomArrayItem(parentsGenes),
-            randomArrayItem(parentsGenes),
-            forGenesToBeInts
-          ),
+          breed(randomArrayItem(parentsGenes), randomArrayItem(parentsGenes)),
           geneRanges
         )
       );
 
-    genes = nMostFit(randomNumber(...parents), genes, getFitness, spawn);
+    parentsGenes = nMostFit(
+      randomNumber(...parents),
+      parentsGenes,
+      getFitness,
+      spawn
+    );
 
-    fitness = getFitness(spawn(genes[0]));
+    fitness = getFitness(spawn(parentsGenes[0]));
     if (fitness > optimalSolution.fitness) {
       optimalSolution = {
-        genes: genes[0],
+        genes: parentsGenes[0],
         fitness,
         generation,
       };
     }
 
-    parentsGenes = genes;
     if (log && generation % logPeriod === 0) {
       console.log(`generation: ${generation}, fitness: ${fitness}`);
     }
@@ -215,11 +175,7 @@ export function evolve<T>({
     console.log(`generation: ${generation}, fitness: ${fitness}`);
   }
   const mostFit = spawn(
-    sortByFitness(
-      [optimalSolution.genes, ...parentsGenes],
-      getFitness,
-      spawn
-    )[0]
+    nMostFit(1, [optimalSolution.genes, ...parentsGenes], getFitness, spawn)[0]
   );
 
   return {

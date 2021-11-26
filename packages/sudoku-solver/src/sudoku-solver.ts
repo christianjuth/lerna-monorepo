@@ -1,16 +1,12 @@
-import { evolve } from "@christianjuth/genetics";
-
 type Board = number[];
 
-export function getCost(board: Board) {
-  let cost = 0;
-
+export function isValid(board: Board) {
   for (let i = 0; i < 9; i++) {
     const seen = {};
     for (let j = 0; j < 9; j++) {
       const num = board[i + 9 * j];
       if (num !== 0 && seen[num]) {
-        cost++;
+        return false;
       }
       seen[num] = true;
     }
@@ -21,7 +17,7 @@ export function getCost(board: Board) {
     for (let j = 0; j < 9; j++) {
       const num = board[i * 9 + j];
       if (num !== 0 && seen[num]) {
-        cost++;
+        return false;
       }
       seen[num] = true;
     }
@@ -41,49 +37,89 @@ export function getCost(board: Board) {
       getBlockIndicies(row + col).forEach((index) => {
         const num = board[index];
         if (num !== 0 && seen[num]) {
-          cost++;
+          return false;
         }
         seen[num] = true;
       });
     }
   }
 
-  return cost;
+  return true;
 }
 
 export function isSolved(board: Board) {
-  return getCost(board) === 0;
+  const total = board.reduce((acc, crnt) => acc + crnt, 0);
+  return isValid(board) && total === 405;
 }
 
-export function evolutionSolver(board: Board) {
-  const emptyCells = board.filter((num) => num === 0);
+function shuffle<T>(array: T[]) {
+  let currentIndex = array.length;
+  let randomIndex = -1;
 
-  const { result } = evolve<number[]>({
-    geneRanges: emptyCells.map(() => [1, 9]),
-    spawn: (cells) => {
-      let index = 0;
-      return board.map((cell) => {
-        if (cell > 0) {
-          return cell;
-        } else {
-          const out = cells[index];
-          index++;
-          return out;
-        }
-      });
-    },
-    getFitness: (cells) => {
-      const total = cells.reduce((acc, val) => acc + val, 0);
-      const overshot = Math.max(0, 405 - total);
-      return 1000 - getCost(cells) - overshot * 2;
-    },
-    // log: true,
-    logPeriod: 5000,
-    mutationRate: 0.7,
-    maxGenerationsWithoutImprovement: 10000,
-    maxGenerations: Infinity,
-    targetFitness: 1000,
-  });
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
 
-  return result;
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+
+  return array;
+}
+
+function dfsSolve(board: Board) {
+  const index = board.findIndex((cell) => cell === 0);
+
+  if (index === -1) {
+    return isSolved(board);
+  }
+
+  for (const num of shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9])) {
+    board[index] = num;
+    if (!isValid(board)) {
+      continue;
+    } else if (dfsSolve(board)) {
+      return true;
+    }
+  }
+
+  if (isSolved(board)) {
+    return true;
+  } else {
+    board[index] = 0;
+    return false;
+  }
+}
+
+export function solve(board: Board) {
+  const t1 = Date.now();
+  board = [...board];
+
+  const isSolved = dfsSolve(board);
+
+  return {
+    solution: isSolved ? board : null,
+    runtime: Date.now() - t1,
+  };
+}
+
+export function generate() {
+  const size = 9 * 9;
+  const board = Array(size).fill(0);
+  const { solution } = solve(board);
+  const puzzel = [...solution];
+  for (let i = 0; i < size; i++) {
+    if (Math.random() >= 0.3) {
+      puzzel[i] = 0;
+    }
+  }
+  return {
+    puzzel,
+    solution,
+  };
 }
