@@ -1,1 +1,5 @@
 export * from './TicTacToe'
+export * from './SudokuSolver'
+export * from './Genetics'
+export * from './GraphSearch'
+export * from './Minimax'

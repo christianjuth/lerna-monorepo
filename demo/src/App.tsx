@@ -11,14 +11,12 @@ const Page = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background-color: #eee;
 `
 
 const Content = styled.div`
-  width: 800px;
+  width: 1000px;
   max-width: 100%;
-  background-color: white;
-  padding: calc(8px + 1vw);
+  padding: calc(15px + 0.5vw);
 `
 
 function App() {
@@ -29,7 +27,11 @@ function App() {
       <Content style={{minHeight: windowHeight}}>
         <Router>
           <Routes>
-            <Route path='tic-tac-toe' element={<Pages.TicTacToe/>} />
+            <Route path='tictactoe-engine' element={<Pages.TicTacToe/>} />
+            <Route path='minimax' element={<Pages.Minimax/>} />
+            <Route path='graph-search' element={<Pages.GraphSearch/>} />
+            <Route path='sudoku-solver' element={<Pages.SudokuSolver/>} />
+            <Route path='genetics' element={<Pages.Genetics/>} />
           </Routes>
         </Router>
       </Content>
