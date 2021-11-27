@@ -34,13 +34,13 @@ export function isValid(board: Board) {
 
       const seen = {};
 
-      getBlockIndicies(row + col).forEach((index) => {
+      for (const index of getBlockIndicies(row + col)) {
         const num = board[index];
         if (num !== 0 && seen[num]) {
           return false;
         }
         seen[num] = true;
-      });
+      }
     }
   }
 
