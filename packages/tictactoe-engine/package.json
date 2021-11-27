@@ -1,6 +1,6 @@
 {
   "name": "@christianjuth/tictactoe-engine",
-  "version": "0.0.3-alpha.9",
+  "version": "0.0.3-alpha.10",
   "description": "> TODO: description",
   "author": "Christian Juth <cjuth2@gmail.com>",
   "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@assemblyscript/loader": "^0.19.20",
-    "@christianjuth/minimax": "^0.0.1-alpha.13"
+    "@christianjuth/minimax": "^0.0.1-alpha.14"
   },
   "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e",
   "sideEffects": false
