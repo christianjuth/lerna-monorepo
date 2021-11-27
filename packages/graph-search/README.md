@@ -1,6 +1,8 @@
 # `@christianjuth/graph-search`
 
-> TODO: description
+A collection of graph search algorithms that let you represent a graph however you choose.
+
+[Demo](https://npm.christianjuth.com/graph-search)
 
 ## Usage
 

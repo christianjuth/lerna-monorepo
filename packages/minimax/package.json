@@ -10,7 +10,8 @@
   "directories": {},
   "files": [
     "cjs",
-    "esm"
+    "esm",
+    "README.md"
   ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org",

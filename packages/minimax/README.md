@@ -1,6 +1,8 @@
 # `@christianjuth/minimax`
 
-> TODO: description
+Flexible minimax algorithm with fail-soft alpha-beta pruning.
+
+[Demo](https://npm.christianjuth.com/minimax)
 
 ## Usage
 

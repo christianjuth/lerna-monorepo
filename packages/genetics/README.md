@@ -1,6 +1,8 @@
 # `@christianjuth/genetics`
 
-> TODO: description
+A flexible genetics algorithm.
+
+[Demo](https://npm.christianjuth.com/genetics)
 
 ### Evolving a sentence
 

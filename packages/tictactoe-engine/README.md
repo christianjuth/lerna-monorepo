@@ -1,11 +1,26 @@
 # `@christianjuth/tictactoe-engine`
 
-> TODO: description
+Tic-tac-toe engine
+
+[Demo](https://npm.christianjuth.com/tictactoe-engine)
 
 ## Usage
 
-```
-const tictactoeEngine = require('@christianjuth/tictactoe-engine');
+```javascript
+import { 
+  getBestMovesMiniMax, 
+  checkWinner, 
+  printBoard 
+} from "@christianjuth/tictactoe-engine";
 
-// TODO: DEMONSTRATE API
+let board = [
+  '','','',
+  '','','',
+  '','',''
+]
+
+while (checkWinner(board) === undefined) {
+  board = getBestMovesMiniMax(board)
+  printBoard(board)
+}
 ```

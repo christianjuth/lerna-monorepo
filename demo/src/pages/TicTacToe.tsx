@@ -42,15 +42,15 @@ export function TicTacToe() {
   return (
     <>
       <h1>@christianjuth/tictactoe-engine</h1>
-      <hr/>
+      <hr />
 
       <h2>Demo</h2>
 
       <button onClick={() => setPlayer('X')}>Play as X</button>
       <button onClick={() => setPlayer('O')}>Play as O</button>
 
-      <br/>
-      <br/>
+      <br />
+      <br />
 
       <Board>
         {board.map((cell, i) => (
@@ -73,7 +73,7 @@ export function TicTacToe() {
         ))}
       </Board>
 
-      <br/>
+      <br />
 
       <span>Predicted winenr: {predictWinner(board) ?? 'draw'}</span>
     </>
