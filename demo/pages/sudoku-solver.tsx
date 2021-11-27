@@ -8,14 +8,17 @@ import { getReadme } from '../utils'
 const Puzzel = styled.div`
   display: flex;
   flex-direction: column;
+  width: 400px;
+  max-width: 100%;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
 `
 
 const Row = styled.div`
   display: grid;
   grid-template-columns: repeat(9, 1fr);
-  width: 400px;
   border-bottom: 1px solid #ddd;
-
+  width: 100%;
   :nth-child(3n) {
     border-bottom: 2px solid black;
   }
@@ -59,13 +62,14 @@ function SudokuSolver({
 }) {
   const [cells, setCells] = useState(Array(9*9).fill(''))
   const [solution, setSolution] = useState(Array(9*9).fill(''))
+  const [runtime, setRuntime] = useState(0)
 
   useEffect(() => {
     let canceled = false
     async function run() {
       const res = solve(cells.map(cell => cell ? +cell : 0))
       if (!canceled) {
-        console.log(res.solution, res.solution && isValid(res.solution))
+        setRuntime(res.runtime) 
         setSolution(res.solution)
       }
     }
@@ -80,31 +84,35 @@ function SudokuSolver({
       pkg="@christianjuth/sudoku-solver"
       readme={readme}
       demo={(
-        <Puzzel>
-          {GRID.map((row, i) => (
-            <Row key={i}>
-              {row.map((_, j) => {
-                const index = (i*9)+j
-                const cell = cells[index]
-                const placeholder = solution?.[index] 
-                return (
-                  <Cell
-                    key={i+j}
-                    placeholder={placeholder}
-                    value={cell}
-                    onChange={e => {
-                      setCells(crnt => {
-                        const clone = [...crnt]
-                        clone[index] = e.target.value.replace(/[^0-9]/, '')
-                        return clone
-                      })
-                    }}
-                  />
-                )
-              })}
-            </Row>
-          ))}
-        </Puzzel>
+        <>
+          <Puzzel>
+            {GRID.map((row, i) => (
+              <Row key={i}>
+                {row.map((_, j) => {
+                  const index = (i*9)+j
+                  const cell = cells[index]
+                  const placeholder = solution?.[index] 
+                  return (
+                    <Cell
+                      key={i+j}
+                      placeholder={placeholder}
+                      value={cell}
+                      onChange={e => {
+                        setCells(crnt => {
+                          const clone = [...crnt]
+                          clone[index] = e.target.value.replace(/[^0-9]/, '')
+                          return clone
+                        })
+                      }}
+                    />
+                  )
+                })}
+              </Row>
+            ))}
+          </Puzzel>
+          <br/>
+          <span>Found solution in {runtime/1000}seconds</span>
+        </>
       )}
     />
   )
