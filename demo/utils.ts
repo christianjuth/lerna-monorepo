@@ -27,3 +27,8 @@ export function useFetch<T>(url: string) {
 export function useReadme(pkg: string) {
   return useFetch<string>(`https://unpkg.com/${pkg}/README.md`)
 }
+
+export async function getReadme(pkg: string) {
+  const res = await fetch(`https://unpkg.com/${pkg}/README.md`)
+  return res.text()
+}

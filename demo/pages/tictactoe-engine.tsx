@@ -1,7 +1,11 @@
 import { useState, useEffect, Fragment } from 'react'
-import { getBestMoveNuralNetwork, whosMove, checkWinner, predictWinner } from '@christianjuth/tictactoe-engine'
+import { getBestMovesMiniMax, whosMove, checkWinner, predictWinner } from '@christianjuth/tictactoe-engine'
 import styled from "styled-components";
 import { Package } from '../components/Package'
+import { GetStaticProps } from "next"
+import { getReadme } from '../utils'
+
+const PKG = '@christianjuth/tictactoe-engine'
 
 const Board = styled.div`
   display: flex;
@@ -21,14 +25,18 @@ const Cell = styled.button`
   border: 1px solid gray;
   background-color: transparent;
   cursor: pointer;
-  color: white;
+  color: var(--text);
 `;
 
 const Break = styled.div`
   min-width: 100%;
 `;
 
-export function TicTacToe() {
+function TicTacToe({
+  readme
+}: {
+  readme: string
+}) {
   const [player, setPlayer] = useState('X')
   const [board, setBoard] = useState(Array(9).fill(''))
 
@@ -39,13 +47,14 @@ export function TicTacToe() {
   useEffect(() => {
     const move = whosMove(board)
     if (move !== player && checkWinner(board) === undefined) {
-      setBoard(b => getBestMoveNuralNetwork(b))
+      setBoard(b => getBestMovesMiniMax(b))
     }
   }, [player, board])
 
   return (
     <Package
       pkg="@christianjuth/tictactoe-engine" 
+      readme={readme}
       demo={(
         <>
           <button onClick={() => setPlayer('X')}>Play as X</button>
@@ -83,3 +92,20 @@ export function TicTacToe() {
     />
   )
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  let readme: string | null = null
+
+  try {
+    readme = await getReadme(PKG)
+  } catch(e) {}
+
+  return {
+    props: {
+      readme
+    },
+    revalidate: 5 * 60,
+  }
+}
+
+export default TicTacToe

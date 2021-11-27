@@ -13,7 +13,7 @@ const Subtitle = styled.span`
 
 const Title = styled.h1`
   && {
-    margin: 5px 0;
+    margin: 0 0 5px;
   }
 `
 
@@ -34,10 +34,12 @@ const Main = styled.main`
 
 export function Package({
   pkg,
-  demo
+  demo,
+  readme
 }: {
   pkg: string,
   demo: ReactElement
+  readme: string
 }) {
   const [tab, setTab] = useState('demo')
 
@@ -48,7 +50,7 @@ export function Package({
         {/* Header */}
         <Grid.Col xs={0} md={1} />
         <Grid.Col xs={3} md={1}>
-          <Subtitle>{pkg.replace(/\/.+/, '')}</Subtitle>
+          <Subtitle>{pkg.replace(/\/.+/, '')}/</Subtitle>
           <Title>{pkg.replace(/.+\//, '')}</Title>
           <Divider />
         </Grid.Col>
@@ -66,7 +68,7 @@ export function Package({
         <Grid.Col xs={3} md={1}>
           <Main>
             {tab === 'demo' && demo}
-            {tab === 'readme' && <Readme pkg={pkg} />}
+            {tab === 'readme' && <Readme pkg={pkg} readme={readme} />}
           </Main>
         </Grid.Col>
 
