@@ -10,14 +10,4 @@ module.exports = {
     config.resolve.fallback = { fs: false };
     return config;
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: 'https://www.npmjs.com/search?q=%40christianjuth%2F',
-        permanent: true,
-        basePath: false
-      },
-    ]
-  },
 }

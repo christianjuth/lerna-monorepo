@@ -1,5 +1,52 @@
 import { useState, useEffect } from 'react'
 
+
+export declare namespace API {
+  type Package = {
+    package: {
+      name: string,
+      scope: string,
+      version: string,
+      description: string,
+      date: string,
+      links: {
+        npm: string,
+        homepage: string,
+        repository: string,
+        bugs: string,
+      },
+      author: {
+        name: string,
+        email: string,
+        username: string,
+      },
+      publisher: {
+        username: string,
+        email: string,
+      },
+      maintainers: [
+        {
+          username: string,
+          email: string,
+        }
+      ]
+    },
+    flags: {
+      unstable: boolean
+    },
+    score: {
+      final: number,
+      detail: {
+        quality: number,
+        popularity: number,
+        maintenance: number,
+      }
+    },
+    searchScore: number,
+  }
+}
+
+
 export function useFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null)
 
@@ -30,5 +77,12 @@ export function useReadme(pkg: string) {
 
 export async function getReadme(pkg: string) {
   const res = await fetch(`https://unpkg.com/${pkg}/README.md`)
-  return res.text()
+  return await res.text()
 }
+
+export async function getPackages(search: string) {
+  const res = await fetch(`https://registry.npmjs.org/-/v1/search?text=${search}/`)
+  const json = await res.json()
+  return json.objects as API.Package[]
+}
+

@@ -2,7 +2,7 @@
   --text: black;
   --background: white;
   --accent: #10910e;
-  --divider: rgb(40, 42, 54);
+  --divider: #d2d2d7;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -10,6 +10,7 @@
     --text: white;
     --background: #18191a;
     --accent: rgb(80, 250, 123); 
+    --divider: #4e4e4e;
   }
 }
 
@@ -34,20 +35,12 @@ pre code {
   word-wrap: break-word !important;
 }
 
-* {
-  box-sizing: border-box;
+pre code * {
+  font-size: 0.9rem;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span,
-label {
-  
+* {
+  box-sizing: border-box;
 }
 
 h1 {
@@ -79,6 +72,6 @@ a:hover,
   text-decoration: underline;
 }
 
-button {
+a, button {
   cursor: pointer;
 }

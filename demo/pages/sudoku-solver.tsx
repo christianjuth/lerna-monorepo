@@ -10,29 +10,28 @@ const Puzzel = styled.div`
   flex-direction: column;
   width: 400px;
   max-width: 100%;
-  border-top: 2px solid black;
-  border-left: 2px solid black;
+  border: 2px solid black;
+  border-bottom: none;
+  background-color: black;
 `
 
 const Row = styled.div`
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  border-bottom: 1px solid #ddd;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 2px 1fr 1px 1fr 1px 1fr 2px 1fr 1px 1fr 1px 1fr;
+  margin-bottom: 1px;
   width: 100%;
   :nth-child(3n) {
-    border-bottom: 2px solid black;
+    margin-bottom: 2px;
   }
 `
 
 const Cell = styled.input`
   width: 100%;
-  aspect-ratio: 1.05;
-  font-weight: bold;
+  aspect-ratio: 1;
   margin: 0;
   border: 0;
   text-align: center;
   font-size: 1rem;
-  border-right: 1px solid #ddd;
 
   ::placeholder {
     color: rgba(0,0,0,0.25);
@@ -44,11 +43,33 @@ const Cell = styled.input`
     font-weight: 300;
   }
 
-  :nth-child(3n) {
-    border-right: 2px solid black;
+  :nth-child(9n) {
+    grid-column: 1;
   }
-
-  
+  :nth-child(9n+2) {
+    grid-column: 3;
+  }
+  :nth-child(9n+3) {
+    grid-column: 5;
+  }
+  :nth-child(9n+4) {
+    grid-column: 7;
+  }
+  :nth-child(9n+5) {
+    grid-column: 9;
+  }
+  :nth-child(9n+6) {
+    grid-column: 11;
+  }
+  :nth-child(9n+7) {
+    grid-column: 13;
+  }
+  :nth-child(9n+8) {
+    grid-column: 15;
+  }
+  :nth-child(9n+9) {
+    grid-column: 17;
+  }
 `
 
 const PKG = '@christianjuth/sudoku-solver'
@@ -106,6 +127,7 @@ function SudokuSolver({
                           return clone
                         })
                       }}
+                      style={cell ? { fontWeight: 700 } : undefined}
                     />
                   )
                 })}

@@ -1,8 +1,11 @@
-import { useState, ReactElement } from 'react'
-import { Divider } from './Divider'
-import { Readme } from './Readme'
-import { Grid } from './Grid'
+import { ReactElement, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { Page } from './Page'
+import { Readme } from './Readme'
+import { ReactChildren } from '../types'
+import { useRouter } from 'next/router'
+import { Switch } from './Switch'
+import Link from 'next/link' 
 
 const Subtitle = styled.span`
   && {
@@ -17,63 +20,62 @@ const Title = styled.h1`
   }
 `
 
-const Sidebar = styled.aside`
-  display: flex;
-  flex-direction: column;
-
-  * {
-    line-height: 1.5em;
-  }
-`
-
-const Main = styled.main`
-  *:first-child {
-    margin-top: 0;
-  }
-`
-
 export function Package({
   pkg,
   demo,
   readme
 }: {
   pkg: string,
-  demo: ReactElement
+  demo: ReactChildren
   readme: string
 }) {
-  const [tab, setTab] = useState('demo')
+  const router = useRouter()
+  const { selectedTab } = router.query
+  const [tab, setTab] = useState<string>()
+
+  useEffect(() => {
+    if (tab === undefined && typeof selectedTab === 'string') {
+      setTab(selectedTab)
+    }
+  }, [tab, selectedTab])
+
+  useEffect(() => {
+    if (tab !== undefined) {
+      router.replace(
+        {
+          query: {
+            selectedTab: tab
+          }
+        }, 
+        undefined, 
+        { shallow: true }
+      )
+    }
+  }, [tab])
 
   return (
-    <>
-      <Grid.Row cols='150px 1fr 150px' spacing={5}>
-
-        {/* Header */}
-        <Grid.Col xs={0} md={1} />
-        <Grid.Col xs={3} md={1}>
+    <Page 
+      header={(
+        <>
           <Subtitle>{pkg.replace(/\/.+/, '')}/</Subtitle>
           <Title>{pkg.replace(/.+\//, '')}</Title>
-          <Divider />
-        </Grid.Col>
-        <Grid.Col xs={0} md={1} />
-
-        {/* Content */}
-        <Grid.Col xs={0} md={1}>
-          <Sidebar>
-            <button className='link' onClick={() => setTab('demo')}>Demo</button>
-            <button className='link' onClick={() => setTab('readme')}>README.md</button>
-            <a href={`https://www.npmjs.com/package/${pkg}`}>NPM</a>
-          </Sidebar>
-        </Grid.Col>
-
-        <Grid.Col xs={3} md={1}>
-          <Main>
-            {tab === 'demo' && demo}
-            {tab === 'readme' && <Readme pkg={pkg} readme={readme} />}
-          </Main>
-        </Grid.Col>
-
-      </Grid.Row>
-    </>
+        </>
+      )}
+      sidebar={(
+        <>
+          <button className='link' onClick={() => setTab('demo')}>Demo</button>
+          <button className='link' onClick={() => setTab('readme')}>README.md</button>
+          <a href={`https://www.npmjs.com/package/${pkg}`}>NPM</a>
+          <Link href='/'>
+            <a>All packages</a>
+          </Link>
+        </>
+      )}
+    >
+      <Switch>
+        {tab === 'readme' && <Readme pkg={pkg} readme={readme} />}
+        {demo}
+      </Switch>
+    </Page>
   )
-
 } 
