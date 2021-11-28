@@ -10,7 +10,7 @@ const Page = styled.div`
 `
 
 const Content = styled.div`
-  width: 1000px;
+  width: 900px;
   max-width: 100%;
   padding: calc(15px + 0.5vw);
 `

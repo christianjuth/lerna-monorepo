@@ -272,10 +272,10 @@
   "resolved" "https://registry.npmjs.org/@christianjuth/minimax/-/minimax-0.0.1-alpha.14.tgz"
   "version" "0.0.1-alpha.14"
 
-"@christianjuth/sudoku-solver@^0.0.1-alpha.1":
-  "integrity" "sha512-WhXCB62FAX5GDpmX/sx4mhL85MaXX0MvrsIGPR68fzoFnm9w9U3HwP1EUXjBaElPdg7CXBmG7bMUotQnHMNKfA=="
-  "resolved" "https://registry.npmjs.org/@christianjuth/sudoku-solver/-/sudoku-solver-0.0.1-alpha.1.tgz"
-  "version" "0.0.1-alpha.1"
+"@christianjuth/sudoku-solver@^0.0.1-alpha.3":
+  "integrity" "sha512-elgqrQKtrZRMOihkaP7IsgsI38ga4XKG8LzirdE/543zndrAkUFjGFiv/Nnds3GQve5uASBgsKkxnT1L0cB8cw=="
+  "resolved" "https://registry.npmjs.org/@christianjuth/sudoku-solver/-/sudoku-solver-0.0.1-alpha.3.tgz"
+  "version" "0.0.1-alpha.3"
 
 "@christianjuth/tictactoe-engine@^0.0.3-alpha.10":
   "integrity" "sha512-Y+XGwIeZyjVPsLrMis+awIGw4YhF49BL1QhjZ/Hgto6w2Nwh0+bEvxrIasS3GDOR7Za+m9t9NkRzt+Tan10qYw=="

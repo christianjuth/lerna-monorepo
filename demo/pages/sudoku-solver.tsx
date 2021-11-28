@@ -61,7 +61,7 @@ function SudokuSolver({
   readme: string
 }) {
   const [cells, setCells] = useState(Array(9*9).fill(''))
-  const [solution, setSolution] = useState(Array(9*9).fill(''))
+  const [solution, setSolution] = useState<number[] | null>(Array(9*9).fill(0))
   const [runtime, setRuntime] = useState(0)
 
   useEffect(() => {
@@ -85,6 +85,8 @@ function SudokuSolver({
       readme={readme}
       demo={(
         <>
+          <p>Enter values in boxes below and the solver will generate a solution to your sudoku puzzel if one exsists.</p>
+
           <Puzzel>
             {GRID.map((row, i) => (
               <Row key={i}>
@@ -95,7 +97,7 @@ function SudokuSolver({
                   return (
                     <Cell
                       key={i+j}
-                      placeholder={placeholder}
+                      placeholder={placeholder ? String(placeholder) : ''}
                       value={cell}
                       onChange={e => {
                         setCells(crnt => {
@@ -111,7 +113,11 @@ function SudokuSolver({
             ))}
           </Puzzel>
           <br/>
-          <span>Found solution in {runtime/1000}seconds</span>
+          {solution === null ? (
+            <span>Error: invalid puzzel</span>
+          ) : (
+            <span>Found solution in {runtime/1000}seconds</span>
+          )}
         </>
       )}
     />
