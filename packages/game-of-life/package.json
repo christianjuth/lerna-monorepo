@@ -1,0 +1,31 @@
+{
+  "name": "@christianjuth/game-of-life",
+  "version": "0.0.0",
+  "description": "Conway Game of Life simulation",
+  "author": "Christian Juth <cjuth2@gmail.com>",
+  "homepage": "https://github.com/christianjuth/lerna-monorepo#readme",
+  "license": "MIT",
+  "main": "cjs/game-of-life.js",
+  "module": "esm/game-of-life.js",
+  "directories": {},
+  "files": [
+    "cjs",
+    "esm",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
+  },
+  "scripts": {
+    "build": "tsc --p ./tsconfig.browser.json && tsc --p ./tsconfig.node.json",
+    "dev": "nodemon --config nodemon.json",
+    "test": "jest --watchAll"
+  },
+  "bugs": {
+    "url": "https://github.com/christianjuth/lerna-monorepo/issues"
+  }
+}
