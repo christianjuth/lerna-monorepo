@@ -19,9 +19,6 @@ const Cell = styled.div`
   border: 1px solid black;
 `
 
-
-
-
 function Game({
   readme
 }: {

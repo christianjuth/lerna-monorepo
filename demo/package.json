@@ -11,7 +11,7 @@
     "@christianjuth/genetics": "^0.0.2-alpha.2",
     "@christianjuth/sudoku-solver": "^0.0.1-alpha.3",
     "@christianjuth/tictactoe-engine": "^0.0.3-alpha.10",
-    "@christianjuth/game-of-life": "^0.0.1-alpha.0",
+    "@christianjuth/game-of-life": "^0.0.1-alpha.1",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-div-100vh": "^0.7.0",

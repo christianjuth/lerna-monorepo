@@ -19,10 +19,10 @@ class GameOfLife {
       );
     this.frame1 = Array(height)
       .fill(0)
-      .map((row) =>
+      .map(() =>
         Array(width)
           .fill(0)
-          .map(() => (Math.random() <= 0.2 ? 1 : 0))
+          .map(() => 0)
       );
   }
 
@@ -50,6 +50,8 @@ class GameOfLife {
           next[y][x] = 1;
         } else if (frame[y][x] === 1 && (neighbors < 2 || neighbors > 3)) {
           next[y][x] = 0;
+        } else {
+          next[y][x] = frame[y][x];
         }
       }
     }
@@ -70,6 +72,7 @@ class GameOfLife {
 
   print() {
     console.log(this.toString());
+    console.log("\n");
   }
 
   notifyChange() {
