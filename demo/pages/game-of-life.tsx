@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Package } from '../components/Package'
 import { getReadme } from '../utils'
 import { GetStaticProps } from "next"
@@ -24,9 +24,11 @@ function Game({
 }: {
   readme: string
 }) {
-  const game = useRef(gameOfLife(20)).current
   const [,setSignal] = useState(0)
-  const [speed, setSpeed] = useState(6)
+  const game = useMemo(
+    () => gameOfLife(40),
+    []
+  )
 
   useEffect(() => {
     function handleChange() {
@@ -41,11 +43,11 @@ function Game({
   useEffect(() => {
     const id = window.setInterval(() => {
       game.tick()
-    }, 1000 - (100*speed))
+    }, 100)
     return () => {
       window.clearInterval(id)
     }
-  }, [game, speed])
+  }, [game])
 
   return (
     <Package
@@ -53,14 +55,6 @@ function Game({
       readme={readme}
       demo={(
         <>
-          <label>Speed:</label>
-          <select value={speed} onChange={e => setSpeed(parseInt(e.target.value))}>
-            {Array(10).fill(0).map((_,i) => (
-              <option key={i} value={i}>{i+1}</option>
-            ))}
-          </select>
-          <br/>
-          <br/>
           {game.getFrame().map((row, y) => (
             <FlexRow key={y}>
               {row.map((cell, x) => (
