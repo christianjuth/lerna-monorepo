@@ -38,14 +38,14 @@ const boards = [
     2, 0, 0, 0, 0, 4, 0, 0, 0,
     0, 0, 1, 0, 2, 0, 0, 8, 6,
   ],
-  generate().puzzel,
-  generate().puzzel,
+  generate().puzzle,
+  generate().puzzle,
 ]
 
 
 describe('@christianjuth/sudoku-solver', () => {
 
-  test.each(boards)("solves puzzel", (...board) => {
+  test.each(boards)("solves puzzle", (...board) => {
     const { solution } = solve(board)
     expect(isSolved(solution)).toBe(true)
   })

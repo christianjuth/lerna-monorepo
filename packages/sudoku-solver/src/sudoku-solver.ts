@@ -112,14 +112,14 @@ export function generate() {
   const size = 9 * 9;
   const board = Array(size).fill(0);
   const { solution } = solve(board);
-  const puzzel = [...solution];
+  const puzzle = [...solution];
   for (let i = 0; i < size; i++) {
     if (Math.random() >= 0.3) {
-      puzzel[i] = 0;
+      puzzle[i] = 0;
     }
   }
   return {
-    puzzel,
+    puzzle,
     solution,
   };
 }

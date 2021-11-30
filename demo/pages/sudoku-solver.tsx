@@ -1,11 +1,11 @@
-import { solve, isValid } from '@christianjuth/sudoku-solver'
+import { solve } from '@christianjuth/sudoku-solver'
 import { GetStaticProps } from "next"
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Package } from '../components/Package'
 import { getReadme } from '../utils'
 
-const Puzzel = styled.div`
+const Puzzle = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
@@ -106,9 +106,9 @@ function SudokuSolver({
       readme={readme}
       demo={(
         <>
-          <p>Enter values in boxes below and the solver will generate a solution to your sudoku puzzel if one exsists.</p>
+          <p>Enter values in boxes below and the solver will generate a solution to your sudoku puzzle if one exsists.</p>
 
-          <Puzzel>
+          <Puzzle>
             {GRID.map((row, i) => (
               <Row key={i}>
                 {row.map((_, j) => {
@@ -133,10 +133,10 @@ function SudokuSolver({
                 })}
               </Row>
             ))}
-          </Puzzel>
+          </Puzzle>
           <br/>
           {solution === null ? (
-            <span>Error: invalid puzzel</span>
+            <span>Error: invalid puzzle</span>
           ) : (
             <span>Found solution in {runtime/1000}seconds</span>
           )}
