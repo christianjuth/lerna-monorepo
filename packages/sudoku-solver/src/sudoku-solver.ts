@@ -2,7 +2,7 @@ type Board = number[];
 
 export function isValid(board: Board) {
   for (let i = 0; i < 9; i++) {
-    const seen = {};
+    const seen: Record<number, boolean> = {};
     for (let j = 0; j < 9; j++) {
       const num = board[i + 9 * j];
       if (num !== 0 && seen[num]) {
@@ -13,7 +13,7 @@ export function isValid(board: Board) {
   }
 
   for (let i = 0; i < 9; i++) {
-    const seen = {};
+    const seen: Record<number, boolean> = {};
     for (let j = 0; j < 9; j++) {
       const num = board[i * 9 + j];
       if (num !== 0 && seen[num]) {
@@ -32,7 +32,7 @@ export function isValid(board: Board) {
     for (let j = 0; j < 3; j++) {
       const col = j * 3;
 
-      const seen = {};
+      const seen: Record<number, boolean> = {};
 
       for (const index of getBlockIndicies(row + col)) {
         const num = board[index];
@@ -112,7 +112,7 @@ export function generate() {
   const size = 9 * 9;
   const board = Array(size).fill(0);
   const { solution } = solve(board);
-  const puzzle = [...solution];
+  const puzzle = [...solution!];
   for (let i = 0; i < size; i++) {
     if (Math.random() >= 0.3) {
       puzzle[i] = 0;

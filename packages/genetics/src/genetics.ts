@@ -46,7 +46,8 @@ function nMostFit<T>(
     n--;
 
     let mostFitIndex = -1;
-    let mostFitValue = null;
+    let mostFitValue: number | null = null;
+
     for (let i = 0; i < fitnesses.length; i++) {
       const fitness = fitnesses[i];
       if (
@@ -58,7 +59,7 @@ function nMostFit<T>(
       }
     }
 
-    if (mostFitValue > mostFitOutput) {
+    if (mostFitValue && mostFitValue > mostFitOutput) {
       ouput.unshift(data[mostFitIndex]);
       mostFitOutput = mostFitValue;
     } else {
@@ -108,7 +109,7 @@ export function evolve<T>({
   }
 
   let optimalSolution = {
-    genes: null,
+    genes: null as Genes | null,
     fitness: -Infinity,
     generation: -1,
   };
@@ -175,7 +176,7 @@ export function evolve<T>({
     console.log(`generation: ${generation}, fitness: ${fitness}`);
   }
   const mostFit = spawn(
-    nMostFit(1, [optimalSolution.genes, ...parentsGenes], getFitness, spawn)[0]
+    nMostFit(1, [optimalSolution.genes!, ...parentsGenes], getFitness, spawn)[0]
   );
 
   return {
