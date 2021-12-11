@@ -9,7 +9,6 @@ Flexible minimax algorithm with fail-soft alpha-beta pruning.
 ```javascript
 import {
   getNextMoves,
-  evaluation,
   checkWinner,
 } from "@christianjuth/tictactoe-engine";
 import { minimax } from "@christianjuth/minimax";
@@ -29,7 +28,8 @@ const bestMove = minimax({
   // level of the tree once the max depth
   // has been hit (see maxDepth option)
   staticEvaluator: ({ gameState, player }) => {
-    return evaluation(gameState, player);
+    // ADD A STATIC EVALUATOR HERE
+    return evaluation
   },
   // Leaf evaluator is only called at the root
   // of the tree once the tic tac toe  game has
@@ -47,7 +47,7 @@ const bestMove = minimax({
   },
   // Max depth to go into the tree before
   // staticEvaluator is used instead of leafEvaluator
-  maxDepth: 1,
+  maxDepth: Infinity,
   // Randomize the order that next game states
   // appear in the tree below their parent game state.
   // This will affect the alpha/beta pruning of the tree.

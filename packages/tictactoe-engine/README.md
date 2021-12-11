@@ -8,7 +8,7 @@ Tic-tac-toe engine
 
 ```javascript
 import { 
-  getBestMovesMiniMax, 
+  getBestMoveMiniMax, 
   checkWinner, 
   printBoard 
 } from "@christianjuth/tictactoe-engine";
@@ -20,7 +20,7 @@ let board = [
 ]
 
 while (checkWinner(board) === undefined) {
-  board = getBestMovesMiniMax(board)
+  board = getBestMoveMiniMax(board)
   printBoard(board)
 }
 ```
