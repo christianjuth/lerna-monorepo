@@ -1,6 +1,7 @@
 {
   "name": "demo",
   "private": true,
+  "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -8,10 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@christianjuth/genetics": "^0.0.2-alpha.2",
-    "@christianjuth/sudoku-solver": "^0.0.1-alpha.3",
-    "@christianjuth/tictactoe-engine": "^0.0.3-alpha.10",
-    "@christianjuth/game-of-life": "^0.0.1-alpha.1",
     "next": "12.0.4",
     "react": "17.0.2",
     "react-div-100vh": "^0.7.0",
@@ -22,13 +19,11 @@
     "styled-components": "^5.3.3"
   },
   "devDependencies": {
-    "@types/node": "16.11.10",
     "@types/react": "17.0.37",
     "@types/react-syntax-highlighter": "^13.5.2",
     "@types/styled-components": "^5.1.15",
     "eslint": "7.32.0",
-    "eslint-config-next": "12.0.4",
-    "typescript": "4.5.2"
+    "eslint-config-next": "12.0.4"
   },
   "sideEffects": false
 }

@@ -2,5 +2,6 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["src/**/*.test.ts"],
-  "exec": "node --loader ts-node/esm ./src/game-of-life.ts"
+  "exec": "yarn build:cjs && node .",
+  "quiet": true
 }

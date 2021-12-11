@@ -7,10 +7,12 @@
   "license": "MIT",
   "main": "cjs/sudoku-solver.js",
   "module": "esm/sudoku-solver.js",
+  "types": "src/sudoku-solver.ts",
   "directories": {},
   "files": [
     "cjs",
     "esm",
+    "src",
     "README.md"
   ],
   "publishConfig": {
@@ -21,8 +23,10 @@
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
   },
   "scripts": {
-    "build": "tsc --p ./tsconfig.browser.json && tsc --p ./tsconfig.node.json",
+    "build:esm": "rimraf ./esm/* && swc ./src -d esm -C module.type=es6",
+    "build:cjs": "rimraf ./cjs/* && swc ./src -d cjs -C module.type=commonjs",
     "dev": "nodemon --config nodemon.json",
+    "test:once": "jest",
     "test": "jest --watchAll"
   },
   "bugs": {

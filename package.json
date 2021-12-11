@@ -3,21 +3,27 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "private": true,
   "scripts": {
-    "build": "lerna run build",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
     "prepare": "husky install",
     "lintStaged": "lint-staged",
-    "test": "lerna run jest",
+    "test": "turbo run test:once",
     "stop-if-git-changes": "git diff-index --quiet HEAD --",
-    "prerelease": "npm run stop-if-git-changes && rimraf ./packages/**/cjs/* && rimraf ./packages/**/esm/* && lerna run build",
+    "prerelease": "yarn run stop-if-git-changes && rimraf ./packages/**/esm/* && yarn build",
     "release": "lerna publish"
   },
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
+    "@swc/cli": "^0.1.53",
+    "@swc/core": "^1.2.119",
+    "@swc/jest": "^0.2.12",
     "@types/heap": "^0.2.28",
     "@types/jest": "^27.0.3",
     "@types/node": "^16.11.9",
     "@types/uuid": "^8.3.3",
-    "assemblyscript": "^0.19.20",
     "bonsole": "^1.0.3",
     "husky": "^7.0.4",
     "jest": "^27.3.1",
@@ -26,13 +32,52 @@
     "nodemon": "^2.0.15",
     "prettier": "2.4.1",
     "rimraf": "^3.0.2",
-    "ts-jest": "^27.0.7",
-    "ts-node": "^10.4.0",
+    "swc": "^1.0.11",
+    "turbo": "^1.0.6",
     "typescript": "^4.5.2"
   },
   "lint-staged": {
     "packages/*/src/**/*.(ts|tsx|js|jsx|html|css)": [
       "prettier --write"
     ]
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "turbo": {
+    "pipeline": {
+      "build:esm": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "esm/**"
+        ]
+      },
+      "build:cjs": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "cjs/**"
+        ]
+      },
+      "build": {
+        "dependsOn": [
+          "build:esm",
+          "build:cjs"
+        ],
+        "outputs": [
+          ".next/**"
+        ]
+      },
+      "test:once": {
+        "outputs": []
+      },
+      "dev": {
+        "cache": false
+      }
+    }
   }
 }

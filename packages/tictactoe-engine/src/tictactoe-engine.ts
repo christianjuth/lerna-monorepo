@@ -1,4 +1,3 @@
-import { evaluate } from "./neural-network";
 import minimax from "@christianjuth/minimax";
 
 type GameState = string[];
@@ -70,53 +69,7 @@ export function getNextMoves(gameState: GameState) {
   return nextGameStates;
 }
 
-export function getBestMoveNuralNetwork(gameState: GameState) {
-  const player = whosMove(gameState);
-  const nextMoves = getNextMoves(gameState);
-
-  const evaluations: [number, GameState][] = [];
-  let maxEval = -1000;
-
-  for (const move of nextMoves) {
-    const evaluation = evaluate(
-      ...convertGameStateToNuralNetworkData(player, move)
-    );
-    evaluations.push([evaluation, move]);
-    maxEval = Math.max(maxEval, evaluation);
-  }
-
-  for (const [evaluation, gameState] of evaluations) {
-    if (evaluation === maxEval) {
-      return gameState;
-    }
-  }
-}
-
-export async function getBestMoveWasmNuralNetwork(gameState: GameState) {
-  const { evaluate } = await require("./wasm");
-
-  const player = whosMove(gameState);
-  const nextMoves = getNextMoves(gameState);
-
-  const evaluations: [number, GameState][] = [];
-  let maxEval = -1000;
-
-  for (const move of nextMoves) {
-    const evaluation = evaluate(
-      ...convertGameStateToNuralNetworkData(player, move)
-    );
-    evaluations.push([evaluation, move]);
-    maxEval = Math.max(maxEval, evaluation);
-  }
-
-  for (const [evaluation, gameState] of evaluations) {
-    if (evaluation === maxEval) {
-      return gameState;
-    }
-  }
-}
-
-export function getBestMovesMiniMax(gameState: GameState) {
+export function getBestMoveMiniMax(gameState: GameState) {
   const player = whosMove(gameState);
 
   return minimax({
@@ -139,43 +92,18 @@ export function getBestMovesMiniMax(gameState: GameState) {
   });
 }
 
-function getIntRepresentationOfCell(player: string) {
-  if (player === "X") return 1;
-  if (player === "O") return -1;
-  return 0;
-}
-
 export function predictWinner(gameState: GameState) {
-  const winner = checkWinner(gameState);
-  if (winner !== undefined) {
-    return winner || undefined;
-  }
+  // const winner = checkWinner(gameState);
+  // if (winner !== undefined) {
+  //   return winner || undefined;
+  // }
+  // const x = getBestMoveMiniMax(gameState);
+  // const o = getBestMoveMiniMax(gameState);
+  // if (Math.abs(x - o) > 0.2) {
+  //   if ((x > 0 && o < 0) || o > 0 || x < 0) {
+  //     return x > o ? "X" : "O";
+  //   }
+  // }
 
-  const x = evaluate(...convertGameStateToNuralNetworkData("X", gameState));
-  const o = evaluate(...convertGameStateToNuralNetworkData("O", gameState));
-  console.log(x, o);
-
-  if (Math.abs(x - o) > 0.2) {
-    if ((x > 0 && o < 0) || o > 0 || x < 0) {
-      return x > o ? "X" : "O";
-    }
-  }
-}
-
-/**
- * The nural network used to analize the board position accepts
- * the data as an array of unmbers where X=1, O=-1, and empty=0.
- * The first argument passed into the network represents who's
- * perspective we are analyzing the position from, and the
- * following 9 arguments each reprent a cell on the board.
- *
- * @param gameState
- * @returns data to be passed into nural network
- */
-function convertGameStateToNuralNetworkData(
-  player: string,
-  gameState: GameState
-): number[] {
-  const cells = gameState.map(getIntRepresentationOfCell);
-  return [getIntRepresentationOfCell(player), ...cells];
+  return undefined;
 }

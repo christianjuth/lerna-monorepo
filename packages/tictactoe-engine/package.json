@@ -7,11 +7,12 @@
   "license": "MIT",
   "main": "cjs/tictactoe-engine.js",
   "module": "esm/tictactoe-engine.js",
+  "types": "src/tictactoe-engine.ts",
   "directories": {},
   "files": [
     "cjs",
     "esm",
-    "build",
+    "src",
     "README.md"
   ],
   "publishConfig": {
@@ -22,18 +23,16 @@
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
   },
   "scripts": {
-    "asbuild:untouched": "asc assembly/index.ts --target debug",
-    "asbuild:optimized": "asc assembly/index.ts --target release",
-    "asbuild": "npm run asbuild:optimized",
-    "build": "tsc --p ./tsconfig.browser.json && tsc --p ./tsconfig.node.json",
+    "build:esm": "rimraf ./esm/* && swc ./src -d esm -C module.type=es6",
+    "build:cjs": "rimraf ./cjs/* && swc ./src -d cjs -C module.type=commonjs",
     "dev": "nodemon --config nodemon.json",
+    "test:once": "jest",
     "test": "jest --watchAll"
   },
   "bugs": {
     "url": "https://github.com/christianjuth/lerna-monorepo/issues"
   },
   "dependencies": {
-    "@assemblyscript/loader": "^0.19.20",
     "@christianjuth/minimax": "^0.0.1-alpha.14"
   },
   "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e",
