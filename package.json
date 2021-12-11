@@ -12,7 +12,7 @@
     "test": "turbo run test:once",
     "stop-if-git-changes": "git diff-index --quiet HEAD --",
     "prerelease": "yarn run stop-if-git-changes && rimraf ./packages/**/esm/* && yarn build",
-    "release": "lerna publish"
+    "release": "HUSKY_SKIP_HOOKS=1 lerna publish"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
