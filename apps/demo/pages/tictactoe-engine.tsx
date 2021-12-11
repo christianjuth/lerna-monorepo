@@ -1,5 +1,5 @@
 import { useState, useEffect, Fragment } from 'react'
-import { getBestMoveMiniMax, whosMove, checkWinner, predictWinner } from '@christianjuth/tictactoe-engine'
+import { getBestMoveMiniMax, whosMove, checkWinner, predictWinner, TicTacToe } from '@christianjuth/tictactoe-engine'
 import styled from "styled-components";
 import { Package } from '../components/Package'
 import { GetStaticProps } from "next"
@@ -38,7 +38,7 @@ function TicTacToe({
   readme: string
 }) {
   const [player, setPlayer] = useState('X')
-  const [board, setBoard] = useState(Array(9).fill(''))
+  const [board, setBoard] = useState<TicTacToe.GameState>(Array(9).fill(''))
 
   useEffect(() => {
     setBoard(Array(9).fill(''))
@@ -47,7 +47,7 @@ function TicTacToe({
   useEffect(() => {
     const move = whosMove(board)
     if (move !== player && checkWinner(board) === undefined) {
-      setBoard(b => getBestMoveMiniMax(b))
+      setBoard(b => getBestMoveMiniMax(b)!)
     }
   }, [player, board])
 

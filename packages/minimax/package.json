@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "cjs/minimax.js",
   "module": "esm/minimax.js",
-  "types": "esm/minimax.ts",
+  "types": "src/minimax.ts",
   "directories": {},
   "files": [
     "cjs",

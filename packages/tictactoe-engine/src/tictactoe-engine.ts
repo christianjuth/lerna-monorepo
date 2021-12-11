@@ -1,8 +1,10 @@
 import minimax from "@christianjuth/minimax";
 
-type GameState = string[];
+export declare namespace TicTacToe {
+  type GameState = string[];
+}
 
-export const printBoard = (gameState: GameState) => {
+export const printBoard = (gameState: TicTacToe.GameState) => {
   let line = "";
   for (let i = 1; i < 10; i++) {
     line += gameState[i - 1] || " ";
@@ -18,7 +20,9 @@ export const printBoard = (gameState: GameState) => {
   }
 };
 
-export function checkWinner(gameState: GameState): "X" | "O" | "" | undefined {
+export function checkWinner(
+  gameState: TicTacToe.GameState
+): "X" | "O" | "" | undefined {
   const winningCellCombinations = [
     // horizontal
     [0, 1, 2],
@@ -46,17 +50,17 @@ export function checkWinner(gameState: GameState): "X" | "O" | "" | undefined {
   return;
 }
 
-export function whosMove(gameState: GameState) {
+export function whosMove(gameState: TicTacToe.GameState) {
   return gameState.filter(Boolean).length % 2 === 0 ? "X" : "O";
 }
 
-export function getNextMoves(gameState: GameState) {
+export function getNextMoves(gameState: TicTacToe.GameState) {
   if (checkWinner(gameState) !== undefined) {
     return [];
   }
 
   const player = whosMove(gameState);
-  const nextGameStates: GameState[] = [];
+  const nextGameStates: TicTacToe.GameState[] = [];
 
   for (let i = 0; i < gameState.length; i++) {
     if (gameState[i] === "") {
@@ -69,7 +73,7 @@ export function getNextMoves(gameState: GameState) {
   return nextGameStates;
 }
 
-export function getBestMoveMiniMax(gameState: GameState) {
+export function getBestMoveMiniMax(gameState: TicTacToe.GameState) {
   const player = whosMove(gameState);
 
   return minimax({
@@ -92,7 +96,7 @@ export function getBestMoveMiniMax(gameState: GameState) {
   });
 }
 
-export function predictWinner(gameState: GameState) {
+export function predictWinner(gameState: TicTacToe.GameState) {
   // const winner = checkWinner(gameState);
   // if (winner !== undefined) {
   //   return winner || undefined;

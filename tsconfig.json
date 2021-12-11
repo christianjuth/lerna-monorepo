@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "removeComments": true,
     "noLib": false,
     "emitDecoratorMetadata": true,
@@ -12,7 +12,7 @@
     "lib": ["es6"],
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "strict": false
+    "strict": true
   },
   "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts", "assembly"]
 }

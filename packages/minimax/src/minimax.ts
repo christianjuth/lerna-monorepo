@@ -95,7 +95,7 @@ function minimaxInternal<T>({
     return val;
   } else {
     const values = [];
-    const children = [];
+    const children: Node<T>[] = [];
     node.children = children;
 
     for (const gameState of childrenData) {
