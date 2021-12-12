@@ -20,8 +20,9 @@
     "access": "public"
   },
   "scripts": {
-    "build:esm": "rimraf ./esm/* && swc ./src -d esm -C module.type=es6",
-    "build:cjs": "rimraf ./cjs/* && swc ./src -d cjs -C module.type=commonjs",
+    "clean": "rimraf ./esm/* && rimraf ./cjs/*",
+    "build:esm": "swc ./src -d esm -C module.type=es6",
+    "build:cjs": "swc ./src -d cjs -C module.type=commonjs",
     "dev": "nodemon --config nodemon.json",
     "test:once": "jest",
     "test": "jest --watchAll"

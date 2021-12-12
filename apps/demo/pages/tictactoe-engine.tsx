@@ -2,19 +2,15 @@ import { useState, useEffect, Fragment } from 'react'
 import { getBestMoveMiniMax, whosMove, checkWinner, predictWinner, TicTacToe } from '@christianjuth/tictactoe-engine'
 import styled from "styled-components";
 import { Package } from '../components/Package'
+import { Grid } from '../components/Grid'
 import { GetStaticProps } from "next"
 import { getReadme } from '../utils'
 
 const PKG = '@christianjuth/tictactoe-engine'
 
-const Board = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+const Board = styled(Grid.Row)`
   border: 1px solid gray;
-  width: 200px;
-  max-width: 200px;
-`;
+`
 
 const Cell = styled.button`
   flex: 1;
@@ -26,10 +22,8 @@ const Cell = styled.button`
   background-color: transparent;
   cursor: pointer;
   color: var(--text);
-`;
-
-const Break = styled.div`
-  min-width: 100%;
+  padding: 0;
+  margin: 0;
 `;
 
 function TicTacToe({
@@ -47,7 +41,7 @@ function TicTacToe({
   useEffect(() => {
     const move = whosMove(board)
     if (move !== player && checkWinner(board) === undefined) {
-      setBoard(b => getBestMoveMiniMax(b)!)
+      setBoard(b => getBestMoveMiniMax(b).gameState!)
     }
   }, [player, board])
 
@@ -63,13 +57,13 @@ function TicTacToe({
           <br />
           <br />
 
-          <Board>
+          <Board cols={3} style={{maxWidth: 200}}>
+
             {board.map((cell, i) => (
-              <Fragment key={i + cell}>
-                {i % 3 === 0 && <Break />}
+              <Grid.Col xs={1} key={i + cell}>
                 <Cell
                   onClick={() => {
-                    if (whosMove(board) === player && checkWinner(board) === undefined) {
+                    if (whosMove(board) === player && checkWinner(board) === undefined && !board[i]) {
                       setBoard((b) => {
                         const bClone = b.slice(0);
                         bClone[i] = player;
@@ -80,13 +74,14 @@ function TicTacToe({
                 >
                   {cell}
                 </Cell>
-              </Fragment>
-            ))}
+              </Grid.Col>
+            ))} 
+
           </Board>
 
           <br />
 
-          <span>Predicted winenr: {predictWinner(board) ?? 'draw'}</span>
+          <span>Predicted winner: {predictWinner(board) ?? 'draw'}</span>
         </>
       )}
     />

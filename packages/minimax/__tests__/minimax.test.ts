@@ -32,6 +32,6 @@ describe("@christianjuth/minimax", () => {
       },
     });
 
-    expect(bestMove).toBe("c");
+    expect(bestMove.gameState).toBe("c");
   });
 });

@@ -48,9 +48,16 @@
   ],
   "turbo": {
     "pipeline": {
+      "clean": {
+        "outputs": [
+          "esm/**",
+          "cjs/**"
+        ]
+      },
       "build:esm": {
         "dependsOn": [
-          "^build"
+          "clean",
+          "^build:esm"
         ],
         "outputs": [
           "esm/**"
@@ -58,7 +65,8 @@
       },
       "build:cjs": {
         "dependsOn": [
-          "^build"
+          "clean",
+          "^build:cjs"
         ],
         "outputs": [
           "cjs/**"

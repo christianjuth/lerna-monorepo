@@ -157,9 +157,14 @@ export function minimax<T>({ gameState, ...rest }: MinimaxConfig<T>) {
 
   for (const child of node.children) {
     if (child.value === choice) {
-      return child.gameState;
+      return {
+        gameState: child.gameState,
+        value: child.value,
+      };
     }
   }
+
+  return {};
 }
 
 export default minimax;

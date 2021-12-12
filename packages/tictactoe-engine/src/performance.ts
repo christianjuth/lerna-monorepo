@@ -9,7 +9,7 @@ export async function checkPerformance(method = "miniMax") {
   while (checkWinner(board) === undefined) {
     const t1 = performance.now();
     if (method === "miniMax") {
-      board = getBestMoveMiniMax(board) ?? [];
+      board = getBestMoveMiniMax(board).gameState ?? [];
     }
     const t2 = performance.now();
     runtimes.push(t2 - t1);

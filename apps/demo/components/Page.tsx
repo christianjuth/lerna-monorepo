@@ -15,8 +15,11 @@ const MenuButtn = styled.button`
   border: 2px solid var(--text);
   border-radius: 5px;
   display: flex;
+  align-items: center;
   z-index: 101;
   color: var(--text);
+  background-color:  var(--background);
+  aspect-ratio: 1.2;
 `
 
 const Modal = styled.div`

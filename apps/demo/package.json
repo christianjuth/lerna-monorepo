@@ -4,12 +4,19 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build:esm": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@christianjuth/game-of-life": "^0.0.1-alpha.3",
+    "@christianjuth/genetics": "^0.0.2-alpha.4",
+    "@christianjuth/graph-search": "^0.0.1-alpha.11",
+    "@christianjuth/minimax": "^0.0.1-alpha.17",
+    "@christianjuth/sudoku-solver": "^0.0.1-alpha.6",
+    "@christianjuth/tictactoe-engine": "^0.0.3-alpha.13",
     "next": "12.0.4",
+    "next-transpile-modules": "^9.0.0",
     "react": "17.0.2",
     "react-div-100vh": "^0.7.0",
     "react-dom": "17.0.2",

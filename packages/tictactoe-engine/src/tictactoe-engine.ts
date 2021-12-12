@@ -97,17 +97,21 @@ export function getBestMoveMiniMax(gameState: TicTacToe.GameState) {
 }
 
 export function predictWinner(gameState: TicTacToe.GameState) {
-  // const winner = checkWinner(gameState);
-  // if (winner !== undefined) {
-  //   return winner || undefined;
-  // }
-  // const x = getBestMoveMiniMax(gameState);
-  // const o = getBestMoveMiniMax(gameState);
-  // if (Math.abs(x - o) > 0.2) {
-  //   if ((x > 0 && o < 0) || o > 0 || x < 0) {
-  //     return x > o ? "X" : "O";
-  //   }
-  // }
+  const winner = checkWinner(gameState);
+  if (winner !== undefined) {
+    return winner || undefined;
+  }
 
-  return undefined;
+  const player = whosMove(gameState);
+  const oponent = player === "X" ? "O" : "X";
+
+  const evaluation = getBestMoveMiniMax(gameState).value!;
+
+  if (evaluation > 0) {
+    return player;
+  } else if (evaluation < 0) {
+    return oponent;
+  } else {
+    return;
+  }
 }
