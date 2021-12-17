@@ -14,6 +14,8 @@ const GlobalStyles = createGlobalStyle<{ vars: string }>`
   body {
     background-color: ${color('gray', 0)};
     color: ${color('gray', 15)};
+    padding: 0;
+    margin: 0;
   }
 
   a,
@@ -25,6 +27,10 @@ const GlobalStyles = createGlobalStyle<{ vars: string }>`
     body {
       background-color: ${color('gray', 1)};
     }
+  }
+
+  * {
+    box-sizing: border-box;
   }
 `
 
