@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import styled from 'styled-components'
 import { use100vh } from 'react-div-100vh'
-import { mediaQuery } from '../components/Grid/utils'
+import { Theme, mediaQuery } from '@christianjuth/ui'
 
 const Page = styled.div`
   display: flex;
@@ -26,15 +26,27 @@ const Content = styled.div`
   }
 `
 
+const BASE_THEME: Theme.Config = {
+  primary: ({ l }) => [0,0,l],
+  accent1: ({ l }) => [135,94,l],
+  gray: ({ l }) => [0,0,l]
+}
+const DARK_THEME: Partial<Theme.Config> = {
+  gray: ({ l }) => [0,0,100-l]
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const windowHeight = use100vh() ?? 0
 
   return (
-    <Page>
-      <Content style={{minHeight: windowHeight}}>
-        <Component {...pageProps} />
-      </Content>
-    </Page>
+    <>
+      <Theme base={BASE_THEME} dark={DARK_THEME} />
+      <Page>
+        <Content style={{minHeight: windowHeight}}>
+          <Component {...pageProps} />
+        </Content>
+      </Page>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import { ReactChildren } from "../types"
+import { ReactChildren } from "../../../apps/npm/types"
 
 export function Switch({
   children,

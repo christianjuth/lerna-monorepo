@@ -5,8 +5,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
+    "start": "./scripts/turbo-run-scoped.sh start",
+    "build": "./scripts/turbo-run-scoped.sh build",
+    "dev": "./scripts/turbo-run-scoped.sh dev",
     "prepare": "husky install",
     "lintStaged": "lint-staged",
     "test": "turbo run test:once",
@@ -34,7 +35,7 @@
     "prettier": "2.4.1",
     "rimraf": "^3.0.2",
     "swc": "^1.0.11",
-    "turbo": "^1.0.6",
+    "turbo": "*",
     "typescript": "^4.5.2"
   },
   "lint-staged": {
@@ -44,7 +45,8 @@
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "react/*"
   ],
   "turbo": {
     "pipeline": {
@@ -74,6 +76,7 @@
       },
       "build": {
         "dependsOn": [
+          "^build",
           "build:esm",
           "build:cjs"
         ],
@@ -85,6 +88,9 @@
         "outputs": []
       },
       "dev": {
+        "cache": false
+      },
+      "start": {
         "cache": false
       }
     }

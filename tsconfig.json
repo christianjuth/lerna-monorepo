@@ -12,7 +12,8 @@
     "lib": ["es6"],
     "esModuleInterop": true,
     "moduleResolution": "Node",
-    "strict": true
+    "strict": true,
+    "jsx": "preserve"
   },
   "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts", "assembly"]
 }

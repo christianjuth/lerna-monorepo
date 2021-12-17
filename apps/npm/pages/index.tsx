@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Page } from '../components/Page'
 import { API, getPackages } from '../utils'
 import Link from 'next/link'
+import { color, Grid, spacing } from '@christianjuth/ui'
 
 const Card = styled.a`
   background: transparent;
@@ -14,11 +15,10 @@ const Card = styled.a`
   flex-direction: column;
   align-items: flex-start;
   color: unset;
-  margin-bottom: 10px;
   transition: border-color 0.1s;
 
   :hover {
-    border-color: var(--text);
+    border-color: ${color('gray', 10)};
     text-decoration: none;
   }
 `
@@ -32,15 +32,19 @@ function Index({
 }) {
   return (
     <Page header={<h1>NPM Packages</h1>}>
-      {packages.map(p => (
-        <Link key={p.package.name} href={p.package.name.replace(SCOPE, '')} passHref={true}>
-          <Card>
-            <span style={{color: 'var(--accent)'}}>{p.package.name}</span>
-            <h3>{p.package.description}</h3>
-            <i>{p.package.version}</i>
-          </Card>
-        </Link>
-      ))}
+      <Grid.Row cols={2} spacing={spacing(2)}>
+        {packages.map(p => (
+          <Grid.Col key={p.package.name}>
+            <Link href={p.package.name.replace(SCOPE, '')} passHref={true}>
+              <Card>
+                <span style={{color: color('accent1', 4)}}>{p.package.name}</span>
+                <h3>{p.package.description}</h3>
+                <i>{p.package.version}</i>
+              </Card>
+            </Link>
+          </Grid.Col>
+        ))}
+      </Grid.Row>
     </Page>
   )
 }

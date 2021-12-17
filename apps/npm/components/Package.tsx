@@ -1,11 +1,11 @@
-import { ReactElement, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { ReactChildren } from '../types'
 import { Page } from './Page'
 import { Readme } from './Readme'
-import { ReactChildren } from '../types'
-import { useRouter } from 'next/router'
-import { Switch } from './Switch'
-import Link from 'next/link' 
+import { Switch } from '@christianjuth/ui'
 
 const Subtitle = styled.span`
   && {

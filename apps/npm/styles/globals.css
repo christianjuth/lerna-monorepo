@@ -53,7 +53,7 @@ p {
 
 a,
 .link {
-  color: var(--accent);
+  /* color: var(--accent); */
   font-size: 1rem;
   text-decoration: none;
 }

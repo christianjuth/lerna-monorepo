@@ -4,8 +4,7 @@ import { BiMenu } from 'react-icons/bi'
 import { IoMdClose } from 'react-icons/io'
 import styled from 'styled-components'
 import { ReactChildren } from '../types'
-import { Divider } from './Divider'
-import { Grid, Display } from './Grid'
+import { Grid, Display, Divider } from '@christianjuth/ui'
 
 const MenuButtn = styled.button`
   position: fixed;
@@ -77,7 +76,7 @@ export function Page({
         {mobileSidebar && <Modal>{sidebar}</Modal>}
       </Display>
 
-      <Grid.Row cols='150px 1fr 150px' spacing={5}>
+      <Grid.Row cols={`${sidebar ? '150px' : 0} 1fr ${sidebar ? '150px' : 0}`} spacing={5}>
         {/* Header */}
         <Grid.Col xs={0} md={1} />
         <Grid.Col xs={3} md={1}>

@@ -2,7 +2,7 @@ import { useState, useEffect, Fragment } from 'react'
 import { getBestMoveMiniMax, whosMove, checkWinner, predictWinner, TicTacToe } from '@christianjuth/tictactoe-engine'
 import styled from "styled-components";
 import { Package } from '../components/Package'
-import { Grid } from '../components/Grid'
+import { Grid } from '@christianjuth/ui'
 import { GetStaticProps } from "next"
 import { getReadme } from '../utils'
 
