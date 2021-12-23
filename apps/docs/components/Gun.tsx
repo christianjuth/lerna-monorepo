@@ -2,9 +2,21 @@ import { useContext, createContext, useMemo, useCallback, useState, useEffect, u
 import GUN from 'gun'
 
 import { IGunChainReference } from 'gun/types/chain'
+import styled from 'styled-components'
 
 export type ReactChild<T = never> = React.ReactNode | null | T
 export type ReactChildren<T = never> = ReactChild<T> | ReactChildren<T>[]
+
+const Form = styled.form`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  * {
+    margin: 3px 0;
+  }
+`
 
 const Context = createContext({} as ReturnType<typeof useAuthInternal>)
 
@@ -24,7 +36,9 @@ function useAuthInternal() {
 
   const login = useCallback(
     (username: string) => {
+      username = username.toLowerCase()
       localStorage.setItem('username', username)
+      setUsername(username)
       setUser(gun.get('username' as never))
     },
     [gun]
@@ -93,16 +107,12 @@ function Login() {
   const { login } = useAuth()
 
   return (
-    <form
+    <Form
       onClick={e => {
         e.preventDefault()
         if (username) {
           login(username)
         }
-      }}
-      style={{
-        display: 'flex',
-        justifyContent: 'center'
       }}
     >
       <label>Username: </label>
@@ -111,7 +121,7 @@ function Login() {
         onChange={e => setUsername(e.target.value)}
       />
       <button type='submit'>Sign in</button>
-    </form>
+    </Form>
   )
 }
 

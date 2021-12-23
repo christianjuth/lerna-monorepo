@@ -15,7 +15,7 @@ class Stack<T> implements List<T> {
     this.data.push(node);
   }
   remove() {
-    return this.data.pop();
+    return this.data.pop()!;
   }
   size() {
     return this.data.length;
@@ -28,7 +28,7 @@ class Queue<T> implements List<T> {
     this.data.unshift(node);
   }
   remove() {
-    return this.data.pop();
+    return this.data.pop()!;
   }
   size() {
     return this.data.length;
@@ -80,7 +80,7 @@ function internalSearch<T>({
     list.add(dest);
   }
 
-  let pathStart = [dest];
+  let pathStart: (T | null)[] = [dest];
 
   let foundDest = false;
   while (list.size() > 0 && !foundDest) {
@@ -177,7 +177,7 @@ function heapSearch<T>({
   }
 
   const path: T[] = [];
-  let crnt = dest;
+  let crnt: typeof dest | null = dest;
   while (crnt) {
     path.unshift(crnt);
     crnt = prevNodes[getNodeKey(crnt)];

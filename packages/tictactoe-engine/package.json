@@ -23,7 +23,7 @@
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
   },
   "scripts": {
-    "clean": "rimraf ./esm/* && rimraf ./cjs/*",
+    "clean": "rm -rf ./esm/* && rm -rf ./cjs/*",
     "build:esm": "swc ./src -d esm -C module.type=es6",
     "build:cjs": "swc ./src -d cjs -C module.type=commonjs",
     "dev": "nodemon --config nodemon.json",
@@ -37,5 +37,13 @@
     "@christianjuth/minimax": "^0.0.1-alpha.17"
   },
   "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e",
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "@christianjuth/tsconfig": "workspace:*",
+    "@swc/cli": "*",
+    "@swc/core": "*",
+    "@swc/jest": "*",
+    "nodemon": "*",
+    "swc": "*"
+  }
 }

@@ -13,7 +13,7 @@ const withTM = require('next-transpile-modules')([
     '@christianjuth/'
   ),
   ...getFilesInFolder(
-    path.join(__dirname, '../', '../',  'react'),
+    path.join(__dirname, '../', '../',  'internal-packages'),
     '@christianjuth/'
   ), 
 ]);

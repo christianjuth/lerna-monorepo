@@ -26,12 +26,12 @@ function MyApp({ Component, pageProps }: AppProps) {
           gray: ({ l }) => [0, 0, 100 - l, 0],
         }}
       />
-      <AuthProvier>
-        <div style={{ minHeight: pageHeight, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ minHeight: pageHeight, display: 'flex', flexDirection: 'column' }}>
+        <AuthProvier>
           <Navbar />
           <Component {...pageProps} />
-        </div>
-      </AuthProvier>
+        </AuthProvier>
+      </div>
     </>
   )
 }

@@ -123,7 +123,7 @@ export function MainGutters({
   rightGutter = "always",
   leftGutter = "always",
   padding = "always",
-  baseWidth = 1000,
+  baseWidth = 800,
   maxWidth,
 }: MainGutters.Props) {
   const middleCol = maxWidth ? `${maxWidth}px` : `calc(${baseWidth}px + 22vw)`

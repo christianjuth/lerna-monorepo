@@ -12,13 +12,13 @@ const Nav = styled.nav`
 `
 
 export function Navbar() {
-  const { username } = useAuth()
+  const { username, logout } = useAuth()
 
   return (
     <MainGutters>
       <Nav>
         <h1>{username}</h1>
-        <button>Logout</button>
+        <button onClick={logout}>Logout</button>
       </Nav>
       <Divider/>
     </MainGutters>
