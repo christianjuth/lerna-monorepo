@@ -1,0 +1,30 @@
+{
+  "name": "@christianjuth/journal",
+  "version": "1.0.0",
+  "main": "__generated__/AppEntry.js",
+  "scripts": {
+    "postinstall": "expo-yarn-workspaces postinstall",
+    "start": "expo start",
+    "dev": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject"
+  },
+  "dependencies": {
+    "expo-blur": "^11.0.0",
+    "expo-status-bar": "~1.2.0",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-native-web": "0.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@christianjuth/tsconfig": "*",
+    "@types/react": "~17.0.21",
+    "@types/react-native": "~0.64.12",
+    "expo-yarn-workspaces": "*",
+    "typescript": "~4.3.5"
+  },
+  "private": true
+}
