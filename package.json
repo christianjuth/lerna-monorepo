@@ -1,5 +1,5 @@
 {
-  "name": "lerna",
+  "name": "monorepo",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -14,7 +14,9 @@
     "stop-if-git-changes": "git diff-index --quiet HEAD --",
     "prerelease": "yarn run stop-if-git-changes && yarn build && lerna version --no-push",
     "release": "HUSKY_SKIP_HOOKS=1 lerna publish from-git --yes",
-    "postrelease": "git push --follow-tags origin"
+    "postrelease": "git push --follow-tags origin",
+    "cargo:build": "cd ./rust && cargo build",
+    "cargo:dev": "./scripts/cargo-dev.sh"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
@@ -39,7 +41,8 @@
   "workspaces": [
     "packages/*",
     "internal-packages/*",
-    "apps/*"
+    "apps/*",
+    "rust/*"
   ],
   "turbo": {
     "pipeline": {

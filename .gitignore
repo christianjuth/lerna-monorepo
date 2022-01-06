@@ -130,3 +130,9 @@ dist
 
 # Gun.js
 radata/
+
+# Rust
+debug/
+target/
+**/*.rs.bk
+*.pdb
