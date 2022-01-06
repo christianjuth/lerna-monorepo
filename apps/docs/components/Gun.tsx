@@ -21,7 +21,7 @@ const Form = styled.form`
 const Context = createContext({} as ReturnType<typeof useAuthInternal>)
 
 function useAuthInternal() {
-  const gun = useMemo(() => GUN('https://gun-manhattan.herokuapp.com/gun'), [])
+  const gun = useMemo(() => GUN('http://localhost:3001/gun'), [])
   
   const [user, setUser] = useState<null | IGunChainReference<any>>(null)
   const [username, setUsername] = useState('')
@@ -65,9 +65,10 @@ export function useAuth() {
   return useContext(Context)
 }
 
-export function useGunItem<T = any>(itemName: string) {
+export function useGunItem<T = any>(itemName: string, defaultValue: T | null = null) {
   const { user } = useAuth()
-  const [item, setItem] = useState<null | T>(null)
+  const [item, setItem] = useState<Partial<T> | null>(null)
+  const [updatedAt, setUpdatedAt] = useState(Date.now())
 
   useEffect(
     () => {
@@ -75,9 +76,31 @@ export function useGunItem<T = any>(itemName: string) {
         let active = true
         const ref = user.get(itemName)
 
+        ref.once(data => {
+          if (!data) {
+            const payload: Record<string, any> = { ...defaultValue }
+            for (const key in payload) {
+              if (typeof payload[key] === 'object' || payload[key] === null) {
+                payload[key] = JSON.stringify(payload[key])
+              }
+            }
+            ref.put(payload)
+          }
+        })
+
         ref.on(data => {
+          const payload: Record<string, any> = { ...data }
+
+          for (const key in data) {
+            try {
+              const obj = JSON.parse(payload[key])
+              payload[key] = obj
+            } catch(e) { }
+          }
+
           if (active) {
-            setItem({ ...data })
+            setItem({ ...defaultValue, ...(payload as T) })
+            setUpdatedAt(Date.now())
           }
         })
         return () => {
@@ -90,16 +113,25 @@ export function useGunItem<T = any>(itemName: string) {
   )
 
   const update = useCallback(
-    (value: T) => {
+    (value: Partial<T>) => {
       if (user) {
-        setItem(value)
-        user.get(itemName).put(value)
+        setItem(v => {
+          const payload: Record<string, any> = { ...v, ...value }
+          for (const key in payload) {
+            if (typeof payload[key] === 'object' || payload[key] === null) {
+              payload[key] = JSON.stringify(payload[key])
+            }
+          }
+          user.get(itemName).put(payload)
+
+          return { ...v, ...value }
+        })
       }
     },
     [user, itemName]
   )
 
-  return [item, update] as const
+  return [item, update, updatedAt] as const
 }
 
 function Login() {

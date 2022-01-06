@@ -29,7 +29,7 @@
     "lint-staged": "^12.1.2",
     "prettier": "2.4.1",
     "tsutils": "^3.21.0",
-    "turbo": "*"
+    "turbo": "latest"
   },
   "lint-staged": {
     "packages/*/src/**/*.(ts|tsx|js|jsx|html|css)": [
