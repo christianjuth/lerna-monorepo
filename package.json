@@ -16,7 +16,8 @@
     "release": "HUSKY_SKIP_HOOKS=1 lerna publish from-git --yes",
     "postrelease": "git push --follow-tags origin",
     "cargo:build": "cd ./rust && cargo build",
-    "cargo:dev": "./scripts/cargo-dev.sh"
+    "cargo:dev": "./scripts/cargo-dev.sh",
+    "cargo:doc": "cd ./rust && cargo doc"
   },
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",

@@ -3,4 +3,5 @@
 members = [
   "graph_search",
   "tic_tac_toe",
+  "game_of_life",
 ]
