@@ -23,7 +23,7 @@
     "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
   },
   "scripts": {
-    "clean": "rm -rf ./esm/* && rm -rf ./cjs/*",
+    "clean": "rm -rf ./esm/* || true  && rm -rf ./cjs/* || true",
     "build:esm": "swc ./src -d esm -C module.type=es6",
     "build:cjs": "swc ./src -d cjs -C module.type=commonjs",
     "dev": "nodemon --config nodemon.json",
