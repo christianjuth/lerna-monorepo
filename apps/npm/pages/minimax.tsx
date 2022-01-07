@@ -13,10 +13,7 @@ function Minimax({
     <Package
       pkg="@christianjuth/minimax" 
       readme={readme}
-      demo={(
-        <>
-        </>
-      )}
+      demo={<></>}
     />
   )
 }
