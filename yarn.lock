@@ -3844,6 +3844,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@rust/genetics@workspace:rust/genetics":
+  version: 0.0.0-use.local
+  resolution: "@rust/genetics@workspace:rust/genetics"
+  languageName: unknown
+  linkType: soft
+
 "@rust/graph_search@workspace:rust/graph_search":
   version: 0.0.0-use.local
   resolution: "@rust/graph_search@workspace:rust/graph_search"
