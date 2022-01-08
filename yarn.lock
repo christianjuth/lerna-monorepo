@@ -3856,6 +3856,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@rust/ray_tracing_in_a_weekend@workspace:rust/ray_tracing_in_a_weekend":
+  version: 0.0.0-use.local
+  resolution: "@rust/ray_tracing_in_a_weekend@workspace:rust/ray_tracing_in_a_weekend"
+  languageName: unknown
+  linkType: soft
+
 "@rust/tic_tac_toe@workspace:rust/tic_tac_toe":
   version: 0.0.0-use.local
   resolution: "@rust/tic_tac_toe@workspace:rust/tic_tac_toe"
