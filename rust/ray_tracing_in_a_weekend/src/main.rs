@@ -1,7 +1,9 @@
 use rand::Rng;
 use std::io::Write;
 use std::fs::OpenOptions;
+use vec3::*;
 
+mod vec3;
 
 fn save_img(data: &String) {
     let mut f = OpenOptions::new()
@@ -38,7 +40,12 @@ fn random_img(width: i32, height: i32) -> String {
 
 fn main() {
     let img = random_img(500, 500);
-    save_img(&img);
+    // save_img(&img);
 
-    eprintln!("test");
+    let a = color3![1.0,2.0,3.0];
+    let b = color3![1.0,2.0,3.0];
+
+    let c = &a * &b;
+    
+    println!("{} {} {} {}", a, c, c.unit(), c);
 }
