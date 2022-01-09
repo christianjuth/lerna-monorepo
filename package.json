@@ -17,6 +17,7 @@
     "postrelease": "git push --follow-tags origin",
     "cargo:build": "cd ./rust && cargo build",
     "cargo:dev": "./scripts/cargo-dev.sh",
+    "cargo:run": "./scripts/cargo-scoped.sh run",
     "cargo:doc": "cd ./rust && cargo doc"
   },
   "devDependencies": {
