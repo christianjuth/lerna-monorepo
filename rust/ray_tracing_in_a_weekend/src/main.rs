@@ -1,3 +1,4 @@
+#[macro_use] extern crate impl_ops;
 use rand::Rng;
 use ray::*;
 use std::fs::OpenOptions;

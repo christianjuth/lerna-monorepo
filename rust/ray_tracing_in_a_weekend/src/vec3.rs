@@ -1,5 +1,6 @@
 use std::fmt;
-use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
+use std::ops::{AddAssign, DivAssign, Index, IndexMut, MulAssign, SubAssign};
+use std::ops;
 
 #[derive(Copy, Clone)]
 pub struct Vec3 {
@@ -52,34 +53,14 @@ impl Vec3 {
   }
 }
 
-impl Add<Vec3> for Vec3 {
-  type Output = Vec3;
-
-  fn add(self, other: Vec3) -> Vec3 {
-    Vec3 {
-      x: self.x + other.x,
-      y: self.y + other.y,
-      z: self.z + other.z,
-      name: self.name,
-    }
+impl_op_ex!(+ |a: &Vec3, b: &Vec3| -> Vec3 { 
+  Vec3 {
+    x: a.x + b.x,
+    y: a.y + b.y,
+    z: a.z + b.z,
+    name: a.name,
   }
-}
-
-impl Add<Vec3> for &Vec3 {
-  type Output = Vec3;
-
-  fn add(self, other: Vec3) -> Vec3 {
-   *self + other
-  }
-}
-
-impl Add<&Vec3> for &Vec3 {
-  type Output = Vec3;
-
-  fn add(self, other: &Vec3) -> Vec3 {
-   *self + *other
-  }
-}
+});
 
 impl AddAssign<&Vec3> for Vec3 {
   fn add_assign(&mut self, other: &Vec3) {
@@ -89,39 +70,14 @@ impl AddAssign<&Vec3> for Vec3 {
   }
 }
 
-impl Sub<Vec3> for Vec3 {
-  type Output = Vec3;
-
-  fn sub(self, other: Vec3) -> Vec3 {
-    Vec3 {
-      x: self.x - other.x,
-      y: self.y - other.y,
-      z: self.z - other.z,
-      name: self.name,
-    }
+impl_op_ex!(- |a: &Vec3, b: &Vec3| -> Vec3 { 
+  Vec3 {
+    x: a.x - b.x,
+    y: a.y - b.y,
+    z: a.z - b.z,
+    name: a.name,
   }
-}
-
-impl Sub<Vec3> for &Vec3 {
-  type Output = Vec3;
-  fn sub(self, other: Vec3) -> Vec3 {
-    *self - other
-  }
-}
-
-impl Sub<&Vec3> for &Vec3 {
-  type Output = Vec3;
-  fn sub(self, other: &Vec3) -> Vec3 {
-    *self - *other
-  }
-}
-
-impl Sub<&Vec3> for Vec3 {
-  type Output = Vec3;
-  fn sub(self, other: &Vec3) -> Vec3 {
-    self - *other
-  }
-}
+});
 
 impl SubAssign<&Vec3> for Vec3 {
   fn sub_assign(&mut self, other: &Vec3) {
@@ -131,38 +87,23 @@ impl SubAssign<&Vec3> for Vec3 {
   }
 }
 
-impl Mul<f64> for Vec3 {
-  type Output = Vec3;
-
-  fn mul(self, other: f64) -> Vec3 {
-    Vec3 {
-      x: self.x * other,
-      y: self.y * other,
-      z: self.z * other,
-      name: self.name,
-    }
+impl_op_ex_commutative!(* |a: &Vec3, b: &f64| -> Vec3 { 
+  Vec3 {
+    x: a.x * b,
+    y: a.y * b,
+    z: a.z * b,
+    name: a.name,
   }
-}
+});
 
-impl Mul<f64> for &Vec3 {
-  type Output = Vec3;
-  fn mul(self, other: f64) -> Vec3 {
-    *self * other
+impl_op_ex!(* |a: &Vec3, b: &Vec3| -> Vec3 { 
+  Vec3 {
+    x: a.x * b.x,
+    y: a.y * b.y,
+    z: a.z * b.z,
+    name: a.name,
   }
-}
-
-impl Mul<&Vec3> for &Vec3 {
-  type Output = Vec3;
-
-  fn mul(self, other: &Vec3) -> Vec3 {
-    Vec3 {
-      x: self.x * other.x,
-      y: self.y * other.y,
-      z: self.z * other.z,
-      name: self.name,
-    }
-  }
-}
+});
 
 impl MulAssign<f64> for Vec3 {
   fn mul_assign(&mut self, other: f64) {
@@ -180,39 +121,14 @@ impl MulAssign<&Vec3> for Vec3 {
   }
 }
 
-impl Div<f64> for &Vec3 {
-  type Output = Vec3;
-
-  fn div(self, other: f64) -> Vec3 {
-    Vec3 {
-      x: self.x * (1.0 / other),
-      y: self.y * (1.0 / other),
-      z: self.z * (1.0 / other),
-      name: self.name,
-    }
+impl_op_ex_commutative!(/ |a: &Vec3, b: &f64| -> Vec3 { 
+  Vec3 {
+    x: a.x * (1.0 / b),
+    y: a.y * (1.0 / b),
+    z: a.z * (1.0 / b),
+    name: a.name,
   }
-}
-
-impl DivAssign<f64> for Vec3 {
-  fn div_assign(&mut self, other: f64) {
-    self.x /= other;
-    self.y /= other;
-    self.z /= other;
-  }
-}
-
-impl Div<&Vec3> for &Vec3 {
-  type Output = Vec3;
-
-  fn div(self, other: &Vec3) -> Vec3 {
-    Vec3 {
-      x: self.x * (1.0 / other.x),
-      y: self.y * (1.0 / other.y),
-      z: self.z * (1.0 / other.z),
-      name: self.name,
-    }
-  }
-}
+});
 
 impl DivAssign<&Vec3> for Vec3 {
   fn div_assign(&mut self, other: &Vec3) {
