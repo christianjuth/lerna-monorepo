@@ -3856,6 +3856,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@rust/jit_compiler@workspace:rust/jit_compiler":
+  version: 0.0.0-use.local
+  resolution: "@rust/jit_compiler@workspace:rust/jit_compiler"
+  languageName: unknown
+  linkType: soft
+
 "@rust/ray_tracing_in_a_weekend@workspace:rust/ray_tracing_in_a_weekend":
   version: 0.0.0-use.local
   resolution: "@rust/ray_tracing_in_a_weekend@workspace:rust/ray_tracing_in_a_weekend"
