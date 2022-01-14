@@ -103,7 +103,7 @@ const zIndexLevels = {
   page: 0,
 };
 
-export const zIndex = (base: keyof typeof zIndexLevels, shift: number = 0) => {
+export const zIndex = (base: keyof typeof zIndexLevels, shift = 0) => {
   return zIndexLevels[base] + shift;
 };
 

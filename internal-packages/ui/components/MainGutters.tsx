@@ -13,7 +13,7 @@ type TargetScreen = "always" | "mobile-only" | "desktop-only" | "none"
 
 export declare namespace MainGutters {
   type Props = {
-    children?: ReactChildren<String>
+    children?: ReactChildren<string>
     innerStyle?: React.CSSProperties
     style?: React.CSSProperties
     className?: string

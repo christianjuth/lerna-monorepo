@@ -1,13 +1,13 @@
-import { useCallback, createContext, useState, useContext } from "react"
-import { ReactChild, ReactChildren } from "./types"
-import { Button } from "./Button"
+import { createContext, useCallback, useContext, useState } from "react"
+import styled from "styled-components"
 import { v4 as uuid } from "uuid"
 import { Backdrop } from "./Backdrop"
+import { Button } from "./Button"
+import { FocusTrap } from './FocusTrap'
 import { Paper } from "./Paper"
 import { Text } from "./Text"
-import styled from "styled-components"
 import { spacing } from "./Theme"
-import { FocusTrap } from './FocusTrap'
+import { ReactChild, ReactChildren } from "./types"
 
 const AlertWrap = styled(Paper)`
   width: 350px;
@@ -77,7 +77,7 @@ export function AlertProvider({ children }: { children: ReactChild }) {
   const clearAlert = useCallback(() => {
     setAlert(null)
   }, [])
-
+  
   return (
     <Context.Provider
       value={{

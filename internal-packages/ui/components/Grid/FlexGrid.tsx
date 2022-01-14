@@ -33,12 +33,11 @@ function Col(props: Types.ColProps) {
   let crntWidth = ""
   const computedBreakPoints: Types.Breakpoints = {}
   breakPointKeys.forEach((key) => {
-    if (typeof breakpointProps[key] === "number") {
-      // @ts-ignore
-      crntWidth = breakpointProps[key] / 0.24 + "%"
-    } else if (typeof breakpointProps[key] === "string") {
-      // @ts-ignore
-      crntWidth = breakpointProps[key]
+    const val = breakpointProps[key]
+    if (typeof val === "number") {
+      crntWidth = val / 0.24 + "%"
+    } else if (typeof val === "string") {
+      crntWidth = val
     }
     computedBreakPoints[key] = crntWidth
   })

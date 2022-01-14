@@ -2,14 +2,14 @@ import { AlertProvider, useAlert } from "@christianjuth/ui";
 import { useEffect } from "react";
 
 function TriggerAlert() {
-  const alrt = useAlert();
+  const { dispatch } = useAlert();
 
   useEffect(() => {
-    alrt.dispatch("This is a test")
-  }, [alrt.dispatch])
+    dispatch("This is a test")
+  }, [dispatch])
 
   return (
-    <button onClick={() => alrt.dispatch("This is a test")}>
+    <button onClick={() => dispatch("This is a test")}>
       Trigger alert
     </button>
   );

@@ -2937,6 +2937,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@christianjuth/eslint-config@workspace:*, @christianjuth/eslint-config@workspace:internal-packages/eslint-config":
+  version: 0.0.0-use.local
+  resolution: "@christianjuth/eslint-config@workspace:internal-packages/eslint-config"
+  languageName: unknown
+  linkType: soft
+
 "@christianjuth/game-of-life@workspace:*, @christianjuth/game-of-life@workspace:packages/game-of-life":
   version: 0.0.0-use.local
   resolution: "@christianjuth/game-of-life@workspace:packages/game-of-life"
@@ -3055,6 +3061,13 @@ __metadata:
 "@christianjuth/ui@workspace:*, @christianjuth/ui@workspace:internal-packages/ui":
   version: 0.0.0-use.local
   resolution: "@christianjuth/ui@workspace:internal-packages/ui"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": ^5.9.1
+    "@typescript-eslint/parser": ^5.9.1
+    eslint: ^8.6.0
+    eslint-plugin-react: ^7.28.0
+    eslint-plugin-react-hooks: ^4.3.0
+    typescript: ^4.5.4
   peerDependencies:
     classnames: "*"
     dayjs: "*"
@@ -6753,6 +6766,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/csf@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@storybook/csf@npm:0.0.1"
+  dependencies:
+    lodash: ^4.17.15
+  checksum: fb57fa028b08a51edf44e1a2bf4be40a4607f5c6ccb58aae8924f476a42b9bbd61a0ad521cfc82196f23e6a912caae0a615e70a755e6800b284c91c509fd2de6
+  languageName: node
+  linkType: hard
+
 "@storybook/manager-webpack4@npm:6.4.12":
   version: 6.4.12
   resolution: "@storybook/manager-webpack4@npm:6.4.12"
@@ -8291,7 +8313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.5.0":
+"@typescript-eslint/eslint-plugin@npm:^5.5.0, @typescript-eslint/eslint-plugin@npm:^5.9.1":
   version: 5.9.1
   resolution: "@typescript-eslint/eslint-plugin@npm:5.9.1"
   dependencies:
@@ -8314,7 +8336,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:5.9.1, @typescript-eslint/experimental-utils@npm:^5.0.0, @typescript-eslint/experimental-utils@npm:^5.9.0":
+"@typescript-eslint/experimental-utils@npm:5.9.1, @typescript-eslint/experimental-utils@npm:^5.0.0, @typescript-eslint/experimental-utils@npm:^5.3.0, @typescript-eslint/experimental-utils@npm:^5.9.0":
   version: 5.9.1
   resolution: "@typescript-eslint/experimental-utils@npm:5.9.1"
   dependencies:
@@ -8330,7 +8352,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.5.0":
+"@typescript-eslint/parser@npm:^5.5.0, @typescript-eslint/parser@npm:^5.9.1":
   version: 5.9.1
   resolution: "@typescript-eslint/parser@npm:5.9.1"
   dependencies:
@@ -14201,7 +14223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:^7.27.1":
+"eslint-plugin-react@npm:^7.27.1, eslint-plugin-react@npm:^7.28.0":
   version: 7.28.0
   resolution: "eslint-plugin-react@npm:7.28.0"
   dependencies:
@@ -14222,6 +14244,19 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: 90293d0fd53bb1f735ffd32141cdd211fb1120c9f7bbe5342f9e923261a39e52a2b2575d4e46c9cd77d257f42db4a99b8b339689fc5b5c1c26048929f69b1784
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-storybook@npm:^0.5.5":
+  version: 0.5.5
+  resolution: "eslint-plugin-storybook@npm:0.5.5"
+  dependencies:
+    "@storybook/csf": ^0.0.1
+    "@typescript-eslint/experimental-utils": ^5.3.0
+    requireindex: ^1.1.0
+  peerDependencies:
+    eslint: ">=6"
+  checksum: 97160cdda0d2540acc41f8926dff3187b705fbafb821d92fcd5e6793d7298955e1267eaa423af3ae101ac7bf8930d31bfb9c6e0a01cd90eedf83039d57adb4cf
   languageName: node
   linkType: hard
 
@@ -14307,7 +14342,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.3.0":
+"eslint@npm:^8.3.0, eslint@npm:^8.6.0":
   version: 8.6.0
   resolution: "eslint@npm:8.6.0"
   dependencies:
@@ -26425,6 +26460,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"requireindex@npm:^1.1.0":
+  version: 1.2.0
+  resolution: "requireindex@npm:1.2.0"
+  checksum: 50d8b10a1ff1fdf6aea7a1870bc7bd238b0fb1917d8d7ca17fd03afc38a65dcd7a8a4eddd031f89128b5f0065833d5c92c4fef67f2c04e8624057fe626c9cf94
+  languageName: node
+  linkType: hard
+
 "requires-port@npm:^1.0.0":
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
@@ -27907,6 +27949,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "storybook-react@workspace:apps/storybook-react"
   dependencies:
+    "@christianjuth/eslint-config": "workspace:*"
     "@christianjuth/tsconfig": "workspace:*"
     "@christianjuth/ui": "workspace:*"
     "@mdx-js/react": ^1.6.22
@@ -27929,6 +27972,8 @@ __metadata:
     babel-preset-react-app: ^10.0.1
     classnames: ^2.3.1
     dayjs: ^1.10.7
+    eslint: ^8.6.0
+    eslint-plugin-storybook: ^0.5.5
     react: ^17.0.2
     react-dom: ^17.0.2
     react-icons: ^4.3.1
