@@ -4,6 +4,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { GetStaticProps } from "next"
 import { getReadme } from '../utils'
+import { Input, Button } from '@christianjuth/ui'
 
 const PKG = '@christianjuth/genetics'
 
@@ -12,7 +13,7 @@ const FlexCol = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  * {
+  & > * {
     margin-bottom: 10px;
   }
 `
@@ -74,12 +75,13 @@ function Genetics({
       demo={(
         <FlexCol>
           <label>Target phrase:</label>
-          <input
+          <Input
+            size='sm'
             value={target}
             onChange={e => setTarget(e.target.value.replace(/[^a-z-A-Z ]/g, "").replace(/-/g, '').toUpperCase())}
           />
 
-          <button onClick={run} disabled={running}>Run</button>
+          <Button size="sm" onClick={run} disabled={running}>Run</Button>
 
           <span>Result: {result}</span>
           <span>Runtime: {runtime}</span>

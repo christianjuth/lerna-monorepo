@@ -70,19 +70,19 @@ function getInputStyle(customSize: GenericProps.Size) {
   switch (customSize) {
     case "sm":
       return {
-        minHeight: 40,
+        minHeight: 35,
         fontSize: "1rem",
         padding: pxToRem(2, 9),
       }
     case "md":
       return {
-        minHeight: 46,
+        minHeight: 42,
         fontSize: "1.1rem",
         padding: pxToRem(2, 12),
       }
     case "lg":
       return {
-        minHeight: 50,
+        minHeight: 48,
         fontSize: "1.3rem",
         padding: pxToRem(2, 12),
       }

@@ -59,24 +59,24 @@ const style = css<StyleProps>`
     switch ($size) {
       case "sm":
         return `
-          && {
-            font-size: 1.05rem;
-            padding: ${pxToRem(9)} ${pxToRem(10)};
-          }
+          min-height: 31px;
+          line-height: 31px;
+          font-size: 1rem;
+          padding: ${pxToRem(0, 10)};
         `
       case "md":
         return `
-          && {
-            font-size: 1.3rem;
-            padding: ${pxToRem(12)} ${pxToRem(26)};
-          }
+          min-height: 38px;
+          line-height: 38px;
+          font-size: 1.1rem;
+          padding: ${pxToRem(0, 15)};
         `
       case "lg":
         return `
-          && {
-            font-size: 1.5rem;
-            padding: ${pxToRem(16)} ${pxToRem(28)};
-          }
+          min-height: 44px;
+          line-height: 44px;
+          font-size: 1.3rem;
+          padding: ${pxToRem(0, 20)};
         `
     }
   }}

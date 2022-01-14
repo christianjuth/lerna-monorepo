@@ -1,6 +1,6 @@
 import ReactMarkdown from 'react-markdown'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula as theme } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { dracula as theme } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useMemo } from 'react'
 
 export function Readme({
