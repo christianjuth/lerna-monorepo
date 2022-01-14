@@ -1,0 +1,4 @@
+{
+  "extends": "@christianjuth/tsconfig/cra.json",
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+}

@@ -6,7 +6,11 @@
   "types": "components/index.ts",
   "license": "MIT",
   "peerDependencies": {
+    "classnames": "*",
+    "dayjs": "*",
     "react": "*",
-    "styled-components": "*"
+    "react-icons": "*",
+    "styled-components": "*",
+    "use-deep-compare-effect": "*"
   }
 }

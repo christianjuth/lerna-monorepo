@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <Theme base={BASE_THEME} dark={DARK_THEME} />
+      <Theme baseTheme={BASE_THEME} darkTheme={DARK_THEME} />
       <Page>
         <Content style={{minHeight: windowHeight}}>
           <Component {...pageProps} />
