@@ -16,7 +16,7 @@
     "@christianjuth/sudoku-solver": "workspace:*",
     "@christianjuth/tictactoe-engine": "workspace:*",
     "@christianjuth/ui": "workspace:*",
-    "next": "latest",
+    "next": "12.0.8",
     "next-transpile-modules": "^9.0.0",
     "react": "17.0.2",
     "react-div-100vh": "^0.7.0",

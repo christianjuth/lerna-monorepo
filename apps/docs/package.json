@@ -12,7 +12,7 @@
     "@christianjuth/ui": "workspace:*",
     "diff": "^5.0.0",
     "gun": "^0.2020.1235",
-    "next": "12.x",
+    "next": "12.0.8",
     "next-transpile-modules": "^9.0.0",
     "react": "17.0.2",
     "react-div-100vh": "^0.7.0",
