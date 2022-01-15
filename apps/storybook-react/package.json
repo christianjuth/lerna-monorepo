@@ -29,9 +29,9 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "start": "start-storybook -p 6006 -s public",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "start": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "devDependencies": {
     "@mdx-js/react": "^1.6.22",

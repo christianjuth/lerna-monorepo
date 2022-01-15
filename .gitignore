@@ -136,3 +136,6 @@ debug/
 target/
 **/*.rs.bk
 *.pdb
+
+# Storybook
+storybook-static/
