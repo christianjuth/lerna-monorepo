@@ -3062,6 +3062,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/ui@workspace:internal-packages/ui"
   dependencies:
+    "@christianjuth/eslint-config": "workspace:*"
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     eslint: ^8.6.0
