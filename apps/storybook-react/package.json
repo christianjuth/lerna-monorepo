@@ -44,6 +44,7 @@
     "@storybook/node-logger": "^6.4.12",
     "@storybook/preset-create-react-app": "^4.0.0",
     "@storybook/react": "^6.4.12",
+    "chromatic": "^6.3.4",
     "eslint": "^8.6.0",
     "webpack": "^5.66.0"
   }
