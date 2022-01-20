@@ -1,6 +1,6 @@
 import { Select } from "@christianjuth/ui";
 import { expect } from "@storybook/jest";
-import { StoryObj } from "@storybook/react/types-6-0";
+import { Meta, StoryObj } from "@storybook/react/types-6-0";
 import { fireEvent, within, userEvent } from "@storybook/testing-library";
 
 const options = ["One", "Two", "Three", "Four", "Five"];
@@ -16,7 +16,8 @@ function SelectExample() {
   );
 }
 
-export default { component: SelectExample };
+const meta: Meta = { component: SelectExample, title: "Atoms/SelectExample" };
+export default meta;
 
 export const InitialState: StoryObj = {};
 

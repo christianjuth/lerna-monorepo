@@ -1,6 +1,8 @@
 import { Button } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 
-export default { component: Button };
+const meta: Meta = { component: Button, title: "Atoms/Button" };
+export default meta;
 
 export const BasicUsage = {
   args: {

@@ -1,4 +1,5 @@
 import { Text } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 import styled from "styled-components";
 
 const FlexColumn = styled.div`
@@ -18,6 +19,7 @@ function TextExamples() {
   );
 }
 
-export default { component: TextExamples };
+const meta: Meta = { component: TextExamples, title: "Atoms/TextExamples" };
+export default meta;
 
 export const BasicUsage = {};

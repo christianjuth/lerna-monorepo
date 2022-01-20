@@ -1,5 +1,7 @@
 import { Input } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 
-export default { component: Input };
+const meta: Meta = { component: Input, title: "Atoms/Input" };
+export default meta;
 
 export const BasicUsage = {};

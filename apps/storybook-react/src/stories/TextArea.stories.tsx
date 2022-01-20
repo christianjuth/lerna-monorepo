@@ -1,6 +1,8 @@
 import { TextArea } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 
-export default { component: TextArea };
+const meta: Meta = { component: TextArea, title: "Atoms/TextArea" };
+export default meta;
 
 export const BasicUsage = {
   args: {

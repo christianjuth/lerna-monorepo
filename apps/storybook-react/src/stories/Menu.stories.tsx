@@ -1,4 +1,5 @@
 import { Menu, MenuItem, useMenuState, spacing, color } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -47,6 +48,7 @@ function MenuExample() {
   );
 }
 
-export default { component: MenuExample };
+const meta: Meta = { component: MenuExample, title: "Atoms/Menu" };
+export default meta;
 
 export const BasicUsage = {};

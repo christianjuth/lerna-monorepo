@@ -8,6 +8,13 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  options: {
+    storySort: {
+      method: '',
+      order: ['Theming', 'GridSystem', 'Atoms'], 
+      locales: '', 
+    },
+  },
 }
 
 export const decorators = [

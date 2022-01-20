@@ -1,4 +1,5 @@
 import { Datepicker, useDatepickerState } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 
 function DatepickerExample() {
   const state = useDatepickerState()
@@ -7,6 +8,7 @@ function DatepickerExample() {
   )
 }
 
-export default { component: DatepickerExample };
+const meta: Meta = { component: DatepickerExample, title: "Atoms/Datepicker" };
+export default meta;
 
 export const BasicUsage = {};

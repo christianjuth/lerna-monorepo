@@ -5787,6 +5787,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@storybook/addon-a11y@npm:^6.4.13":
+  version: 6.4.13
+  resolution: "@storybook/addon-a11y@npm:6.4.13"
+  dependencies:
+    "@storybook/addons": 6.4.13
+    "@storybook/api": 6.4.13
+    "@storybook/channels": 6.4.13
+    "@storybook/client-logger": 6.4.13
+    "@storybook/components": 6.4.13
+    "@storybook/core-events": 6.4.13
+    "@storybook/csf": 0.0.2--canary.87bc651.0
+    "@storybook/theming": 6.4.13
+    axe-core: ^4.2.0
+    core-js: ^3.8.2
+    global: ^4.4.0
+    lodash: ^4.17.21
+    react-sizeme: ^3.0.1
+    regenerator-runtime: ^0.13.7
+    ts-dedent: ^2.0.0
+    util-deprecate: ^1.0.2
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  peerDependenciesMeta:
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: f353e0f2e6eead2e9bf8ed69557fe5c0f1104250b2a5c7117c9ff4a5713b7765f9eb05a74a00416f160c90baa27bb02dee80a1fa035a153e913bd1e87ee0f0c8
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-actions@npm:6.4.12, @storybook/addon-actions@npm:^6.4.12":
   version: 6.4.12
   resolution: "@storybook/addon-actions@npm:6.4.12"
@@ -10089,7 +10121,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axe-core@npm:^4.3.5":
+"axe-core@npm:^4.2.0, axe-core@npm:^4.3.5":
   version: 4.3.5
   resolution: "axe-core@npm:4.3.5"
   checksum: 973c6a80f0aaa663820b209d4202de7a0c240a2dea2f3cff168b09c0f221b27179b1f0988f00ad11ed63cbc50535920f8ca779de1c60dc82090ab2d275f71fdd
@@ -28047,6 +28079,7 @@ __metadata:
     "@christianjuth/tsconfig": "workspace:*"
     "@christianjuth/ui": "workspace:*"
     "@mdx-js/react": ^1.6.22
+    "@storybook/addon-a11y": ^6.4.13
     "@storybook/addon-actions": ^6.4.12
     "@storybook/addon-docs": ^6.4.12
     "@storybook/addon-essentials": ^6.4.12

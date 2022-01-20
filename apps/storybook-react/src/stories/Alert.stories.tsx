@@ -1,5 +1,5 @@
 import { AlertProvider, useAlert } from "@christianjuth/ui";
-import { StoryObj } from "@storybook/react/types-6-0";
+import { StoryObj, Meta } from "@storybook/react/types-6-0";
 import { fireEvent, within } from "@storybook/testing-library";
 import { expect } from "@storybook/jest";
 
@@ -23,7 +23,8 @@ function AlertExample() {
   );
 }
 
-export default { component: AlertExample };
+const meta: Meta = { component: AlertExample, title: "Atoms/Alert" };
+export default meta;
 
 export const BasicUsage: StoryObj = {
   play: async ({ canvasElement }) => {

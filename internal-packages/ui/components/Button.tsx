@@ -87,9 +87,9 @@ const style = css<StyleProps>`
       case "contained":
         return `
           &&, &&:hover, &&:active {
-            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 6)};
-            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 6)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 6, 'text')};
+            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
+            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
+            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 9, 'text')};
           }
           ${
             $disabled
@@ -104,13 +104,13 @@ const style = css<StyleProps>`
       case "outlined":
         return `
           && {
-            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 6)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 6)};
+            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
+            color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
             transition: background-color 0.2s, color 0.2s, border-color 0.2s;
           }
           &&:hover {
-            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 6)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 6, 'text')};  
+            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
+            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 9, 'text')};  
           }
         `
     }

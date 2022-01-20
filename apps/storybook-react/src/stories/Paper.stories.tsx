@@ -1,6 +1,8 @@
 import { Paper } from "@christianjuth/ui";
+import { Meta } from "@storybook/react/types-6-0";
 
-export default { component: Paper };
+const meta: Meta = { component: Paper, title: "Atoms/Paper" };
+export default meta;
 
 export const BasicUsage = {
   args: {
