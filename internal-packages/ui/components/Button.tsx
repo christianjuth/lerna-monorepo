@@ -5,6 +5,7 @@ import { GenericProps, DomEvents } from "./types"
 import { pxToRem } from "./utils"
 import { Animations } from "./Animations"
 import { ImSpinner8 } from "react-icons/im"
+import { buttonDefaults } from './config'
 
 type StyleProps = {
   $size: Button.Size
@@ -18,6 +19,7 @@ type StyleProps = {
 const style = css<StyleProps>`
   display: flex;
   flex-direction: row;
+  align-items: center;
   border-radius: ${roundness(1)};
   padding: 0;
   background: transparent;
@@ -151,7 +153,7 @@ export function Button({
   href,
   disabled = false,
   size = "md",
-  variant = "contained",
+  variant = buttonDefaults.variant as Button.Variant,
   className,
   themeColor = "accent1",
   fullWidth = false,
@@ -202,8 +204,8 @@ export function Button({
       {children}
 
       {loading && (
-        <Animations.Spin style={{ marginLeft: "0.5ch" }}>
-          <ImSpinner8 />
+        <Animations.Spin style={{ marginLeft: "0.6ch" }}>
+          <ImSpinner8 size="0.9em" />
         </Animations.Spin>
       )}
     </StyledButton>

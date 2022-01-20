@@ -6,7 +6,7 @@ import { Theme } from "./Theme"
 import { GenericProps } from "./types"
 
 const InputStyle = styled.input`
-  background: transparent;  
+  background: transparent; 
 `
 
 const inputFormats = {

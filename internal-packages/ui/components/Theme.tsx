@@ -1,9 +1,7 @@
-import { useMemo } from "react";
-import { createGlobalStyle } from "styled-components";
-import { globalTextStyles } from "./Text";
-import { getAdjustedColor, remap } from "./utils";
+import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
+import { textStyles } from "./Text";
 import { HSLColor, ReactChildren } from "./types";
-import { ThemeProvider } from "styled-components";
+import { getAdjustedColor, remap } from "./utils";
 
 const SHADES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] as const;
 const SHADE_STOPS = SHADES.length;
@@ -12,16 +10,43 @@ function clamp(min: number, val: number, max: number) {
   return Math.max(min, Math.min(val, max));
 }
 
-const GlobalStyles = createGlobalStyle<{ vars: string }>`
-  ${globalTextStyles}
+const CSSVariableProvider = styled.div<{
+  $useDarkTheme?: boolean;
+  $baseTheme: Theme.Config;
+  $darkTheme: Partial<Theme.Config>;
+  $style: string;
+}>`
+  ${({ $useDarkTheme, $baseTheme, $darkTheme }) => {
+    if ($useDarkTheme === false) {
+      return `
+          ${getVars($baseTheme)}
+        `;
+    } else if ($useDarkTheme === true) {
+      return `
+          ${getVars($baseTheme)} ${getVars($darkTheme)}
+        `;
+    }
 
-  ${({ vars }) => vars}
+    return `
+        ${getVars($baseTheme)}
+        @media (prefers-color-scheme: dark) { 
+          ${getVars($darkTheme)}
+        }
+      `;
+  }}
 
+  ${({ $style }) => $style}
+  ${textStyles}
+`;
+
+const GlobalStyles = createGlobalStyle<{ $bodyStyles: string }>`
   body {
     background-color: ${color("gray", 0)};
     color: ${color("gray", 15)};
     padding: 0;
     margin: 0;
+
+    ${({ $bodyStyles }) => $bodyStyles}
   }
 
   a,
@@ -118,31 +143,6 @@ export function Theme({
   useDarkTheme?: boolean;
   children: ReactChildren;
 }) {
-  const vars = useMemo(() => {
-    if (useDarkTheme === false) {
-      return `
-          :root { ${getVars(baseTheme)} }
-        `;
-    } else if (useDarkTheme === true) {
-      return `
-          :root { ${getVars(baseTheme)} ${getVars(darkTheme)} }
-          body {
-            background-color: ${color("gray", 1)};
-          }
-        `;
-    }
-
-    return `
-        :root { ${getVars(baseTheme)} }
-        @media (prefers-color-scheme: dark) { 
-          :root { ${getVars(darkTheme)} } 
-          body {
-            background-color: ${color("gray", 1)};
-          }
-        }
-      `;
-  }, [baseTheme, darkTheme, useDarkTheme]);
-
   function darkMode(styles: string) {
     if (useDarkTheme === true) {
       return styles;
@@ -151,12 +151,38 @@ export function Theme({
         @media (prefers-color-scheme: dark) { ${styles} } 
       `;
     }
+    return "";
   }
+
+  const backgroudColor = `
+    background-color: ${hslToString(baseTheme.gray({ l: 100, shade: 0 }))};
+    ${
+      darkTheme.gray
+        ? darkMode(
+            `
+              background-color: ${hslToString(
+                darkTheme.gray({ l: 100, shade: 0 })
+              )};
+              color: ${hslToString(
+                darkTheme.gray({ l: 0, shade: SHADE_STOPS })
+              )}; 
+            `
+          )
+        : ""
+    }
+  `;
 
   return (
     <>
-      <GlobalStyles vars={vars} />
-      <ThemeProvider theme={{ darkMode }}>{children}</ThemeProvider>
+      <GlobalStyles $bodyStyles={backgroudColor} />
+      <CSSVariableProvider
+        $baseTheme={baseTheme}
+        $darkTheme={darkTheme}
+        $useDarkTheme={useDarkTheme}
+        $style={backgroudColor}
+      >
+        <ThemeProvider theme={{ darkMode }}>{children}</ThemeProvider>
+      </CSSVariableProvider>
     </>
   );
 }

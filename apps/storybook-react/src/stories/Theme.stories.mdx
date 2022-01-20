@@ -1,0 +1,53 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { LightTheme, DarkTheme, DynamicTheme } from "../partials/Theme";
+
+<Meta title="Theming/Theme" component={LightTheme} />
+
+# Theme Colors
+
+Colors are generated using a HSL color generator function `({ l }) => [h, s, l]`. This function takes the `l` (luminance) value and shifts it to match the [relative luminance](https://www.w3.org/WAI/GL/wiki/Relative_luminance). This produces visually consistent shades across all colors making it easy to swap out colors later.
+
+```tsx
+<Theme
+  baseTheme={{
+    primary: ({ l, shade }) => [256, 100 - shade, l],
+    accent1: ({ l, shade }) => [165 + shade, 82, l],
+    gray: ({ l }) => [0, 0, l],
+  }}
+  darkTheme={{ ... }}
+>
+  ...
+</Theme>
+```
+
+<LightTheme />
+
+---
+
+# Dark mode
+
+An easy way to implement dark mode is by flipping the luminance value on the HSL color generator function.
+
+```tsx
+<Theme
+  baseTheme={{ ... }}
+  darkTheme={{
+    // 100-l inverts the gray pallette
+    gray: ({ l }) => [h, s, 100-l]
+  }}
+  // Setting to true forces the library to load
+  // the dark theme. If you omit this prop, Thene
+  // will respect the system theme preference (light/dark)
+  useDarkMode={true}
+>
+  ...
+</Theme>
+```
+
+<DarkTheme />
+
+---
+
+# Dynamic theme
+
+<DynamicTheme />

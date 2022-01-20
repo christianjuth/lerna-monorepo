@@ -80,12 +80,10 @@ function headingSize(size: number) {
   return `calc(${pxToRem(size)} + min(2vw, ${size/2}px))`
 }
 
-export const globalTextStyles = css`
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-  }
+export const textStyles = css`
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol";
 
   .${genName("h1")} {
     font-size: ${headingSize(45)};

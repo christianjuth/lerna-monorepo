@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "cjs/graph-search.js",
   "module": "esm/graph-search.js",
-  "types": "esm/graph-search.ts",
+  "types": "src/graph-search.ts",
   "directories": {},
   "files": [
     "cjs",

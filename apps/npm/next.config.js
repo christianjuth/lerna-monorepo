@@ -23,5 +23,5 @@ module.exports = withTM({
   swcMinify: true,
   experimental: {
     styledComponents: true
-  }
+  },
 });

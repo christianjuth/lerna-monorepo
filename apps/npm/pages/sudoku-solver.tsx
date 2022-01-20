@@ -4,15 +4,16 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Package } from '../components/Package'
 import { getReadme } from '../utils'
+import { color } from '@christianjuth/ui'
 
 const Puzzle = styled.div`
   display: flex;
   flex-direction: column;
   width: 400px;
   max-width: 100%;
-  border: 2px solid black;
+  border: 2px solid ${color('gray', 3)};
   border-bottom: none;
-  background-color: black;
+  background-color: ${color('gray', 3)};
 `
 
 const Row = styled.div`
@@ -32,14 +33,16 @@ const Cell = styled.input`
   border: 0;
   text-align: center;
   font-size: 1rem;
+  background-color: ${color('gray', 0)};
+  color: ${color('gray', 15)};
 
   ::placeholder {
-    color: rgba(0,0,0,0.25);
+    color: ${color('gray', 5)};
   }
 
   :focus {
     outline: none;
-    background-color: rgba(200,200,200);
+    background-color: ${color('gray', 2)};
     font-weight: 300;
   }
 
