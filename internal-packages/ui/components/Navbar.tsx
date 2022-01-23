@@ -42,8 +42,9 @@ const Items = styled(FlexRow)`
   align-items: center;
 `;
 
-const StyledLink = styled(Link)<{ $themeColor: Theme.ColorName }>`
-  &&, &&:hover {
+const StyledLink = styled(Button)<{ $themeColor: Theme.ColorName }>`
+  &&,
+  &&:hover {
     color: unset;
     text-decoration: none;
   }
@@ -59,7 +60,7 @@ const StyledLink = styled(Link)<{ $themeColor: Theme.ColorName }>`
     color: ${color($themeColor, 15, "text")}};
   `}
 
-  transition: opacity 0.2s;
+  transition: opacity 0.1s;
 
   :hover {
     opacity: 1;
@@ -106,7 +107,7 @@ function Item({
         {...search}
         className={[className, search.className].join(" ")}
         input={{
-          variant: themeColor === "gray" ? "outlined" : "contained",
+          variant: "transparent",
           ...search.input,
           themeColor: themeColor,
         }}
@@ -131,7 +132,16 @@ function Item({
 
   if (link) {
     return (
-      <StyledLink {...link} $themeColor={themeColor} className={className} />
+      <StyledLink
+        href={link.href}
+        $themeColor={themeColor}
+        className={className}
+        themeColor="gray"
+        variant="transparent"
+        size="sm"
+      >
+        {link.children}
+      </StyledLink>
     );
   }
 
@@ -141,7 +151,7 @@ function Item({
         themeColor="gray"
         size="sm"
         className={className}
-        variant={themeColor === "gray" ? "outlined" : "contained"}
+        variant="transparent"
         {...input}
       />
     );
@@ -168,7 +178,7 @@ export function Navbar({
         alignItems: "center",
         minHeight: 55,
       }}
-      className={dark ? 'dark-mode' : undefined}
+      className={dark ? "dark-mode" : undefined}
     >
       <Link
         href="/"
@@ -181,7 +191,7 @@ export function Navbar({
       </Link>
 
       <Display xs={false} md={true}>
-        <Items $spacing={spacing(2)}>
+        <Items>
           {leftItems.map((item, i) => (
             <Item
               key={i}

@@ -1,15 +1,16 @@
 import { CSSProperties, useState } from "react";
 import styled from "styled-components";
 import { color, roundness, Theme } from "./Theme";
-import { ReactChildren, GenericProps } from "./types";
+import { GenericProps, ReactChildren } from "./types";
 import { pxToRem } from "./utils";
 
 const ACTIVE_BORDER_WIDTH = 2;
+const VERTICAL_PADDING = 2;
 
 const InputWrapDiv = styled.div<{
   themeColor: Theme.ColorName;
   fullWidth: boolean;
-  $variant?: "outlined" | "contained";
+  $variant?: "outlined" | "transparent";
   $hideBorder?: boolean;
 }>`
   position: relative;
@@ -18,13 +19,17 @@ const InputWrapDiv = styled.div<{
   border: none;
   display: flex;
   align-items: center;
-  background-color: ${({ $variant, themeColor }) =>
-    $variant === "contained" ? color(themeColor, 9) : color("gray", 0)};
   ${({ fullWidth }) => (fullWidth ? `width: 100%;` : "")}
   input::-webkit-search-decoration {
     -webkit-appearance: none;
   }
   transition: border-with 0.2s, opacity 0.2s;
+
+  ${({ $variant }) =>
+    $variant === "transparent"
+      ? `background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), 0.12);`
+      : `background-color: ${color("gray", 0)};`
+  }
 
   ${({ $hideBorder }) =>
     $hideBorder
@@ -40,35 +45,25 @@ const InputWrapDiv = styled.div<{
       border-radius: inherit;
       border-width: 1px;
       border-style: solid;
-      border-color: ${color("gray", 15)};
       pointer-events: none;
-      opacity: 0.4;
+      border-color: ${color("gray", 4)};
+      opacity: 0.9;
     }
   `}
 
   &[data-active="true"]:before {
-    border-color: ${({ themeColor, $variant }) =>
-      themeColor === "gray"
-        ? color(themeColor, 15)
-        : $variant === "contained"
-        ? color("gray", 15)
-        : color(themeColor, 6)};
+    border-color: ${({ themeColor }) =>
+      themeColor === "gray" ? color(themeColor, 15) : color(themeColor, 6)};
     border-width: ${ACTIVE_BORDER_WIDTH}px;
     opacity: 1;
   }
   * {
-    color: ${({ $variant, themeColor }) =>
-      $variant === "contained"
-        ? color(themeColor, 7, "text")
-        : color("gray", 15)};
+    color: ${color("gray", 15)};
   }
 
   *::placeholder {
-    opacity: 0.7;
-    color: ${({ $variant, themeColor }) =>
-      $variant === "contained"
-        ? color(themeColor, 9, "text")
-        : color("gray", 9)};
+    opacity: 0.55;
+    color: ${color("gray", 15)};
   }
 `;
 
@@ -93,7 +88,7 @@ export declare namespace InputWrap {
     style?: CSSProperties;
     applyInputStylesToSelf?: boolean;
     active?: boolean;
-    variant?: "outlined" | "contained";
+    variant?: "outlined" | "transparent";
     className?: string;
     hideBorder?: boolean;
   }
@@ -103,21 +98,21 @@ function getInputStyle(customSize: GenericProps.Size) {
   switch (customSize) {
     case "sm":
       return {
-        minHeight: 35,
+        minHeight: 35 - VERTICAL_PADDING,
         fontSize: "1rem",
-        padding: pxToRem(2, 9),
+        padding: pxToRem(VERTICAL_PADDING, 9),
       };
     case "md":
       return {
-        minHeight: 42,
+        minHeight: 42 - VERTICAL_PADDING,
         fontSize: "1.1rem",
-        padding: pxToRem(2, 12),
+        padding: pxToRem(VERTICAL_PADDING, 12),
       };
     case "lg":
       return {
-        minHeight: 48,
+        minHeight: 48 - VERTICAL_PADDING,
         fontSize: "1.3rem",
-        padding: pxToRem(2, 12),
+        padding: pxToRem(VERTICAL_PADDING, 12),
       };
   }
 }
@@ -147,7 +142,7 @@ export function InputWrap({
         ...style,
       }}
       className={className}
-      $hideBorder={hideBorder}
+      $hideBorder={hideBorder || variant === "transparent"}
     >
       {children({
         onFocus: () => setIsFocused(true),

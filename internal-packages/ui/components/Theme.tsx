@@ -36,14 +36,21 @@ const CSSVariableProvider = styled.div<{
   }}
 
   .dark-mode {
+    --dark-mode-bit: 1;
     ${({ $darkTheme }) => getVars($darkTheme)}
   }
 
   ${({ $style }) => $style}
+
   ${textStyles}
 `;
 
-const GlobalStyles = createGlobalStyle<{ $bodyStyles: string }>`
+const GlobalStyles = createGlobalStyle<{
+  $bodyStyles: string;
+  $useDarkTheme?: boolean;
+  $baseTheme: Theme.Config;
+  $darkTheme: Partial<Theme.Config>;
+}>`
   body {
     background-color: ${color("gray", 0)};
     color: ${color("gray", 15)};
@@ -51,6 +58,27 @@ const GlobalStyles = createGlobalStyle<{ $bodyStyles: string }>`
     margin: 0;
 
     ${({ $bodyStyles }) => $bodyStyles}
+  }
+  
+  :root {
+    ${({ $useDarkTheme, $baseTheme, $darkTheme }) => {
+      if ($useDarkTheme === false) {
+        return `
+            ${getVars($baseTheme)}
+          `;
+      } else if ($useDarkTheme === true) {
+        return `
+            ${getVars($baseTheme)} ${getVars($darkTheme)}
+          `;
+      }
+
+      return `
+          ${getVars($baseTheme)}
+          @media (prefers-color-scheme: dark) { 
+            ${getVars($darkTheme)}
+          }
+        `;
+    }}
   }
 `;
 
@@ -192,21 +220,28 @@ export function Theme({
       } 
       *::-moz-selection {
         background: ${color("primary", 9)};
-      } 
+      }
     `)}
   `;
 
   return (
-    <>
-      {addBodyStyles && <GlobalStyles $bodyStyles={backgroudColor} />}
+    <ThemeProvider theme={{ darkMode }}>
+      {addBodyStyles && (
+        <GlobalStyles
+          $bodyStyles={backgroudColor}
+          $baseTheme={baseTheme}
+          $darkTheme={darkTheme}
+          $useDarkTheme={useDarkTheme}
+        />
+      )}
       <CSSVariableProvider
         $baseTheme={baseTheme}
         $darkTheme={darkTheme}
         $useDarkTheme={useDarkTheme}
         $style={backgroudColor}
       >
-        <ThemeProvider theme={{ darkMode }}>{children}</ThemeProvider>
+        {children}
       </CSSVariableProvider>
-    </>
+    </ThemeProvider>
   );
 }

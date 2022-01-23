@@ -4,7 +4,7 @@ import {
   Checkbox,
   Input,
   TextArea,
-  Datepicker,
+  StatefulDatepicker,
   FlexRow,
   FlexCol,
 } from "@christianjuth/ui";
@@ -55,7 +55,7 @@ _Label creates a two way binding between the label and the control element using
     <FlexCol>
       <Label variant="copy-1">
         Select a date
-        {(props) => <Datepicker {...props} />}
+        {(props) => <StatefulDatepicker {...props} />}
       </Label>
     </FlexCol>
   </Story>

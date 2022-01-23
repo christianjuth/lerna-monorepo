@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { HSLColor } from "./types";
 
 function clamp(min: number, val: number, max: number) {
@@ -149,4 +149,46 @@ export function cn(...styles: StyleConfig[]) {
   }
 
   return out.join(" ");
+}
+
+export function debounce(func: () => any, wait = 10, immediate = false) {
+  let timeout: number | undefined;
+
+  return function executedFunction() {
+    let later = function () {
+      timeout = undefined;
+      if (!immediate) func();
+    };
+
+    let callNow = immediate && !timeout;
+
+    window.clearTimeout(timeout);
+
+    timeout = window.setTimeout(later, wait);
+
+    if (callNow) func();
+  };
+}
+
+export function useDebouncedCallback(fn: () => any, deps: any[]) {
+  const unmoutedRef = useRef(false)
+
+  useEffect(() => {
+    return () => {
+      unmoutedRef.current = true
+    }
+  }, [])
+
+  const debounced = useMemo(
+    () => {
+      return debounce(() => {
+        if (!unmoutedRef.current) {
+          fn()
+        }
+      })
+    },
+    [deps]
+  )
+
+  return debounced
 }

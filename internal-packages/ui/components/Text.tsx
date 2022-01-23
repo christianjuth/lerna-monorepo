@@ -66,7 +66,13 @@ export declare namespace Text {
 }
 
 const genName = (
-  variant: Text.Variant | "truncate" | "numOfLines" | "no-padding" | "uppercase" | "text-muted"
+  variant:
+    | Text.Variant
+    | "truncate"
+    | "numOfLines"
+    | "no-padding"
+    | "uppercase"
+    | "text-muted"
 ) => `Text-${variant}`;
 
 const TRUNCATE_CLASS = genName("truncate");
@@ -77,13 +83,15 @@ const NUM_OF_LINES_VAR = genName("numOfLines");
 const SPACING_AFTER_TEXT = "10px";
 
 function headingSize(size: number) {
-  return `calc(${pxToRem(size)} + min(2vw, ${size/2}px))`
+  return `calc(${pxToRem(size)} + min(2vw, ${size / 2}px))`;
 }
 
 export const textStyles = css`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol";
+  * {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+  }
 
   .${genName("h1")} {
     font-size: ${headingSize(45)};
@@ -127,7 +135,8 @@ export const textStyles = css`
     line-height: 1em;
     margin-bottom: ${SPACING_AFTER_TEXT};
   }
-  .${genName("copy-1")}, .${genName("copy-1")} a, ${genName("p")}, p {
+  .${genName("copy-1")}, .${genName("copy-1")} a,
+  ${genName("p")}, p {
     font-size: ${pxToRem(20)};
     font-style: normal;
     font-weight: 400;
@@ -141,11 +150,14 @@ export const textStyles = css`
     line-height: ${22 / 18}em;
     text-decoration: none;
     cursor: pointer;
-    
+
     color: ${color("accent1", 10)};
-    ${({ theme }) => theme.darkMode?.(`
-      color: ${color("accent1", 6)};
-    ` ?? '')}
+    ${({ theme }) =>
+      theme.darkMode?.(
+        `
+      color: ${color("accent1", 7)};
+    ` ?? ""
+      )}
 
     &:hover {
       text-decoration: underline;

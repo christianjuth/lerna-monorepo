@@ -37,7 +37,8 @@ const style = css<StyleProps>`
     border: 1px solid transparent;
     font-style: italic;
   }
-  &&, &&:hover {
+  &&,
+  &&:hover {
     text-decoration: none;
   }
   ${({ $disabled }) =>
@@ -87,7 +88,7 @@ const style = css<StyleProps>`
         `;
     }
   }}
-  ${({ $variant, $themeColor, $disabled }) => {
+  ${({ $variant, $themeColor, $disabled, theme }) => {
     switch ($variant) {
       case "contained":
         return `
@@ -149,12 +150,12 @@ const style = css<StyleProps>`
       case "transparent":
         return `
           && {
-            color: ${color('gray', 15)};
+            color: ${color("gray", 15)};
           }
           &&:hover {
-            background-color: ${color('gray', 1)};
+            background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), 0.12);
           }
-        `
+        `;
     }
   }}
 `;

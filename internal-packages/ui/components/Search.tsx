@@ -3,6 +3,7 @@ import { Input } from "./Input";
 import { FlexRow } from "./UtilityStyles";
 import { Theme } from "./Theme";
 import { GenericProps } from "./types";
+import { AiOutlineSearch } from "react-icons/ai";
 
 export declare namespace Search {
   export type Props = {
@@ -22,15 +23,24 @@ export function Search({
   className,
 }: Search.Props) {
   return (
-    <FlexRow $spacing={5} className={className}>
+    <FlexRow className={className}>
       <Input
         placeholder="Search..."
         themeColor={themeColor}
         {...input}
         size={size}
+        style={{
+          borderTopRightRadius: 0,
+          borderBottomRightRadius: 0,
+        }}
       />
-      <Button themeColor={themeColor} {...cta} size={size}>
-        {cta?.children ?? "Search"}
+      <Button
+        themeColor={themeColor}
+        {...cta}
+        size={size}
+        style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+      >
+        {cta?.children ?? <AiOutlineSearch />}
       </Button>
     </FlexRow>
   );

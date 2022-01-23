@@ -6,7 +6,6 @@
   "types": "components/index.ts",
   "license": "MIT",
   "peerDependencies": {
-    "classnames": "*",
     "dayjs": "*",
     "react": "*",
     "react-icons": "*",

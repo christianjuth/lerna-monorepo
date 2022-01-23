@@ -25,7 +25,7 @@ export declare namespace Input {
     labelledBy?: string;
     themeColor?: Color;
     placeholder?: string;
-    variant?: "outlined" | "contained";
+    variant?: "outlined" | "transparent";
     hideBorder?: boolean;
   }
 }

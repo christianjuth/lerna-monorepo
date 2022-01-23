@@ -27,9 +27,9 @@ const FormStyle = styled.form`
     grid-column-start: 1;
     grid-column-end: 2;
   }
-  
+
   & > [data-small-form-element] {
-    grid-column-start: 2; 
+    grid-column-start: 2;
     grid-column-end: 3;
   }
 
@@ -84,9 +84,11 @@ function collectFormData(elm: HTMLFormElement) {
 export function Form({
   children,
   onSubmit,
+  submitBtn = { children: "Submit" },
 }: {
   children: ReactChildren;
   onSubmit?: (data: FormJsonData) => any;
+  submitBtn?: Button.Props;
 }) {
   const ref = useRef<HTMLFormElement>(null);
 
@@ -100,7 +102,7 @@ export function Form({
     >
       {children}
 
-      <Button htmlType="submit">Submit</Button>
+      <Button {...submitBtn} htmlType="submit" />
     </FormStyle>
   );
 }
