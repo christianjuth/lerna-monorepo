@@ -1,0 +1,21 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { LightTheme, DarkTheme, DynamicTheme } from "../organisms/Theme";
+import { Display } from '@christianjuth/ui'
+import { Box } from '../components/Box'
+
+<Meta title="Layout/Display" />
+
+# Display 
+
+Allows you to show/hide content on specified screen sizes.
+
+<Canvas>
+  <Story name="Independent column sizes">
+    <Display xs={true} md={false}>
+      <Box>I'm only visible on small screens</Box>
+    </Display>
+    <Display xs={false} md={true}>
+      <Box>I'm only visible on large screens</Box>
+    </Display> 
+  </Story>
+</Canvas>

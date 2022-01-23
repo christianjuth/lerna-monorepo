@@ -35,6 +35,10 @@ const CSSVariableProvider = styled.div<{
       `;
   }}
 
+  .dark-mode {
+    ${({ $darkTheme }) => getVars($darkTheme)}
+  }
+
   ${({ $style }) => $style}
   ${textStyles}
 `;
@@ -48,15 +52,6 @@ const GlobalStyles = createGlobalStyle<{ $bodyStyles: string }>`
 
     ${({ $bodyStyles }) => $bodyStyles}
   }
-
-  a,
-  .link {
-    color: ${color("accent1", 4)};
-  }
-
-  * {
-    box-sizing: border-box;
-  }
 `;
 
 export declare namespace Theme {
@@ -68,7 +63,10 @@ export declare namespace Theme {
 }
 
 function varName(color: Theme.ColorName, shade: number, modifier?: "text") {
-  return `--${[color, shade, modifier].join("-")}`;
+  if (modifier) {
+    return `--${[color, shade, modifier].join("-")}`;
+  }
+  return `--${[color, shade].join("-")}`;
 }
 
 export function color(
@@ -137,11 +135,13 @@ export function Theme({
   darkTheme,
   useDarkTheme,
   children,
+  addBodyStyles = false,
 }: {
   baseTheme: Theme.Config;
   darkTheme: Partial<Theme.Config>;
   useDarkTheme?: boolean;
   children: ReactChildren;
+  addBodyStyles?: boolean;
 }) {
   function darkMode(styles: string) {
     if (useDarkTheme === true) {
@@ -155,7 +155,11 @@ export function Theme({
   }
 
   const backgroudColor = `
+    --dark-mode-bit: 0;
+    ${darkMode("--dark-mode-bit: 1;")}
     background-color: ${hslToString(baseTheme.gray({ l: 100, shade: 0 }))};
+    color: ${hslToString(baseTheme.gray({ l: 0, shade: SHADE_STOPS }))};
+
     ${
       darkTheme.gray
         ? darkMode(
@@ -165,16 +169,36 @@ export function Theme({
               )};
               color: ${hslToString(
                 darkTheme.gray({ l: 0, shade: SHADE_STOPS })
-              )}; 
+              )};
             `
           )
         : ""
     }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    *::selection {
+      background: ${color("primary", 2)};
+    }
+    *::-moz-selection {
+      background: ${color("primary", 2)}; 
+    }
+
+    ${darkMode(`
+      *::selection {
+        background: ${color("primary", 9)};
+      } 
+      *::-moz-selection {
+        background: ${color("primary", 9)};
+      } 
+    `)}
   `;
 
   return (
     <>
-      <GlobalStyles $bodyStyles={backgroudColor} />
+      {addBodyStyles && <GlobalStyles $bodyStyles={backgroudColor} />}
       <CSSVariableProvider
         $baseTheme={baseTheme}
         $darkTheme={darkTheme}

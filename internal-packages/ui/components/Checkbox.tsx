@@ -4,7 +4,9 @@ import { color, roundness } from "./Theme";
 import { GenericProps } from "./types";
 
 const Box = styled.div<{ $size?: GenericProps.Size }>`
-  display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   position: relative;
   cursor: pointer;
   font-size: 22px;
@@ -51,8 +53,8 @@ const Box = styled.div<{ $size?: GenericProps.Size }>`
   }
 
   input:checked ~ span {
-    background-color: ${color("accent1", 6)};
-    border-color: ${color("accent1", 6)};
+    background-color: ${color("accent1", 9)};
+    border-color: ${color("accent1", 9)};
   }
 
   & > span:after {
@@ -88,13 +90,31 @@ type CheckboxProps = {
   checked?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   size?: GenericProps.Size;
+  id?: string;
+  labelledBy?: string;
+  name?: string;
 };
 
-export function Checkbox({ style, checked, onChange, size }: CheckboxProps) {
+export function Checkbox({
+  style,
+  checked,
+  onChange,
+  size,
+  labelledBy,
+  id,
+  name,
+}: CheckboxProps) {
   return (
-    <Box style={style} $size={size}>
-      <input checked={checked} onChange={onChange} type="checkbox" />
-      <span></span>
+    <Box style={style} $size={size} data-small-form-element>
+      <input
+        checked={checked}
+        onChange={onChange}
+        type="checkbox"
+        id={id}
+        aria-labelledby={labelledBy}
+        name={name}
+      />
+      <span />
     </Box>
   );
 }

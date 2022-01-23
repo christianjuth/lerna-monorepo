@@ -78,8 +78,8 @@ const Option = styled.div<{ themeColor: Select.Color }>`
   color: ${color('gray', 15)};
   :hover,
   &[data-active="true"] {
-    background-color: ${({ themeColor }) => color(themeColor, 1)};
-    color: ${({ themeColor }) => color(themeColor, 1, 'text')};
+    background-color: ${color('gray', 1)};
+    color: ${color('gray', 1, 'text')};
   }
   &[data-selected="true"] {
     background-color: ${({ themeColor }) => color(themeColor, 5)};

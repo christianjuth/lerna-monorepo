@@ -8329,6 +8329,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mdx@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@types/mdx@npm:2.0.1"
+  checksum: 521ee9f976af45859a4dd60b159e1cc09109de49ec5570fe70f34cddb0a7b5472b87c1bea743429270398207a997821dec34fd7bd63cbc2a1e5f2f6c701dd1c2
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:^1":
   version: 1.3.2
   resolution: "@types/mime@npm:1.3.2"
@@ -28096,6 +28103,7 @@ __metadata:
     "@testing-library/react": ^12.1.2
     "@testing-library/user-event": ^13.5.0
     "@types/jest": ^27.4.0
+    "@types/mdx": ^2.0.1
     "@types/node": ^16.11.19
     "@types/react": ^17.0.38
     "@types/react-dom": ^17.0.11

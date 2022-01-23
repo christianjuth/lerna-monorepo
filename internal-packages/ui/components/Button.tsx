@@ -1,20 +1,23 @@
-import { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react"
-import styled, { css } from "styled-components"
-import { color, roundness, Theme } from "./Theme"
-import { GenericProps, DomEvents } from "./types"
-import { pxToRem } from "./utils"
-import { Animations } from "./Animations"
-import { ImSpinner8 } from "react-icons/im"
-import { buttonDefaults } from './config'
+import { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
+import styled, { css } from "styled-components";
+import { color, roundness, Theme } from "./Theme";
+import { GenericProps, DomEvents } from "./types";
+import { pxToRem } from "./utils";
+import { Animations } from "./Animations";
+import { ImSpinner8 } from "react-icons/im";
+import { buttonDefaults } from "./config";
+import { Link } from "./Link";
+
+const BORDER_WIDTH = 1;
 
 type StyleProps = {
-  $size: Button.Size
-  $variant: Button.Variant
-  $themeColor: Button.Color
-  $fullWidth: boolean
-  $uppercase: boolean
-  $disabled?: boolean
-}
+  $size: Button.Size;
+  $variant: Button.Variant;
+  $themeColor: Button.Color;
+  $fullWidth: boolean;
+  $uppercase: boolean;
+  $disabled?: boolean;
+};
 
 const style = css<StyleProps>`
   display: flex;
@@ -24,8 +27,6 @@ const style = css<StyleProps>`
   padding: 0;
   background: transparent;
   line-height: 1em;
-  font-weight: bold;
-  font-style: italic;
   letter-spacing: 0.06em;
   cursor: pointer;
   text-align: center;
@@ -33,7 +34,11 @@ const style = css<StyleProps>`
   justify-content: center;
   height: fit-content;
   && {
-    border: 2px solid transparent;
+    border: 1px solid transparent;
+    font-style: italic;
+  }
+  &&, &&:hover {
+    text-decoration: none;
   }
   ${({ $disabled }) =>
     $disabled
@@ -61,25 +66,25 @@ const style = css<StyleProps>`
     switch ($size) {
       case "sm":
         return `
-          min-height: 31px;
-          line-height: 31px;
+          min-height: ${35 - BORDER_WIDTH * 2}px;
+          line-height: ${35 - BORDER_WIDTH * 2}px;
           font-size: 1rem;
           padding: ${pxToRem(0, 10)};
-        `
+        `;
       case "md":
         return `
-          min-height: 38px;
-          line-height: 38px;
+          min-height: ${42 - BORDER_WIDTH * 2}px;
+          line-height: ${42 - BORDER_WIDTH * 2}px;
           font-size: 1.1rem;
           padding: ${pxToRem(0, 15)};
-        `
+        `;
       case "lg":
         return `
-          min-height: 44px;
-          line-height: 44px;
+          min-height: ${48 - BORDER_WIDTH * 2}px;
+          line-height: ${48 - BORDER_WIDTH * 2}px;
           font-size: 1.3rem;
           padding: ${pxToRem(0, 20)};
-        `
+        `;
     }
   }}
   ${({ $variant, $themeColor, $disabled }) => {
@@ -87,9 +92,21 @@ const style = css<StyleProps>`
       case "contained":
         return `
           &&, &&:hover, &&:active {
-            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
-            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 9, 'text')};
+            border-color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15)
+                : color($themeColor, 9)
+            };
+            background-color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15)
+                : color($themeColor, 9)
+            };
+            color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15, "text")
+                : color($themeColor, 9, "text")
+            };
           }
           ${
             $disabled
@@ -100,50 +117,75 @@ const style = css<StyleProps>`
           `
               : ""
           }
-        `
+        `;
       case "outlined":
         return `
           && {
-            border-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
+            border-color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15)
+                : color($themeColor, 8)
+            };
+            color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15)
+                : color($themeColor, 8)
+            };
             transition: background-color 0.2s, color 0.2s, border-color 0.2s;
           }
           &&:hover {
-            background-color: ${$themeColor === 'gray' ? color($themeColor, 15) : color($themeColor, 9)};
-            color: ${$themeColor === 'gray' ? color($themeColor, 15, 'text') : color($themeColor, 9, 'text')};  
+            background-color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15)
+                : color($themeColor, 8)
+            };
+            color: ${
+              $themeColor === "gray"
+                ? color($themeColor, 15, "text")
+                : color($themeColor, 8, "text")
+            };  
+          }
+        `;
+      case "transparent":
+        return `
+          && {
+            color: ${color('gray', 15)};
+          }
+          &&:hover {
+            background-color: ${color('gray', 1)};
           }
         `
     }
   }}
-`
+`;
 
 const StyledButton = styled.button<StyleProps>`
   ${style}
-`
-const StyledLink = styled.a<StyleProps>`
+`;
+const StyledLink = styled(Link)<StyleProps>`
   ${style}
-`
+`;
 
 export declare namespace Button {
-  export type Size = GenericProps.Size
-  export type Variant = "contained" | "outlined"
-  export type Color = Theme.ColorName
+  export type Size = GenericProps.Size;
+  export type Variant = "contained" | "outlined" | "transparent";
+  export type Color = Theme.ColorName;
 
   export interface Props
     extends DomEvents<HTMLAnchorElement & HTMLButtonElement> {
-    children: ReactNode
-    style?: CSSProperties
-    href?: string
-    disabled?: boolean
-    size?: Size
-    htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"]
-    className?: string
-    variant?: Variant
-    themeColor?: Color
-    fullWidth?: boolean
-    uppercase?: boolean
-    tabIndex?: number
-    loading?: boolean
+    children: ReactNode;
+    style?: CSSProperties;
+    href?: string;
+    disabled?: boolean;
+    size?: Size;
+    htmlType?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
+    className?: string;
+    variant?: Variant;
+    themeColor?: Color;
+    fullWidth?: boolean;
+    uppercase?: boolean;
+    tabIndex?: number;
+    loading?: boolean;
   }
 }
 
@@ -209,7 +251,7 @@ export function Button({
         </Animations.Spin>
       )}
     </StyledButton>
-  )
+  );
 }
 
-export default Button
+export default Button;

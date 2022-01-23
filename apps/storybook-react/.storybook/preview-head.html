@@ -1,0 +1,64 @@
+<!-- .storybook/preview-body.html -->
+
+<style>
+  body,
+  .sbdocs-wrapper.sbdocs-wrapper {
+    background-color: transparent;
+  }
+
+  .sbdocs-preview {
+    background-color: transparent;
+    border: 1px solid #fff;
+  }
+
+  h1.sbdocs,
+  h2.sbdocs,
+  h3.sbdocs,
+  h4.sbdocs,
+  h5.sbdocs,
+  h6.sbdocs,
+  p.sbdocs,
+  li.sbdocs,
+  h1.sbdocs-title {
+    color: unset;
+  }
+
+  .docblock-source.docblock-source {
+    background: transparent;
+    border: 1px solid var(--gray-2);
+  }
+
+  .docblock-argstable-head,
+  .docblock-argstable-body,
+  .docblock-source.docblock-source > * {
+    filter: invert(var(--dark-mode-bit)) contrast(calc(var(--dark-mode-bit) + 1));
+  }
+
+  .docblock-argstable-body {
+    border: 1px solid var(--gray-2);
+  }
+
+  .docblock-argstable-body.docblock-argstable-body.docblock-argstable-body tr:not(:first-child) {
+    border-color: var(--gray-2);
+  }
+
+  .sbdocs-preview.sbdocs-preview {
+    background: var(--gray-0);
+    border: 1px solid var(--gray-2);
+  }
+
+  .sbdocs-preview.sbdocs-preview > .os-host.os-host { 
+    background: transparent;
+    border-bottom: 1px solid var(--gray-2);
+  }
+
+  .docblock-emptyblock {
+    color: unset;
+  }
+
+  .sbdocs.sbdocs > code,
+  .sbdocs.sbdocs > * > code {
+    filter: invert(var(--dark-mode-bit)) contrast(calc(var(--dark-mode-bit) + 1));
+    border: 1px solid var(--gray-6);
+  }
+</style>

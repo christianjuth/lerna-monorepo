@@ -1,9 +1,8 @@
-import cn from "classnames";
 import * as React from "react";
 import { css } from "styled-components";
 import { color } from "./Theme";
 import { ReactChildren } from "./types";
-import { pxToRem, useComponentId } from "./utils";
+import { pxToRem, useComponentId, cn } from "./utils";
 
 const htmlTags = [
   "h1",
@@ -67,12 +66,13 @@ export declare namespace Text {
 }
 
 const genName = (
-  variant: Text.Variant | "truncate" | "numOfLines" | "no-padding" | "uppercase"
+  variant: Text.Variant | "truncate" | "numOfLines" | "no-padding" | "uppercase" | "text-muted"
 ) => `Text-${variant}`;
 
 const TRUNCATE_CLASS = genName("truncate");
 const NO_PADDING_CLASS = genName("no-padding");
 const UPPERCASE_CLASS = genName("uppercase");
+const TEXT_MUTED_CLASS = genName("text-muted");
 const NUM_OF_LINES_VAR = genName("numOfLines");
 const SPACING_AFTER_TEXT = "10px";
 
@@ -140,6 +140,16 @@ export const textStyles = css`
     font-weight: 400;
     line-height: ${22 / 18}em;
     text-decoration: none;
+    cursor: pointer;
+    
+    color: ${color("accent1", 10)};
+    ${({ theme }) => theme.darkMode?.(`
+      color: ${color("accent1", 6)};
+    ` ?? '')}
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
   .${genName("copy-2")}, .${genName("copy-2")} a {
     font-size: ${pxToRem(17)};
@@ -163,11 +173,12 @@ export const textStyles = css`
     -webkit-line-clamp: var(--${NUM_OF_LINES_VAR});
     word-wrap: break-word;
   }
-  .${NO_PADDING_CLASS} {
-    &&& {
-      margin: 0;
-      padding: 0;
-    }
+  .${NO_PADDING_CLASS}.${NO_PADDING_CLASS}.${NO_PADDING_CLASS} {
+    margin: 0;
+    padding: 0;
+  }
+  .${TEXT_MUTED_CLASS} {
+    color: ${color("gray", 9)};
   }
   .${UPPERCASE_CLASS} {
     text-transform: uppercase;
@@ -205,7 +216,7 @@ function TextElement({ htmlTag = "span", ...props }: Text.TextElementProps) {
 export function Text({
   ariaLabel,
   ariaHidden,
-  variant = "h1",
+  variant = "copy-1",
   numberOfLines,
   style,
   htmlTag,
@@ -229,10 +240,10 @@ export function Text({
         [TRUNCATE_CLASS]: numberOfLines !== undefined,
         [NO_PADDING_CLASS]: noPadding,
         [UPPERCASE_CLASS]: uppercase,
+        [TEXT_MUTED_CLASS]: muted,
       })}
       style={{
         [`--${NUM_OF_LINES_VAR}`]: numberOfLines,
-        color: muted ? color("gray", 9) : color("gray", 15),
         ...style,
         ...cssProps,
       }}

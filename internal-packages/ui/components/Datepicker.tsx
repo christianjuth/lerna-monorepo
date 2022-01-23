@@ -1,32 +1,32 @@
-import { useCallback, useEffect } from "react"
-import { useState } from "react"
-import { InputWrap } from "./InputWrap"
-import dayjs from "dayjs"
-import styled from "styled-components"
-import { BsFillCalendarFill } from "react-icons/bs"
-import { mediaQuery } from "./Grid/utils"
-import { spacing, color } from './Theme'
+import { useCallback, useEffect } from "react";
+import { useState } from "react";
+import { InputWrap } from "./InputWrap";
+import dayjs from "dayjs";
+import styled from "styled-components";
+import { BsFillCalendarFill } from "react-icons/bs";
+import { mediaQuery } from "./Grid/utils";
+import { spacing, color } from "./Theme";
 
-const HTML_DATE_PROP_FORMAT = "YYYY-MM-DD"
+const HTML_DATE_PROP_FORMAT = "YYYY-MM-DD";
 
 function useLocaleDateFormat() {
-  const [format, setFormat] = useState("MM/DD/YYYY")
+  const [format, setFormat] = useState("MM/DD/YYYY");
 
   useEffect(() => {
-    const dayjsObj = dayjs("12/11/2000")
+    const dayjsObj = dayjs("12/11/2000");
     if (dayjsObj.isValid()) {
-      const locale = dayjsObj.toDate().toLocaleDateString()
-      const monthFirst = locale.indexOf("12") === 0
-      setFormat(monthFirst ? "MM/DD/YYYY" : "DD/MM/YYYY")
+      const locale = dayjsObj.toDate().toLocaleDateString();
+      const monthFirst = locale.indexOf("12") === 0;
+      setFormat(monthFirst ? "MM/DD/YYYY" : "DD/MM/YYYY");
     }
-  }, [])
+  }, []);
 
-  return format
+  return format;
 }
 
 const InputStyle = styled.input`
   background: transparent;
-`
+`;
 
 const CalendarButtonWrap = styled.div`
   position: relative;
@@ -42,7 +42,7 @@ const CalendarButtonWrap = styled.div`
   @media ${mediaQuery("xs", "md")} {
     width: 100%;
   }
-`
+`;
 
 // Trigger calendar when user clicks on input in chrome
 // See https://stackoverflow.com/a/65138737/3052484
@@ -70,78 +70,83 @@ const CalendarInput = styled.input`
     display: flex;
   }
   cursor: pointer;
-`
+`;
 
-declare namespace Datepicker {
-  type Date = dayjs.Dayjs
-  type DateProp = Date | string
+export declare namespace Datepicker {
+  type Date = dayjs.Dayjs;
+  type DateProp = Date | string;
+
+  type DatepickerState = ReturnType<typeof useDatepickerState>;
+
+  export type StatefulDatepickerProps = {
+    name?: string;
+    id?: string;
+    labelledBy?: string;
+  };
+
+  export interface Props extends StatefulDatepickerProps, DatepickerState {}
 }
 
 function convertStringToDateIfNeeded(
   date: string | Datepicker.Date | undefined
 ) {
   if (typeof date === "string") {
-    return dayjs(date)
+    return dayjs(date);
   }
-  return date
+  return date;
 }
 
 export function useDatepickerState(config?: {
-  defaultDate?: Datepicker.DateProp
-  min?: Datepicker.DateProp
-  max?: Datepicker.DateProp
+  defaultDate?: Datepicker.DateProp;
+  min?: Datepicker.DateProp;
+  max?: Datepicker.DateProp;
 }) {
-  const { defaultDate, min, max } = config ?? {}
+  const { defaultDate, min, max } = config ?? {};
   const [date, setDate] = useState<Datepicker.Date | undefined>(
     convertStringToDateIfNeeded(defaultDate)
-  )
+  );
 
   const update = useCallback(
     ({ date }: { date?: Datepicker.DateProp }) => {
       if (date) {
-        date = convertStringToDateIfNeeded(date)!
-        const parsedMin = convertStringToDateIfNeeded(min)
-        const parsedMax = convertStringToDateIfNeeded(max)
+        date = convertStringToDateIfNeeded(date) as dayjs.Dayjs;
+        const parsedMin = convertStringToDateIfNeeded(min);
+        const parsedMax = convertStringToDateIfNeeded(max);
 
         if (parsedMin && date.isBefore(parsedMin)) {
-          setDate(parsedMin)
+          setDate(parsedMin);
         } else if (parsedMax && date.isAfter(parsedMax)) {
-          setDate(parsedMax)
+          setDate(parsedMax);
         } else {
-          setDate(date)
+          setDate(date);
         }
       }
     },
     [min, max]
-  )
+  );
 
   return {
     date,
     update,
     min: convertStringToDateIfNeeded(min),
     max: convertStringToDateIfNeeded(max),
-  }
+  };
 }
 
-export function Datepicker({
-  date,
-  update,
-  min,
-  max,
-}: ReturnType<typeof useDatepickerState>) {
-  const [freeFormValue, setFreeFormValue] = useState("")
-  const dateFormat = useLocaleDateFormat()
+export function Datepicker({ date, update, min, max, name, id, labelledBy }: Datepicker.Props) {
+  const [freeFormValue, setFreeFormValue] = useState("");
+  const dateFormat = useLocaleDateFormat();
 
   useEffect(() => {
     if (date) {
-      setFreeFormValue(date.format(dateFormat))
+      setFreeFormValue(date.format(dateFormat));
     }
-  }, [date, dateFormat])
+  }, [date, dateFormat]);
 
   function updateDate(val: string) {
     // convert hyphens in date to slash
     if (val.indexOf("-") !== -1) {
-      val = val.replaceAll("-", "/")
+      val = val.replaceAll("-", "/");
     }
     // add slashes to date if they are missing
     else if (val.indexOf("/") === -1) {
@@ -149,17 +154,17 @@ export function Datepicker({
         .split("")
         .map((char, i) => {
           if (i % 2 === 1 && i < 5) {
-            return char + "/"
+            return char + "/";
           } else {
-            return char
+            return char;
           }
         })
-        .join("")
+        .join("");
     }
 
-    const parsedDate = dayjs(val)
+    const parsedDate = dayjs(val);
     if (parsedDate.isValid()) {
-      update({ date: parsedDate })
+      update({ date: parsedDate });
     }
   }
 
@@ -173,14 +178,16 @@ export function Datepicker({
             onChange={(e) => setFreeFormValue(e.target.value)}
             placeholder={dateFormat.toLowerCase()}
             onBlur={() => {
-              updateDate(freeFormValue)
-              props.onBlur()
+              updateDate(freeFormValue);
+              props.onBlur();
             }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                updateDate(freeFormValue)
+                updateDate(freeFormValue);
               }
             }}
+            id={id}
+            aria-labelledBy={labelledBy}
           />
           <CalendarButtonWrap>
             <CalendarInput
@@ -189,18 +196,23 @@ export function Datepicker({
               min={min?.format(HTML_DATE_PROP_FORMAT)}
               max={max?.format(HTML_DATE_PROP_FORMAT)}
               onChange={(e) => {
-                update({ date: dayjs(e.target.value) })
+                update({ date: dayjs(e.target.value) });
               }}
+              name={name}
+              data-date={date?.format()}
             />
-            <BsFillCalendarFill 
-              size={20} 
-              fill={color('gray', 4)}
-            />
+            <BsFillCalendarFill size={20} fill={color("gray", 4)} />
           </CalendarButtonWrap>
         </>
       )}
     </InputWrap>
-  )
+  );
 }
 
-export default Datepicker
+export function StatefulDatepicker(props: Datepicker.StatefulDatepickerProps) {
+  const state = useDatepickerState();
+
+  return <Datepicker {...props} {...state} />;
+}
+
+export default Datepicker;

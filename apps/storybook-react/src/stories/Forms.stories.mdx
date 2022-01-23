@@ -1,0 +1,30 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { Form, Label, Checkbox, Input, TextArea, StatefulDatepicker, Divider } from "@christianjuth/ui";
+
+<Meta title="Organisms/Forms" component={() => null} />
+
+# Themes
+
+<Canvas>
+  <Story name="Form">
+    <Form onSubmit={data => console.log(data)}>
+      <Label variant="copy-1" noPadding>
+        Toggle something
+        {(props) => <Checkbox name="toggle" {...props} />}
+      </Label>
+      <Label variant="copy-1">
+        Username
+        {(props) => <Input name="username" {...props} />}
+      </Label>
+      <Divider/>
+      <Label variant="copy-1">
+        Type something
+        {(props) => <TextArea name="textarea" {...props} style={{ minHeight: 200 }} />}
+      </Label>
+      <Label variant="copy-1">
+        Select a date
+        {(props) => <StatefulDatepicker name="date" {...props} />}
+      </Label>
+    </Form>
+  </Story>
+</Canvas>

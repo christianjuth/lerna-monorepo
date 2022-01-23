@@ -1,0 +1,62 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import {
+  Label,
+  Checkbox,
+  Input,
+  TextArea,
+  Datepicker,
+  FlexRow,
+  FlexCol,
+} from "@christianjuth/ui";
+
+<Meta title="Molecules/Labeling" />
+
+# Labeling
+
+The Label component can be used to label the following components. 
+
+_Label creates a two way binding between the label and the control element using `labelFor` and `aria-labelledby`._
+
+<Canvas>
+  <Story name="Checkboxes">
+    <FlexRow $spacing={10}>
+      <Label variant="copy-1" noPadding>
+        Toggle something
+        {(props) => <Checkbox {...props} />}
+      </Label>
+    </FlexRow>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="Inputs">
+    <FlexCol>
+      <Label variant="copy-1">
+        Username
+        {(props) => <Input {...props} />}
+      </Label>
+    </FlexCol>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="TextArea">
+    <FlexCol>
+      <Label variant="copy-1">
+        Type something
+        {(props) => <TextArea {...props} style={{ minHeight: 200 }} />}
+      </Label>
+    </FlexCol>
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story name="Datepicker">
+    <FlexCol>
+      <Label variant="copy-1">
+        Select a date
+        {(props) => <Datepicker {...props} />}
+      </Label>
+    </FlexCol>
+  </Story>
+</Canvas>

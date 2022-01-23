@@ -1,4 +1,4 @@
-import { Providers } from './Providers'
+import { StoryWrapper, DocsWrapper } from './Providers'
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -11,16 +11,19 @@ export const parameters = {
   options: {
     storySort: {
       method: '',
-      order: ['Theming', 'GridSystem', 'Atoms'], 
+      order: ['Getting Started', 'Layout', 'Atoms', 'Molecules', 'Organisms'], 
       locales: '', 
     },
+  },
+  docs: {
+    container: DocsWrapper,
   },
 }
 
 export const decorators = [
   (Story) => (
-    <Providers>
+    <StoryWrapper>
       <Story />
-    </Providers>
+    </StoryWrapper>
   ),
 ]

@@ -1,7 +1,7 @@
 import { MainGutters } from "@christianjuth/ui";
 import { Meta } from "@storybook/react/types-6-0";
 
-const meta: Meta = { component: MainGutters, title: "GridSystem/MainGutters" };
+const meta: Meta = { component: MainGutters, title: "Layout/MainGutters" };
 export default meta;
 
 export const BasicUsage = {

@@ -1,0 +1,15 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { NavbarExample } from "../organisms/Navbar";
+
+<Meta title="Organisms/Navbar" component={NavbarExample} />
+
+# Themes
+
+<Canvas>
+  <Story name="Themes">
+    <NavbarExample />
+    <NavbarExample themeColor="primary" />
+    <NavbarExample themeColor="accent1" />
+    <NavbarExample dark />
+  </Story>
+</Canvas>

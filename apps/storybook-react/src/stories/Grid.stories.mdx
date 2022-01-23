@@ -1,0 +1,50 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { LightTheme, DarkTheme, DynamicTheme } from "../organisms/Theme";
+import { Grid } from '@christianjuth/ui'
+import { Box } from '../components/Box'
+
+<Meta title="Layout/Grid" />
+
+# Column sizes can be controlled individually
+
+<Canvas>
+  <Story name="Independent column sizes">
+    <Grid.Row cols="1fr 200px 2fr 5vw" spacing={10}>
+      <Grid.Col>
+        <Box>1fr</Box>
+      </Grid.Col>
+      <Grid.Col>
+        <Box>200px</Box>
+      </Grid.Col>
+      <Grid.Col>
+        <Box>2fr</Box>
+      </Grid.Col>
+      <Grid.Col>
+        <Box>5vw</Box>
+      </Grid.Col>
+    </Grid.Row>
+  </Story>
+</Canvas>
+
+
+<Canvas>
+  <Story name="Responsive columns">
+    <Grid.Row cols={6} spacing={10}>
+      <Grid.Col xs={6} md={3}>
+        <Box/>
+      </Grid.Col>
+      <Grid.Col xs={6} md={3}>
+        <Box/>
+      </Grid.Col>
+      <Grid.Col xs={6} md={3} lg={2}>
+        <Box/>
+      </Grid.Col>
+      <Grid.Col xs={6} md={3} lg={2}>
+        <Box/>
+      </Grid.Col>
+      <Grid.Col xs={6} md={3} lg={2}>
+        <Box/>
+      </Grid.Col>
+    </Grid.Row>
+  </Story>
+</Canvas>

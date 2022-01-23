@@ -53,7 +53,7 @@ function ThemeExample({
   return (
     <div
       style={{
-        border: '1px solid #ddd',
+        border: `1px solid ${color('gray', 2)}`,
         borderRadius: roundness(1),
         overflow: "hidden",
       }}

@@ -5,7 +5,6 @@ import * as Types from "./types"
 export const defaultContextValue: Types.Context = {
   breakPoint: null,
   spacing: 0,
-  cols: new Array(24).fill("1fr").join(" "),
 }
 
 export const Context = React.createContext<Types.Context>(defaultContextValue)

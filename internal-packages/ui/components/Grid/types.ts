@@ -28,7 +28,6 @@ export interface ConsumerProps {
 export type Context = {
   breakPoint: Breakpoint | null
   spacing: number
-  cols: string
 }
 
 export interface DisplayProps extends Partial<BreakpointGenerator<boolean>> {
