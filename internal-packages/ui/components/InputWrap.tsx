@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from "react";
+import { CSSProperties, ReactChild, useState } from "react";
 import styled from "styled-components";
 import { color, roundness, Theme } from "./Theme";
 import { GenericProps, ReactChildren } from "./types";
@@ -27,9 +27,15 @@ const InputWrapDiv = styled.div<{
 
   ${({ $variant }) =>
     $variant === "transparent"
-      ? `background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), 0.12);`
-      : `background-color: ${color("gray", 0)};`
-  }
+      ? `
+        opacity: 0.75;
+        background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), calc(0.12 + (var(--dark-mode-bit) / 10)));
+
+        &[data-active="true"] {
+          opacity: 1;
+        } 
+      `
+      : `background-color: ${color("gray", 0)};`}
 
   ${({ $hideBorder }) =>
     $hideBorder
@@ -80,8 +86,10 @@ export declare namespace InputWrap {
     onBlur: (...args: any) => any;
   }
 
+  type ChildFn = (props: ChildProps) => ReactChildren<string>;
+
   interface Props extends React.HTMLProps<HTMLDivElement> {
-    children: (props: ChildProps) => ReactChildren<string>;
+    children: ChildFn | [ChildFn, ReactChild];
     themeColor?: Theme.ColorName;
     customSize?: GenericProps.Size;
     fullWidth?: boolean;
@@ -131,6 +139,9 @@ export function InputWrap({
 }: InputWrap.Props) {
   const [isFocused, setIsFocused] = useState(false);
 
+  const [childFn, otherChild] =
+    typeof children === "function" ? [children] : children;
+
   return (
     <InputWrapDiv
       themeColor={themeColor}
@@ -144,7 +155,7 @@ export function InputWrap({
       className={className}
       $hideBorder={hideBorder || variant === "transparent"}
     >
-      {children({
+      {childFn({
         onFocus: () => setIsFocused(true),
         onBlur: () => setIsFocused(false),
         style: {
@@ -156,6 +167,7 @@ export function InputWrap({
           ...(applyInputStylesToSelf ? {} : getInputStyle(customSize)),
         },
       })}
+      {otherChild}
     </InputWrapDiv>
   );
 }

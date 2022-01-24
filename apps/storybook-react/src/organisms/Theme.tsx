@@ -29,7 +29,7 @@ function Palette({ themeColor }: { themeColor: Theme.ColorName }) {
           .fill(0)
           .map((_, i) => (
             <Box
-              key={themeColor}
+              key={color(themeColor, i)}
               style={{
                 backgroundColor: color(themeColor, i),
                 color: color(themeColor, i, "text"),

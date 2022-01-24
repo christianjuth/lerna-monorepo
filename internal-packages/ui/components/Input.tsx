@@ -48,6 +48,7 @@ export const Input = forwardRef<HTMLInputElement, Input.Props>(function Input(
     variant,
     className,
     hideBorder,
+    children,
     ...rest
   },
   ref
@@ -88,6 +89,9 @@ export const Input = forwardRef<HTMLInputElement, Input.Props>(function Input(
           }}
         />
       )}
+      <>
+        {children}
+      </>
     </InputWrap>
   );
 });

@@ -155,7 +155,7 @@ export const textStyles = css`
     ${({ theme }) =>
       theme.darkMode?.(
         `
-      color: ${color("accent1", 7)};
+      color: ${color("accent1", 6)};
     ` ?? ""
       )}
 

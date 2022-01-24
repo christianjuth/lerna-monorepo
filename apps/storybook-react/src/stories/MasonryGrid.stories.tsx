@@ -1,4 +1,4 @@
-import { color, MasonryGrid } from "@christianjuth/ui";
+import { color, MasonryGrid, Button } from "@christianjuth/ui";
 import { Meta } from "@storybook/react/types-6-0";
 import { useMemo } from "react";
 import styled from "styled-components";
@@ -16,12 +16,12 @@ function Box({ index }: { index: number }) {
       style={{
         height,
         backgroundColor: color("gray", 15),
-        color: color("gray", 15, 'text'),
-        width: '100%',
-        padding: 10
+        color: color("gray", 15, "text"),
+        width: "100%",
+        padding: 10,
       }}
     >
-      {index}
+      <Button>{index}</Button>
     </BoxDiv>
   );
 }
@@ -35,11 +35,7 @@ function MasonryGridExample() {
     []
   );
 
-  return (
-    <MasonryGrid>
-      {children}
-    </MasonryGrid>
-  );
+  return <MasonryGrid>{children}</MasonryGrid>;
 }
 
 const meta: Meta = {

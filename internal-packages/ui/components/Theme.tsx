@@ -6,9 +6,7 @@ import { getAdjustedColor, remap } from "./utils";
 const SHADES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] as const;
 const SHADE_STOPS = SHADES.length;
 
-function clamp(min: number, val: number, max: number) {
-  return Math.max(min, Math.min(val, max));
-}
+const WHITE = "#FFF";
 
 const CSSVariableProvider = styled.div<{
   $useDarkTheme?: boolean;
@@ -90,11 +88,9 @@ export declare namespace Theme {
   type Config = Record<ColorName, ColorFn>;
 }
 
-function varName(color: Theme.ColorName, shade: number, modifier?: "text") {
-  if (modifier) {
-    return `--${[color, shade, modifier].join("-")}`;
-  }
-  return `--${[color, shade].join("-")}`;
+function varName(...parts: (string | number | undefined)[]) {
+  parts = parts.filter((v) => (v ?? false) !== false);
+  return `--${parts.join("-")}`;
 }
 
 export function color(
@@ -102,25 +98,39 @@ export function color(
   shade: number,
   modifier?: "text"
 ) {
-  return `var(${varName(color, shade, modifier)})`;
+  if (modifier === "text") {
+    const invertedBit = `var(${varName(color, "inverted", "bit")})`
+    if (shade < 5) {
+      return `hsl(0, 0%, calc(${invertedBit} * 100%))`;
+    } else if (shade > 10) {
+      return `hsl(0, 0%, calc((1 - ${invertedBit}) * 100%))`;
+    } else {
+      return WHITE;
+    }
+  }
+
+  return `hsla(var(${varName(color, shade, modifier)}), 100%)`;
 }
 
-function hslToString([h, s, l, a]: HSLColor) {
-  return `hsl(${h} ${s}% ${Math.round(l)}%${
-    a ? `/ ${clamp(0, a, 100)}%` : ""
-  })`;
+function hslToString([h, s, l]: HSLColor) {
+  return `${h}, ${s}%, ${Math.round(l)}%`;
 }
 
 function generatePallet(color: Theme.ColorName, fn: Theme.ColorFn) {
   let vars = "";
+
+  const inverted = fn({ l: 100, shade: 0 })[2] < 50; // check if luminance starts low
+
+  vars += `${varName(color, "inverted", "bit")}: ${inverted ? 1 : 0};`
+
   for (let shade = 0; shade < SHADE_STOPS; shade++) {
     const lightness = remap(shade, SHADE_STOPS - 1, 0, 0, 100);
-    let [h, s, l, a] = fn({ l: lightness, shade });
+    let [h, s, l] = fn({ l: lightness, shade });
     l = Math.round(remap(l, 0, 100, 0, SHADE_STOPS - 1));
-    const adjusted = getAdjustedColor([h, s, l, a]);
+    const adjusted = getAdjustedColor([h, s, l]);
+
     vars += `
       ${varName(color, shade)}: ${hslToString(adjusted)};
-      ${varName(color, shade, "text")}: ${l > 10 ? "black" : "white"};
     `;
   }
   return vars;
@@ -185,19 +195,19 @@ export function Theme({
   const backgroudColor = `
     --dark-mode-bit: 0;
     ${darkMode("--dark-mode-bit: 1;")}
-    background-color: ${hslToString(baseTheme.gray({ l: 100, shade: 0 }))};
-    color: ${hslToString(baseTheme.gray({ l: 0, shade: SHADE_STOPS }))};
+    background-color: hsl(${hslToString(baseTheme.gray({ l: 100, shade: 0 }))});
+    color: hsl(${hslToString(baseTheme.gray({ l: 0, shade: SHADE_STOPS }))});
 
     ${
       darkTheme.gray
         ? darkMode(
             `
-              background-color: ${hslToString(
+              background-color: hsl(${hslToString(
                 darkTheme.gray({ l: 100, shade: 0 })
-              )};
-              color: ${hslToString(
+              )});
+              color: hsl(${hslToString(
                 darkTheme.gray({ l: 0, shade: SHADE_STOPS })
-              )};
+              )});
             `
           )
         : ""

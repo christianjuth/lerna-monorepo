@@ -26,7 +26,7 @@
 
   .docblock-source.docblock-source {
     background: transparent;
-    border: 1px solid var(--gray-2);
+    border: 1px solid hsl(var(--gray-2));
   }
 
   .docblock-argstable-head,
@@ -36,21 +36,21 @@
   }
 
   .docblock-argstable-body {
-    border: 1px solid var(--gray-2);
+    border: 1px solid hsl(var(--gray-2));
   }
 
   .docblock-argstable-body.docblock-argstable-body.docblock-argstable-body tr:not(:first-child) {
-    border-color: var(--gray-2);
+    border-color: hsl(var(--gray-2));
   }
 
   .sbdocs-preview.sbdocs-preview {
-    background: var(--gray-0);
-    border: 1px solid var(--gray-2);
+    background: hsl(var(--gray-0));
+    border: 1px solid hsl(var(--gray-2));
   }
 
   .sbdocs-preview.sbdocs-preview > .os-host.os-host { 
     background: transparent;
-    border-bottom: 1px solid var(--gray-2);
+    border-bottom: 1px solid hsl(var(--gray-2));
   }
 
   .docblock-emptyblock {
@@ -60,6 +60,8 @@
   .sbdocs.sbdocs > code,
   .sbdocs.sbdocs > * > code {
     filter: invert(var(--dark-mode-bit)) contrast(calc(var(--dark-mode-bit) + 1));
-    border: 1px solid var(--gray-6);
+    border: 1px solid hsl(var(--gray-6));
+    font-weight: bold;
+    font-size: 0.85rem;
   }
 </style>

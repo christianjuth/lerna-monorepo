@@ -20,6 +20,8 @@ type StyleProps = {
 };
 
 const style = css<StyleProps>`
+  outline-offset: ${BORDER_WIDTH*2}px;
+  
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -88,7 +90,7 @@ const style = css<StyleProps>`
         `;
     }
   }}
-  ${({ $variant, $themeColor, $disabled, theme }) => {
+  ${({ $variant, $themeColor, $disabled }) => {
     switch ($variant) {
       case "contained":
         return `
@@ -153,7 +155,7 @@ const style = css<StyleProps>`
             color: ${color("gray", 15)};
           }
           &&:hover {
-            background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), 0.12);
+            background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), calc(0.12 + (var(--dark-mode-bit) / 10)));
           }
         `;
     }

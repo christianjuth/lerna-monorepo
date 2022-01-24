@@ -102,18 +102,11 @@ function Item({
   if (search) {
     return (
       <Search
-        themeColor="gray"
+        themeColor={themeColor}
         size="sm"
         {...search}
         className={[className, search.className].join(" ")}
-        input={{
-          variant: "transparent",
-          ...search.input,
-          themeColor: themeColor,
-        }}
-        cta={{
-          ...search.cta,
-        }}
+        variant="transparent"
       />
     );
   }
