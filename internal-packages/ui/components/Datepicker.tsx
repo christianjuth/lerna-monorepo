@@ -187,7 +187,7 @@ export function Datepicker({ date, update, min, max, name, id, labelledBy }: Dat
               }
             }}
             id={id}
-            aria-labelledBy={labelledBy}
+            aria-labelledby={labelledBy}
           />
           <CalendarButtonWrap>
             <CalendarInput

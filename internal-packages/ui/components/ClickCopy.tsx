@@ -12,6 +12,10 @@ const Wrapper = styled(InvisibleButton)`
   :hover {
     opacity: 1;
   }
+
+  input {
+    cursor: pointer;
+  }
 `;
 
 function fallbackCopyTextToClipboard(text: string) {
@@ -78,11 +82,11 @@ export function ClickCopy({ value }: ClickCopy.Props) {
         setSuccess(true);
       }}
     >
-      <Input value={value} disabled style={{paddingRight: 30}}>
+      <Input value={value} readOnly style={{paddingRight: 30}}>
         {success ? (
-          <MdCheck style={{ position: "absolute", right: 10 }} />
+          <MdCheck size={18} style={{ position: "absolute", right: 10 }} />
         ) : (
-          <MdContentCopy style={{ position: "absolute", right: 10 }} />
+          <MdContentCopy size={18} style={{ position: "absolute", right: 10 }} />
         )}
       </Input>
     </Wrapper>

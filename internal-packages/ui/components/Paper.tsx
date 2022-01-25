@@ -1,4 +1,4 @@
-import { roundness, spacing, color } from "./Theme"
+import { roundness, spacing, color, theme } from "./Theme"
 import styled, { css } from "styled-components"
 import { ReactChildren } from "./types"
 import { CSSProperties } from "react"
@@ -26,9 +26,8 @@ const Div = styled.div<{
     color: unset;
     padding: ${({ $padding }) => spacing($padding)};
   }
-  ${({ theme }) => theme.darkMode(`
-    border: 1px solid ${color('gray', 3)};
-  `)}
+
+  border: calc(${theme.darkModeBit()} * 1px) solid ${theme.colorPresets.border};
 `
 
 const shadowKeyUmbraOpacity = 0.05

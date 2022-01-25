@@ -1,14 +1,14 @@
-import * as React from "react"
-import styled from "styled-components"
-import { color } from "./Theme"
+import * as React from "react";
+import styled from "styled-components";
+import { color } from "./Theme";
 
 const Switch = styled.button<{
-  active: boolean
+  active: boolean;
 }>`
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 54px;
+  height: 30px;
   border: none;
   background-color: ${color("gray", 2)};
   border-radius: 34px;
@@ -17,8 +17,8 @@ const Switch = styled.button<{
   :before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
+    height: 22px;
+    width: 22px;
     left: 4px;
     bottom: 4px;
     background-color: white;
@@ -28,13 +28,13 @@ const Switch = styled.button<{
   ${({ active }) =>
     active
       ? `
-    background-color: ${color("accent1", 5)};
+    background-color: ${color("accent1", 9)};
     :before {
-      transform: translateX(26px);
+      transform: translateX(24px);
     }
   `
       : ""}
-`
+`;
 
 export function ToggleSwitch({
   id,
@@ -42,31 +42,45 @@ export function ToggleSwitch({
   value,
   onChange,
   defaultValue = false,
+  name,
 }: {
-  id?: string
-  labelledBy?: string
-  value?: boolean
-  onChange?: (val: boolean) => any
-  defaultValue?: boolean
+  id?: string;
+  labelledBy?: string;
+  value?: boolean;
+  onChange?: (val: boolean) => any;
+  defaultValue?: boolean;
+  name?: string;
 }) {
-  const [checked, setChecked] = React.useState(defaultValue)
+  const [checked, setChecked] = React.useState(defaultValue);
 
   // allow props to override state
-  const computedValue = value ?? checked
-  const handleChange = onChange ?? setChecked
+  const computedValue = value ?? checked;
+  const handleChange = onChange ?? setChecked;
 
   return (
-    <Switch
-      id={id}
-      role="switch"
-      aria-checked={value}
-      aria-labelledby={labelledBy}
-      onClick={() => {
-        if (handleChange) {
-          handleChange(!computedValue)
-        }
-      }}
-      active={computedValue}
-    />
-  )
+    <>
+      <Switch
+        id={id}
+        role="switch"
+        type="button"
+        aria-checked={value}
+        aria-labelledby={labelledBy}
+        onClick={() => {
+          if (handleChange) {
+            handleChange(!computedValue);
+          }
+        }}
+        active={computedValue}
+      />
+      {name && (
+        <input
+          name={name}
+          type="checkbox"
+          checked={checked}
+          readOnly
+          style={{ display: "none" }}
+        />
+      )}
+    </>
+  );
 }

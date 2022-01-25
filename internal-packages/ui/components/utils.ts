@@ -151,7 +151,7 @@ export function cn(...styles: StyleConfig[]) {
   return out.join(" ");
 }
 
-export function debounce(func: () => any, wait = 10, immediate = false) {
+export function debounce(func: () => any, wait = 20, immediate = false) {
   let timeout: number | undefined;
 
   return function executedFunction() {

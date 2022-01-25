@@ -23,16 +23,15 @@ const InputWrapDiv = styled.div<{
   input::-webkit-search-decoration {
     -webkit-appearance: none;
   }
-  transition: border-with 0.2s, opacity 0.2s;
+  transition: border-with 0.2s, background-color 0.2s;
 
   ${({ $variant }) =>
     $variant === "transparent"
       ? `
-        opacity: 0.75;
-        background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), calc(0.12 + (var(--dark-mode-bit) / 10)));
+        background-color: ${color('gray', 3, 'transparent-overlay-1')};
 
         &[data-active="true"] {
-          opacity: 1;
+          background-color: ${color('gray', 3, 'transparent-overlay-2')};
         } 
       `
       : `background-color: ${color("gray", 0)};`}
@@ -106,19 +105,19 @@ function getInputStyle(customSize: GenericProps.Size) {
   switch (customSize) {
     case "sm":
       return {
-        minHeight: 35 - VERTICAL_PADDING,
+        minHeight: 35,
         fontSize: "1rem",
         padding: pxToRem(VERTICAL_PADDING, 9),
       };
     case "md":
       return {
-        minHeight: 42 - VERTICAL_PADDING,
+        minHeight: 42,
         fontSize: "1.1rem",
         padding: pxToRem(VERTICAL_PADDING, 12),
       };
     case "lg":
       return {
-        minHeight: 48 - VERTICAL_PADDING,
+        minHeight: 48,
         fontSize: "1.3rem",
         padding: pxToRem(VERTICAL_PADDING, 12),
       };

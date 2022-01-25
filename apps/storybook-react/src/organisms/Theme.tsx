@@ -20,7 +20,7 @@ const Box = styled.div`
   flex: 1;
 `;
 
-function Palette({ themeColor }: { themeColor: Theme.ColorName }) {
+export function Palette({ themeColor }: { themeColor: Theme.ColorName }) {
   return (
     <>
       <Title variant="h5">{color}</Title>

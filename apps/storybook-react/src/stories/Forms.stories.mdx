@@ -1,5 +1,5 @@
 import { Canvas, Meta, Story } from "@storybook/addon-docs";
-import { Form, Label, Checkbox, Input, TextArea, StatefulDatepicker, Divider } from "@christianjuth/ui";
+import { Form, Label, Checkbox, Input, TextArea, StatefulDatepicker, Divider, ToggleSwitch } from "@christianjuth/ui";
 
 <Meta title="Organisms/Forms" component={() => null} />
 
@@ -9,8 +9,12 @@ import { Form, Label, Checkbox, Input, TextArea, StatefulDatepicker, Divider } f
   <Story name="Form">
     <Form onSubmit={data => console.log(data)}>
       <Label variant="copy-1" noPadding>
-        Toggle something
-        {(props) => <Checkbox name="toggle" {...props} />}
+        Toggle
+        {(props) => <ToggleSwitch name="toggleSwitch" {...props} />}
+      </Label>
+      <Label variant="copy-1" noPadding>
+        Check me
+        {(props) => <Checkbox name="checkbox" {...props} />}
       </Label>
       <Label variant="copy-1">
         Username

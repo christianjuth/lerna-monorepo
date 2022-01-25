@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
 import styled, { css } from "styled-components";
-import { color, roundness, Theme } from "./Theme";
+import { color, roundness, Theme, theme } from "./Theme";
 import { GenericProps, DomEvents } from "./types";
 import { pxToRem } from "./utils";
 import { Animations } from "./Animations";
@@ -20,8 +20,8 @@ type StyleProps = {
 };
 
 const style = css<StyleProps>`
-  outline-offset: ${BORDER_WIDTH*2}px;
-  
+  outline-offset: ${BORDER_WIDTH * 2}px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -37,7 +37,7 @@ const style = css<StyleProps>`
   height: fit-content;
   && {
     border: 1px solid transparent;
-    font-style: italic;
+    font-style: var(${theme.VARIABLE_NAMES.BUTTON_FONT_STYLE});
   }
   &&,
   &&:hover {
@@ -155,7 +155,7 @@ const style = css<StyleProps>`
             color: ${color("gray", 15)};
           }
           &&:hover {
-            background-color: hsla(0, 0%, calc(var(--dark-mode-bit) * 100%), calc(0.12 + (var(--dark-mode-bit) / 10)));
+            background-color: ${color($themeColor, 3, "transparent-overlay-1")};
           }
         `;
     }
@@ -200,7 +200,14 @@ export function Button({
   size = "md",
   variant = buttonDefaults.variant as Button.Variant,
   className,
-  themeColor = "accent1",
+  /**
+   * When button is variant transparent, themeColor means
+   * the color the button is overlaying rather than the color
+   * of the button itself. For this reason, assume themeColor
+   * is gray when variant is transparent since gray is the 
+   * themeColor used for background.
+   */
+  themeColor = variant === "transparent" ? "gray" : "accent1",
   fullWidth = false,
   uppercase = false,
   tabIndex,

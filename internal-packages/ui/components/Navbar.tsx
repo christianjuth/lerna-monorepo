@@ -6,14 +6,20 @@ import { MainGutters } from "./MainGutters";
 import { Search } from "./Search";
 import { Text } from "./Text";
 import { color, spacing, zIndex, Theme } from "./Theme";
-import { ReactChild } from "./types";
+import { ReactChild, GenericProps } from "./types";
 import { FlexRow, InvisibleButton } from "./UtilityStyles";
 import { StatefulActionMenu } from "./ActionMenu";
 import { Display } from "./Grid";
 import { FiMenu } from "react-icons/fi";
+import { Avatar } from "./Avatar";
+import { elevationStyle } from "./Paper";
+import { theme } from "./Theme";
 
-const Bar = styled(MainGutters)<{ $themeColor: Theme.ColorName }>`
-  border-bottom: 1px solid ${color("gray", 1)};
+const Bar = styled(MainGutters)<{
+  $themeColor: Theme.ColorName;
+  $elevation: number;
+}>`
+  border-bottom: 1px solid ${theme.colorPresets.border};
   position: sticky;
   top: 0;
   z-index: ${zIndex("header")};
@@ -36,6 +42,7 @@ const Bar = styled(MainGutters)<{ $themeColor: Theme.ColorName }>`
         : ""
     }
   `}
+  ${elevationStyle}
 `;
 
 const Items = styled(FlexRow)`
@@ -67,13 +74,21 @@ const StyledLink = styled(Button)<{ $themeColor: Theme.ColorName }>`
   }
 `;
 
+const CenterItemWrap = styled.div`
+  flex: 1;
+`;
+
 export declare namespace Navbar {
   export type Props = {
     logo: ReactChild<string>;
     themeColor?: Theme.ColorName;
-    leftItems: Item[];
-    rightItems: Item[];
+    leftItems?: Item[];
+    rightItems?: Item[];
     dark?: boolean;
+    defaultButtonVariant?: Button.Variant;
+    defaultItemSize?: GenericProps.Size;
+    centerItem?: Item;
+    elevation?: number;
   };
 
   export type Item = {
@@ -82,11 +97,14 @@ export declare namespace Navbar {
     input?: Input.Props;
     search?: Search.Props;
     child?: ReactChild;
+    avatar?: Avatar.Props;
   };
 
   export interface ItemProps extends Item {
     themeColor: Theme.ColorName;
     className?: string;
+    defaultButtonVariant: Button.Variant;
+    defaultItemSize: GenericProps.Size;
   }
 }
 
@@ -95,15 +113,24 @@ function Item({
   link,
   input,
   search,
+  avatar,
   child,
   themeColor,
   className,
+  defaultButtonVariant,
+  defaultItemSize,
 }: Navbar.ItemProps) {
+  if (avatar) {
+    return (
+      <Avatar {...avatar} />
+    )
+  }
+
   if (search) {
     return (
       <Search
         themeColor={themeColor}
-        size="sm"
+        size={defaultItemSize}
         {...search}
         className={[className, search.className].join(" ")}
         variant="transparent"
@@ -114,9 +141,11 @@ function Item({
   if (button) {
     return (
       <Button
-        variant="outlined"
-        themeColor="gray"
-        size="sm"
+        variant={defaultButtonVariant}
+        themeColor={
+          defaultButtonVariant === "transparent" ? "gray" : themeColor
+        }
+        size={defaultItemSize}
         className={className}
         {...button}
       />
@@ -129,9 +158,9 @@ function Item({
         href={link.href}
         $themeColor={themeColor}
         className={className}
-        themeColor="gray"
+        themeColor={themeColor}
         variant="transparent"
-        size="sm"
+        size={defaultItemSize}
       >
         {link.children}
       </StyledLink>
@@ -142,7 +171,7 @@ function Item({
     return (
       <Input
         themeColor="gray"
-        size="sm"
+        size={defaultItemSize}
         className={className}
         variant="transparent"
         {...input}
@@ -156,11 +185,33 @@ function Item({
 export function Navbar({
   logo,
   themeColor = "gray",
-  leftItems,
-  rightItems,
+  leftItems = [],
+  rightItems = [],
   dark = false,
+  defaultButtonVariant = "outlined",
+  defaultItemSize = "sm",
+  centerItem,
+  elevation = 0,
 }: Navbar.Props) {
   const className = dark || themeColor !== "gray" ? "dark-mode" : undefined;
+
+  let height = 55;
+  switch (defaultItemSize) {
+    case "md":
+      height = 70;
+      break;
+    case "lg":
+      height = 80;
+  }
+
+  let spacingMultiplier = 2;
+  switch (defaultItemSize) {
+    case "md":
+      spacingMultiplier = 2;
+      break;
+    case "lg":
+      spacingMultiplier = 3;
+  }
 
   return (
     <Bar
@@ -169,58 +220,90 @@ export function Navbar({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        minHeight: 55,
+        minHeight: height,
       }}
       className={dark ? "dark-mode" : undefined}
+      $elevation={elevation}
     >
       <Link
         href="/"
-        style={{ color: "unset", marginRight: spacing(4) }}
+        style={{ color: "unset", marginRight: spacing(spacingMultiplier) }}
         className={className}
       >
-        <Text variant="h6" noPadding>
-          {logo}
-        </Text>
+        {typeof logo === "string" ? (
+          <Text variant="h6" noPadding>
+            {logo}
+          </Text>
+        ) : (
+          logo
+        )}
       </Link>
 
-      <Display xs={false} md={true}>
-        <Items>
+      <Display xs={false} md={true} style={{ flex: 1 }}>
+        <Items $spacing={spacingMultiplier}>
           {leftItems.map((item, i) => (
             <Item
               key={i}
               {...item}
               themeColor={themeColor}
               className={className}
+              defaultButtonVariant={defaultButtonVariant}
+              defaultItemSize={defaultItemSize}
             />
           ))}
-        </Items>
-      </Display>
 
-      <div style={{ flex: 1 }} />
+          <CenterItemWrap>
+            {centerItem && (
+              <Item
+                {...centerItem}
+                themeColor={themeColor}
+                className={className}
+                defaultButtonVariant={defaultButtonVariant}
+                defaultItemSize={defaultItemSize}
+              />
+            )}
+          </CenterItemWrap>
 
-      <Display xs={false} md={true}>
-        <Items $spacing={spacing(2)}>
           {rightItems.map((item, i) => (
             <Item
               key={i}
               {...item}
               themeColor={themeColor}
               className={className}
+              defaultButtonVariant={defaultButtonVariant}
+              defaultItemSize={defaultItemSize}
             />
           ))}
         </Items>
       </Display>
 
-      <Display xs={true} md={false}>
-        <StatefulActionMenu
-          align="end"
-          trigger={(props) => (
-            <InvisibleButton {...props} className={className}>
-              <FiMenu color={color("gray", 15)} size="1.5rem" />
-            </InvisibleButton>
-          )}
-          items={[...leftItems, ...rightItems]}
-        />
+      <Display xs={true} md={false} style={{ flex: 1 }}>
+        <FlexRow
+          $spacing={spacingMultiplier}
+          $centerContent="vertical"
+        >
+          <CenterItemWrap>
+            {centerItem && (
+              <Item
+                {...centerItem}
+                themeColor={themeColor}
+                className={className}
+                defaultButtonVariant={defaultButtonVariant}
+                defaultItemSize={defaultItemSize}
+              />
+            )}
+          </CenterItemWrap>
+
+          <StatefulActionMenu
+            align="end"
+            trigger={(props) => (
+              <InvisibleButton {...props} className={className}>
+                <FiMenu color={color("gray", 15)} size="1.5rem" />
+              </InvisibleButton>
+            )}
+            items={[...leftItems, ...rightItems]}
+          />
+        </FlexRow>
       </Display>
     </Bar>
   );

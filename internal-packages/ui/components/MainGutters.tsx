@@ -1,28 +1,29 @@
-import * as React from "react"
-import styled from "styled-components"
-import { mediaQuery } from './Grid/utils'
+import * as React from "react";
+import styled from "styled-components";
+import { theme } from "./Theme";
+import { mediaQuery } from "./Grid/utils";
 
-export type ReactChild<T = never> = React.ReactNode | null | T
-export type ReactChildren<T = never> = ReactChild<T> | ReactChildren<T>[]
+export type ReactChild<T = never> = React.ReactNode | null | T;
+export type ReactChildren<T = never> = ReactChild<T> | ReactChildren<T>[];
 
-const MAIN_GUTTERS_PADDING = "calc(1vw + 8px)"
-const MOBILE_QUERY = ["xs", "lg"] as const
-const DESKTOP_QUERY = ["lg"] as const
+const MAIN_GUTTERS_PADDING = "calc(1vw + 8px)";
+const MOBILE_QUERY = ["xs", "lg"] as const;
+const DESKTOP_QUERY = ["lg"] as const;
 
-type TargetScreen = "always" | "mobile-only" | "desktop-only" | "none"
+type TargetScreen = "always" | "mobile-only" | "desktop-only" | "none";
 
 export declare namespace MainGutters {
   type Props = {
-    children?: ReactChildren<string>
-    innerStyle?: React.CSSProperties
-    style?: React.CSSProperties
-    className?: string
-    leftGutter?: TargetScreen
-    rightGutter?: TargetScreen
-    padding?: TargetScreen
-    baseWidth?: number
-    maxWidth?: number
-  }
+    children?: ReactChildren<string>;
+    innerStyle?: React.CSSProperties;
+    style?: React.CSSProperties;
+    className?: string;
+    leftGutter?: TargetScreen;
+    rightGutter?: TargetScreen;
+    padding?: TargetScreen;
+    baseWidth?: number | string;
+    maxWidth?: number;
+  };
 }
 
 const Wrap = styled.div<
@@ -34,7 +35,7 @@ const Wrap = styled.div<
   grid-row-end: 2;
   ${({ padding }) => {
     if (padding === "mobile-only" || padding === "desktop-only") {
-      const query = padding === "mobile-only" ? MOBILE_QUERY : DESKTOP_QUERY
+      const query = padding === "mobile-only" ? MOBILE_QUERY : DESKTOP_QUERY;
       return `
         padding-right: 0;
         padding-left: 0;
@@ -42,19 +43,19 @@ const Wrap = styled.div<
           margin-right: ${MAIN_GUTTERS_PADDING};
           margin-left: ${MAIN_GUTTERS_PADDING};
         }
-      `
+      `;
     }
     if (padding === "always") {
       return `
         margin-right: ${MAIN_GUTTERS_PADDING};
         margin-left: ${MAIN_GUTTERS_PADDING};
-      `
+      `;
     }
   }}
   ${({ leftGutter }) => {
     switch (leftGutter) {
       case "always":
-        return "grid-column-start: 2;"
+        return "grid-column-start: 2;";
       case "desktop-only":
         return `
           grid-column-start: 1;
@@ -64,7 +65,7 @@ const Wrap = styled.div<
           @media ${mediaQuery(...MOBILE_QUERY)} {
             margin-left: 0;
           }
-        `
+        `;
       case "mobile-only":
         return `
           grid-column-start: 1;
@@ -74,18 +75,18 @@ const Wrap = styled.div<
           @media ${mediaQuery(...MOBILE_QUERY)} {
             grid-column-start: 2;
           }
-        `
+        `;
       case "none":
         return `
           grid-column-start: 1;
           && { margin-left: 0; }
-        `
+        `;
     }
   }}
   ${({ rightGutter }) => {
     switch (rightGutter) {
       case "always":
-        return "grid-column-end: 3;"
+        return "grid-column-end: 3;";
       case "desktop-only":
         return `
           grid-column-end: 4;
@@ -95,7 +96,7 @@ const Wrap = styled.div<
           @media ${mediaQuery(...MOBILE_QUERY)} {
             margin-right: 0;
           }
-        `
+        `;
       case "mobile-only":
         return `
           grid-column-end: 4;
@@ -105,15 +106,15 @@ const Wrap = styled.div<
           @media ${mediaQuery(...MOBILE_QUERY)} {
             grid-column-end: 3;
           }
-        `
+        `;
       case "none":
         return `
           grid-column-end: 4;
           && { margin-right: 0; }
-        `
+        `;
     }
   }}
-`
+`;
 
 export function MainGutters({
   children,
@@ -123,10 +124,14 @@ export function MainGutters({
   rightGutter = "always",
   leftGutter = "always",
   padding = "always",
-  baseWidth = 800,
+  baseWidth = `var(${theme.VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH})`,
   maxWidth,
 }: MainGutters.Props) {
-  const middleCol = maxWidth ? `${maxWidth}px` : `calc(${baseWidth}px + 22vw)`
+  const middleCol = maxWidth
+    ? `${maxWidth}px`
+    : `calc(${
+        typeof baseWidth === "number" ? `${baseWidth}px` : baseWidth
+      } + 22vw)`;
 
   return (
     <div
@@ -148,8 +153,8 @@ export function MainGutters({
         {children}
       </Wrap>
     </div>
-  )
+  );
 }
-MainGutters.padding = MAIN_GUTTERS_PADDING
+MainGutters.padding = MAIN_GUTTERS_PADDING;
 
-export default MainGutters
+export default MainGutters;

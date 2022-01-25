@@ -44,7 +44,7 @@ export function Link({
   if (href === undefined && onClick !== undefined) {
     return (
       <button
-        className={[CSS_CLASS, className].join(' ')}
+        className={[CSS_CLASS, className].join(" ")}
         style={style}
         tabIndex={tabIndex}
         role={role}
@@ -59,7 +59,7 @@ export function Link({
   const props = {
     href: href ?? "#",
     style,
-    className: [CSS_CLASS, className].join(' '),
+    className: [CSS_CLASS, className].join(" "),
     tabIndex,
     role,
     ref,

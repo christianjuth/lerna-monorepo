@@ -8,9 +8,17 @@ const SPACING = 10;
 const BoxDiv = styled.div`
   display: flex;
   align-items: center;
-  width: calc(100% / var(--masonry-cols) - ${SPACING}px);
+  width: calc(100% / var(--masonry-cols));
   page-break-inside: avoid;
-  margin: ${SPACING / 2}px;
+  margin-bottom: ${SPACING}px;
+
+  &[data-left-padding="true"] > div {
+    margin-left: ${SPACING}px;
+  }
+
+  & > div {
+    width: 100%;
+  }
 `;
 
 const Row = styled.div<{ $cols: number }>`
@@ -60,9 +68,16 @@ export function MasonryGrid({
         columnHeights[currentMinColumnIndex] += childHeight;
         const order = currentMinColumnIndex + 1;
         child.style.order = `${order}`;
+
+        if (order > 1) {
+          child.dataset.leftPadding = "true";
+        } else {
+          child.dataset.leftPadding = "false";
+        }
       }
 
-      const newHeight = Math.ceil(Math.max(...columnHeights));
+      // TODO: remove the +5 hack
+      const newHeight = Math.ceil(Math.max(...columnHeights)) + 5;
       setHeight(isFinite(newHeight) ? newHeight : undefined);
       setCols(newCols);
     }
@@ -95,7 +110,9 @@ export function MasonryGrid({
   return (
     <Row ref={ref} style={{ height }} $cols={cols}>
       {childrenArr.map((child, i) => (
-        <BoxDiv key={i}>{child}</BoxDiv>
+        <BoxDiv key={i}>
+          <div>{child}</div>
+        </BoxDiv>
       ))}
       {lineBreaks}
     </Row>
