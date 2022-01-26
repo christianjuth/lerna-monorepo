@@ -23,6 +23,7 @@ export declare namespace MainGutters {
     padding?: TargetScreen;
     baseWidth?: number | string;
     maxWidth?: number;
+    id?: string;
   };
 }
 
@@ -126,6 +127,7 @@ export function MainGutters({
   padding = "always",
   baseWidth = `var(${theme.VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH})`,
   maxWidth,
+  id,
 }: MainGutters.Props) {
   const middleCol = maxWidth
     ? `${maxWidth}px`
@@ -135,6 +137,7 @@ export function MainGutters({
 
   return (
     <div
+      id={id}
       className={className}
       style={{
         display: "grid",

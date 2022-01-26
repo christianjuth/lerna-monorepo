@@ -16,6 +16,7 @@ const htmlTags = [
   "time",
   "blockquote",
   "label",
+  "figcaption",
 ] as const;
 const variants = [
   "h1",
@@ -140,7 +141,7 @@ export const textStyles = css`
     font-size: ${pxToRem(20)};
     font-style: normal;
     font-weight: 400;
-    line-height: ${22 / 18}em;
+    line-height: 1.5em;
     margin-bottom: ${SPACING_AFTER_TEXT};
   }
   .${genName("link")}, a {
@@ -220,6 +221,8 @@ function TextElement({ htmlTag = "span", ...props }: Text.TextElementProps) {
       return <blockquote {...props} />;
     case "label":
       return <label {...props} />;
+    case "figcaption":
+      return <figcaption {...props} />;
     default:
       return <span {...props} />;
   }

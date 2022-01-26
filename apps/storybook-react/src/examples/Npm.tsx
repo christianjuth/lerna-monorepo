@@ -26,6 +26,7 @@ const DiscoverBtn = styled.button<{ $index: number }>`
   padding: ${theme.spacing(3.5)};
   font-size: 1.2rem;
   transition: all 0.1s;
+  cursor: pointer;
 
   :hover {
     background-color: hsla(
@@ -79,10 +80,10 @@ export function Npm() {
       baseTheme={{
         primary: ({ l }) => [0, 0, l],
         accent1: ({ l }) => [0, 0, l],
-        gray: ({ l, shade }) => [218, shade + 10, l],
+        gray: ({ l, shade }) => [218, (shade/2), l],
       }}
       darkTheme={{
-        gray: ({ l, shade }) => [218, 25 - shade, 100 - l],
+        gray: ({ l, shade }) => [218, 8 - (shade/2), 100 - l],
       }}
       useDarkTheme={darkMode}
       roundness={0}
@@ -130,7 +131,7 @@ export function Npm() {
         elevation={5}
       />
       <MainGutters innerStyle={{ paddingTop: spacing(2) }}>
-        <Paper padding={4}>
+        <Paper padding={4} elevation={4}>
           <Grid.Row cols={6} spacing={spacing(4)}>
             <Grid.Col xs={6} md={3} xl={2}>
               <Text variant="h6">

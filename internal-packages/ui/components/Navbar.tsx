@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { Button } from "./Button";
 import { Input } from "./Input";
 import { Link } from "./Link";
@@ -15,8 +15,15 @@ import { Avatar } from "./Avatar";
 import { elevationStyle } from "./Paper";
 import { theme } from "./Theme";
 
+const GlobalStyles = createGlobalStyle<{ $navbarHeight: number }>`
+  *[id] {
+    ${({ $navbarHeight }) => `scroll-margin-top: ${$navbarHeight}px;`}
+  }
+`;
+
 const Bar = styled(MainGutters)<{
   $themeColor: Theme.ColorName;
+  $themeShade: number;
   $elevation: number;
 }>`
   border-bottom: 1px solid ${theme.colorPresets.border};
@@ -24,14 +31,16 @@ const Bar = styled(MainGutters)<{
   top: 0;
   z-index: ${zIndex("header")};
 
-  ${({ $themeColor }) => `
+  ${({ $themeColor, $themeShade }) => `
     background-color: ${
-      $themeColor === "gray" ? color($themeColor, 0) : color($themeColor, 9)
+      $themeColor === "gray"
+        ? color($themeColor, 0)
+        : color($themeColor, $themeShade)
     };
     color: ${
       $themeColor === "gray"
         ? color($themeColor, 0, "text")
-        : color($themeColor, 9, "text")
+        : color($themeColor, $themeShade, "text")
     };
 
     ${
@@ -59,11 +68,9 @@ const StyledLink = styled(Button)<{ $themeColor: Theme.ColorName }>`
   ${({ $themeColor }) =>
     $themeColor === "gray"
       ? `
-    opacity: 0.5;
     color: ${color("gray", 0, "text")};
   `
       : `
-    opacity: 0.7;
     color: ${color($themeColor, 15, "text")}};
   `}
 
@@ -80,8 +87,9 @@ const CenterItemWrap = styled.div`
 
 export declare namespace Navbar {
   export type Props = {
-    logo: ReactChild<string>;
+    logo?: ReactChild<string>;
     themeColor?: Theme.ColorName;
+    themeShade?: number;
     leftItems?: Item[];
     rightItems?: Item[];
     dark?: boolean;
@@ -121,9 +129,7 @@ function Item({
   defaultItemSize,
 }: Navbar.ItemProps) {
   if (avatar) {
-    return (
-      <Avatar {...avatar} />
-    )
+    return <Avatar {...avatar} />;
   }
 
   if (search) {
@@ -131,9 +137,15 @@ function Item({
       <Search
         themeColor={themeColor}
         size={defaultItemSize}
-        {...search}
-        className={[className, search.className].join(" ")}
         variant="transparent"
+        {...search}
+        className={[
+          {
+            [className ?? ""]:
+              (search.variant ?? "transparent") === "transparent",
+          },
+          search.className,
+        ].join(" ")}
       />
     );
   }
@@ -185,6 +197,7 @@ function Item({
 export function Navbar({
   logo,
   themeColor = "gray",
+  themeShade = 9,
   leftItems = [],
   rightItems = [],
   dark = false,
@@ -214,97 +227,99 @@ export function Navbar({
   }
 
   return (
-    <Bar
-      $themeColor={themeColor}
-      innerStyle={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "center",
-        minHeight: height,
-      }}
-      className={dark ? "dark-mode" : undefined}
-      $elevation={elevation}
-    >
-      <Link
-        href="/"
-        style={{ color: "unset", marginRight: spacing(spacingMultiplier) }}
-        className={className}
+    <>
+      {/* TODO: find a way to make this scoped */}
+      <GlobalStyles $navbarHeight={height} />
+      <Bar
+        $themeColor={themeColor}
+        $themeShade={themeShade}
+        innerStyle={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          minHeight: height,
+        }}
+        className={dark ? "dark-mode" : undefined}
+        $elevation={elevation}
       >
-        {typeof logo === "string" ? (
-          <Text variant="h6" noPadding>
-            {logo}
-          </Text>
-        ) : (
-          logo
-        )}
-      </Link>
-
-      <Display xs={false} md={true} style={{ flex: 1 }}>
-        <Items $spacing={spacingMultiplier}>
-          {leftItems.map((item, i) => (
-            <Item
-              key={i}
-              {...item}
-              themeColor={themeColor}
-              className={className}
-              defaultButtonVariant={defaultButtonVariant}
-              defaultItemSize={defaultItemSize}
-            />
-          ))}
-
-          <CenterItemWrap>
-            {centerItem && (
-              <Item
-                {...centerItem}
-                themeColor={themeColor}
-                className={className}
-                defaultButtonVariant={defaultButtonVariant}
-                defaultItemSize={defaultItemSize}
-              />
-            )}
-          </CenterItemWrap>
-
-          {rightItems.map((item, i) => (
-            <Item
-              key={i}
-              {...item}
-              themeColor={themeColor}
-              className={className}
-              defaultButtonVariant={defaultButtonVariant}
-              defaultItemSize={defaultItemSize}
-            />
-          ))}
-        </Items>
-      </Display>
-
-      <Display xs={true} md={false} style={{ flex: 1 }}>
-        <FlexRow
-          $spacing={spacingMultiplier}
-          $centerContent="vertical"
+        <Link
+          href="/"
+          style={{ color: "unset", marginRight: spacing(spacingMultiplier) }}
+          className={className}
         >
-          <CenterItemWrap>
-            {centerItem && (
+          {typeof logo === "string" ? (
+            <Text variant="h6" noPadding>
+              {logo}
+            </Text>
+          ) : (
+            logo
+          )}
+        </Link>
+
+        <Display xs={false} md={true} style={{ flex: 1 }}>
+          <Items $spacing={spacingMultiplier}>
+            {leftItems.map((item, i) => (
               <Item
-                {...centerItem}
+                key={i}
+                {...item}
                 themeColor={themeColor}
                 className={className}
                 defaultButtonVariant={defaultButtonVariant}
                 defaultItemSize={defaultItemSize}
               />
-            )}
-          </CenterItemWrap>
+            ))}
 
-          <StatefulActionMenu
-            align="end"
-            trigger={(props) => (
-              <InvisibleButton {...props} className={className}>
-                <FiMenu color={color("gray", 15)} size="1.5rem" />
-              </InvisibleButton>
-            )}
-            items={[...leftItems, ...rightItems]}
-          />
-        </FlexRow>
-      </Display>
-    </Bar>
+            <CenterItemWrap>
+              {centerItem && (
+                <Item
+                  {...centerItem}
+                  themeColor={themeColor}
+                  className={className}
+                  defaultButtonVariant={defaultButtonVariant}
+                  defaultItemSize={defaultItemSize}
+                />
+              )}
+            </CenterItemWrap>
+
+            {rightItems.map((item, i) => (
+              <Item
+                key={i}
+                {...item}
+                themeColor={themeColor}
+                className={className}
+                defaultButtonVariant={defaultButtonVariant}
+                defaultItemSize={defaultItemSize}
+              />
+            ))}
+          </Items>
+        </Display>
+
+        <Display xs={true} md={false} style={{ flex: 1 }}>
+          <FlexRow $spacing={spacingMultiplier} $centerContent="vertical">
+            <CenterItemWrap>
+              {centerItem && (
+                <Item
+                  {...centerItem}
+                  themeColor={themeColor}
+                  className={className}
+                  defaultButtonVariant={defaultButtonVariant}
+                  defaultItemSize={defaultItemSize}
+                />
+              )}
+            </CenterItemWrap>
+
+            <StatefulActionMenu
+              align="end"
+              trigger={(props) => (
+                <InvisibleButton {...props} className={className}>
+                  <FiMenu color={color("gray", 15)} size="1.5rem" />
+                </InvisibleButton>
+              )}
+              items={[...leftItems, ...rightItems]}
+            />
+          </FlexRow>
+        </Display>
+      </Bar>
+    </>
   );
 }

@@ -37,32 +37,32 @@ const ColStyle = styled.div`
 
   @media ${mediaQuery("xs", "sm")} {
     display: var(--gridDisplay-xs);
-    grid-column-end: span var(--gridWidth-xs);
+    grid-column: span var(--gridWidth-xs);
   }
 
   @media ${mediaQuery("sm", "md")} {
     display: var(--gridDisplay-sm);
-    grid-column-end: span var(--gridWidth-sm);
+    grid-column: span var(--gridWidth-sm);
   }
 
   @media ${mediaQuery("md", "lg")} {
     display: var(--gridDisplay-md);
-    grid-column-end: span var(--gridWidth-md);
+    grid-column: span var(--gridWidth-md);
   }
 
   @media ${mediaQuery("lg", "xl")} {
     display: var(--gridDisplay-lg);
-    grid-column-end: span var(--gridWidth-lg);
+    grid-column: span var(--gridWidth-lg);
   }
 
   @media ${mediaQuery("xl", "xxl")} {
     display: var(--gridDisplay-xl);
-    grid-column-end: span var(--gridWidth-xl);
+    grid-column: span var(--gridWidth-xl);
   }
 
   @media ${mediaQuery("xxl")} {
     display: var(--gridDisplay-xxl);
-    grid-column-end: span var(--gridWidth-xxl);
+    grid-column: span var(--gridWidth-xxl);
   }
 `;
 

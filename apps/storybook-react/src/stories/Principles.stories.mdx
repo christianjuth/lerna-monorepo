@@ -2,19 +2,28 @@ import { Canvas, Meta, Story } from "@storybook/addon-docs";
 
 <Meta title="Getting Started/Principles" component={() => null} />
 
-# Dependencies
+# Principles
+
+### Dependencies
 
 Use as few dependencies as possible.
 
-### Peer dependencies:
+In addition to React, we use:
 
-* dayjs
-* react
-* react-icons
-* styled-components
-* use-deep-compare-effect
-* react-div-100vh
+- dayjs
+- react-icons
+- styled-components
+- use-deep-compare-effect
+- react-div-100vh
 
-# Accesibility
+### Accesibility
 
-# Atomic design
+Building accessible component benifits everyone. For example, accessible interfaces should be keyboard navigatable. Even if you aren't someone with accesiblity needs, intuitivly you would expect certain elements to respond to keyboard interactions. By addressing these accesiblity concerns upfront, we solve a lot of issues that would surface down the line.
+
+### Atomic design
+
+Use Atomic design to organize components into a hiarchy.
+
+### Scoped styles
+
+We take style scoping to the next level. The `ThemeProvider` component allows you to specify wether you want to load styles globally or scoped. This allows you to run two sepratly themed instances of the library side by side without any styles leaking form one instance to another.

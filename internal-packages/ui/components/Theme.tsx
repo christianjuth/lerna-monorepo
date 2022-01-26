@@ -86,6 +86,12 @@ const GlobalStyles = createGlobalStyle<{
         `;
     }}
   }
+
+  .dark-mode {
+    ${VARIABLE_NAMES.DARK_MODE_BIT}: 1;
+    ${({ $darkTheme }) => getVars($darkTheme)}
+    color: ${color("gray", 15)};
+  }
 `;
 
 export declare namespace Theme {
@@ -218,7 +224,8 @@ export function Theme({
   addBodyStyles = false,
   roundness = 6,
   button,
-  mainGutters
+  mainGutters,
+  controlElement
 }: {
   baseTheme: Theme.Config;
   darkTheme?: Partial<Theme.Config>;
@@ -232,6 +239,9 @@ export function Theme({
   mainGutters?: {
     baseWidth?: number | string;
   };
+  controlElement?: {
+    backgroundColor?: string
+  }
 }) {
   function darkMode(styles: string) {
     if (useDarkTheme === true) {
@@ -248,7 +258,9 @@ export function Theme({
     ${VARIABLE_NAMES.DARK_MODE_BIT}: 0;
     ${VARIABLE_NAMES.ROUNDNESS}: ${roundness};
     ${VARIABLE_NAMES.BUTTON_FONT_STYLE}: ${button?.fontStyle ?? "italic"};
-    ${VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH}: ${mainGutters?.baseWidth ?? '800px'};
+    ${VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH}: ${
+    mainGutters?.baseWidth ?? "800px"
+  };
 
     ${darkMode(`${VARIABLE_NAMES.DARK_MODE_BIT}: 1;`)}
     background-color: hsl(${hslToString(baseTheme.gray({ l: 100, shade: 0 }))});
@@ -274,20 +286,11 @@ export function Theme({
     }
 
     *::selection {
-      background: ${color("primary", 2)};
+      background: ${color("accent1", 7, 0.5)};
     }
     *::-moz-selection {
-      background: ${color("primary", 2)}; 
+      background: ${color("accent1", 7, 0.5)}; 
     }
-
-    ${darkMode(`
-      *::selection {
-        background: ${color("primary", 9)};
-      } 
-      *::-moz-selection {
-        background: ${color("primary", 9)};
-      }
-    `)}
   `;
 
   return (

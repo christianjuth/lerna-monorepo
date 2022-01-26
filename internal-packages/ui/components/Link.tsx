@@ -104,6 +104,10 @@ export function Link({
 // };
 
 function linkIsInternal(href?: string) {
+  if (href?.[0] === '#') {
+    return true
+  }
+
   if (typeof href === "undefined") {
     return false;
   }
