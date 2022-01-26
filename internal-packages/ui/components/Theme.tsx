@@ -2,7 +2,8 @@ import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import { textStyles } from "./Text";
 import { HSLColor, ReactChildren } from "./types";
 import { getAdjustedColor, remap } from "./utils";
-import { Provider } from "./Grid";
+import { Provider, mediaQuery } from "./Grid";
+
 
 const VARIABLE_NAMES = {
   DARK_MODE_BIT: "--dark-mode-bit",
@@ -341,4 +342,5 @@ export const theme = {
   colorPresets,
   darkModeBit,
   VARIABLE_NAMES,
+  mediaQuery
 };

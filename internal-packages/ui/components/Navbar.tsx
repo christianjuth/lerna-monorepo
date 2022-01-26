@@ -194,6 +194,19 @@ function Item({
   return <>{child}</> ?? null;
 }
 
+Navbar.height = getHeight;
+function getHeight(size: GenericProps.Size) {
+  let height = 55;
+  switch (size) {
+    case "md":
+      height = 70;
+      break;
+    case "lg":
+      height = 80;
+  }
+  return height;
+}
+
 export function Navbar({
   logo,
   themeColor = "gray",
@@ -208,14 +221,7 @@ export function Navbar({
 }: Navbar.Props) {
   const className = dark || themeColor !== "gray" ? "dark-mode" : undefined;
 
-  let height = 55;
-  switch (defaultItemSize) {
-    case "md":
-      height = 70;
-      break;
-    case "lg":
-      height = 80;
-  }
+  const navbarHeight = getHeight(defaultItemSize);
 
   let spacingMultiplier = 2;
   switch (defaultItemSize) {
@@ -229,7 +235,7 @@ export function Navbar({
   return (
     <>
       {/* TODO: find a way to make this scoped */}
-      <GlobalStyles $navbarHeight={height} />
+      <GlobalStyles $navbarHeight={navbarHeight} />
       <Bar
         $themeColor={themeColor}
         $themeShade={themeShade}
@@ -237,7 +243,7 @@ export function Navbar({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          minHeight: height,
+          minHeight: navbarHeight,
         }}
         className={dark ? "dark-mode" : undefined}
         $elevation={elevation}

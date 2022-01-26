@@ -39,7 +39,7 @@ export declare namespace Text {
     htmlTag?: HtmlTag;
     className?: string;
     style?: React.CSSProperties;
-    children: ReactChildren<string>;
+    children?: ReactChildren<string>;
     numberOfLines?: number;
     htmlFor?: string;
     id?: string;
@@ -137,7 +137,7 @@ export const textStyles = css`
     margin-bottom: ${SPACING_AFTER_TEXT};
   }
   .${genName("copy-1")}, .${genName("copy-1")} a,
-  ${genName("p")}, p {
+  .${genName("p")}, p {
     font-size: ${pxToRem(20)};
     font-style: normal;
     font-weight: 400;
@@ -159,7 +159,6 @@ export const textStyles = css`
       color: ${color("accent1", 6)};
     ` ?? ""
       )}
-
     &:hover {
       text-decoration: underline;
     }
@@ -172,9 +171,10 @@ export const textStyles = css`
     margin-bottom: ${SPACING_AFTER_TEXT};
   }
   .${genName("p")}, p {
+    line-height: 1.8em;
     display: block;
     margin-block-start: 0;
-    margin-block-end: 1em;
+    margin-block-end: 2em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     margin-bottom: ${SPACING_AFTER_TEXT};

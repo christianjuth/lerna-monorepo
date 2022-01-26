@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import { color, roundness, Theme, theme } from "./Theme";
 import { GenericProps, DomEvents } from "./types";
 import { pxToRem } from "./utils";
-import { Animations } from "./Animations";
+import { Animation, animations } from "./Animations";
 import { ImSpinner8 } from "react-icons/im";
 import { buttonDefaults } from "./config";
 import { Link } from "./Link";
@@ -204,7 +204,7 @@ export function Button({
    * When button is variant transparent, themeColor means
    * the color the button is overlaying rather than the color
    * of the button itself. For this reason, assume themeColor
-   * is gray when variant is transparent since gray is the 
+   * is gray when variant is transparent since gray is the
    * themeColor used for background.
    */
   themeColor = variant === "transparent" ? "gray" : "accent1",
@@ -232,9 +232,12 @@ export function Button({
       {children}
 
       {loading && (
-        <Animations.Spin style={{ marginLeft: "0.5ch" }}>
+        <Animation
+          animations={[animations.spin]}
+          style={{ marginLeft: "0.5ch" }}
+        >
           <ImSpinner8 />
-        </Animations.Spin>
+        </Animation>
       )}
     </StyledLink>
   ) : (
@@ -256,9 +259,12 @@ export function Button({
       {children}
 
       {loading && (
-        <Animations.Spin style={{ marginLeft: "0.6ch" }}>
+        <Animation
+          animations={[animations.spin]}
+          style={{ marginLeft: "0.6ch" }}
+        >
           <ImSpinner8 size="0.9em" />
-        </Animations.Spin>
+        </Animation>
       )}
     </StyledButton>
   );
