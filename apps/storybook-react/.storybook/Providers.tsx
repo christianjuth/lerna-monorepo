@@ -1,13 +1,18 @@
-import { MainGutters, Theme } from "@christianjuth/ui";
+import { Theme } from "@christianjuth/ui";
+import { DocsContainer } from "@storybook/addon-docs/blocks";
 import { useDarkMode } from "storybook-dark-mode";
 import { theme } from "../src/config/theme";
-import { DocsContainer } from "@storybook/addon-docs/blocks";
 
 export function StoryWrapper({ children }: { children: any }) {
   const darkMode = useDarkMode();
 
   return (
-    <Theme {...theme} useDarkTheme={darkMode} addBodyStyles>
+    <Theme
+      {...theme}
+      useDarkTheme={darkMode}
+      addBodyStyles
+      button={{ defaultVariant: "contained" }}
+    >
       {children}
     </Theme>
   );

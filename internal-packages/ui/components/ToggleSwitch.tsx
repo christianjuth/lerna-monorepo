@@ -71,6 +71,7 @@ export function ToggleSwitch({
           }
         }}
         active={computedValue}
+        data-small-form-element
       />
       {name && (
         <input

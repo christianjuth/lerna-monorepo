@@ -5,7 +5,6 @@ import { GenericProps, DomEvents } from "./types";
 import { pxToRem } from "./utils";
 import { Animation, animations } from "./Animations";
 import { ImSpinner8 } from "react-icons/im";
-import { buttonDefaults } from "./config";
 import { Link } from "./Link";
 
 const BORDER_WIDTH = 1;
@@ -90,8 +89,8 @@ const style = css<StyleProps>`
         `;
     }
   }}
-  ${({ $variant, $themeColor, $disabled }) => {
-    switch ($variant) {
+  ${({ $variant, $themeColor, $disabled, theme }) => {
+    switch ($variant ?? theme?.button?.defaultVariant) {
       case "contained":
         return `
           &&, &&:hover, &&:active {
@@ -150,7 +149,14 @@ const style = css<StyleProps>`
           }
         `;
       case "transparent":
-        return `
+        return $themeColor === 'gray' ? `
+          && {
+            color: ${color("gray", 15)};
+          }
+          &&:hover {
+            background-color: ${color($themeColor, 2, 0.7)};
+          } 
+        ` : `
           && {
             color: ${color("gray", 15)};
           }
@@ -198,7 +204,7 @@ export function Button({
   href,
   disabled = false,
   size = "md",
-  variant = buttonDefaults.variant as Button.Variant,
+  variant,
   className,
   /**
    * When button is variant transparent, themeColor means

@@ -7,18 +7,42 @@ import { Search } from "./Search";
 import { Text } from "./Text";
 import { color, spacing, zIndex, Theme } from "./Theme";
 import { ReactChild, GenericProps } from "./types";
-import { FlexRow, InvisibleButton } from "./UtilityStyles";
+import { InvisibleButton } from "./UtilityStyles";
 import { StatefulActionMenu } from "./ActionMenu";
 import { Display } from "./Grid";
 import { FiMenu } from "react-icons/fi";
 import { Avatar } from "./Avatar";
 import { elevationStyle } from "./Paper";
 import { theme } from "./Theme";
+import { cn } from "./utils";
 
 const GlobalStyles = createGlobalStyle<{ $navbarHeight: number }>`
   *[id] {
     ${({ $navbarHeight }) => `scroll-margin-top: ${$navbarHeight}px;`}
   }
+`;
+
+
+export const Items = styled.div<{
+  $spacing?: number;
+}>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  ${({ $spacing }) =>
+    $spacing
+      ? `
+    &&& > *:not(:first-child) {
+      margin-left: ${spacing($spacing)};
+    }
+    &&& {
+      .navbar-link + .navbar-link {
+        margin-left: 0;
+      }      
+    }
+  `
+      : ""}
 `;
 
 const Bar = styled(MainGutters)<{
@@ -30,11 +54,12 @@ const Bar = styled(MainGutters)<{
   position: sticky;
   top: 0;
   z-index: ${zIndex("header")};
+  backdrop-filter: blur(15px);
 
   ${({ $themeColor, $themeShade }) => `
     background-color: ${
       $themeColor === "gray"
-        ? color($themeColor, 0)
+        ? color($themeColor, 0, 0.9)
         : color($themeColor, $themeShade)
     };
     color: ${
@@ -52,10 +77,6 @@ const Bar = styled(MainGutters)<{
     }
   `}
   ${elevationStyle}
-`;
-
-const Items = styled(FlexRow)`
-  align-items: center;
 `;
 
 const StyledLink = styled(Button)<{ $themeColor: Theme.ColorName }>`
@@ -169,7 +190,7 @@ function Item({
       <StyledLink
         href={link.href}
         $themeColor={themeColor}
-        className={className}
+        className={cn('navbar-link', className)}
         themeColor={themeColor}
         variant="transparent"
         size={defaultItemSize}
@@ -262,7 +283,7 @@ export function Navbar({
           )}
         </Link>
 
-        <Display xs={false} md={true} style={{ flex: 1 }}>
+        <Display xs={false} lg={true} style={{ flex: 1 }}>
           <Items $spacing={spacingMultiplier}>
             {leftItems.map((item, i) => (
               <Item
@@ -300,8 +321,8 @@ export function Navbar({
           </Items>
         </Display>
 
-        <Display xs={true} md={false} style={{ flex: 1 }}>
-          <FlexRow $spacing={spacingMultiplier} $centerContent="vertical">
+        <Display xs={true} lg={false} style={{ flex: 1 }}>
+          <Items $spacing={spacingMultiplier}>
             <CenterItemWrap>
               {centerItem && (
                 <Item
@@ -323,7 +344,7 @@ export function Navbar({
               )}
               items={[...leftItems, ...rightItems]}
             />
-          </FlexRow>
+          </Items>
         </Display>
       </Bar>
     </>

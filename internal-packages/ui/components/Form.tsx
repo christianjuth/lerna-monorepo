@@ -31,6 +31,7 @@ const FormStyle = styled.form`
   & > [data-small-form-element] {
     grid-column-start: 2;
     grid-column-end: 3;
+    align-self: center;
   }
 
   @media ${mediaQuery("sm")} {

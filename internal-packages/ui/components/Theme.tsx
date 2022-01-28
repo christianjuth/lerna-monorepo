@@ -4,11 +4,11 @@ import { HSLColor, ReactChildren } from "./types";
 import { getAdjustedColor, remap } from "./utils";
 import { Provider, mediaQuery } from "./Grid";
 
-
 const VARIABLE_NAMES = {
   DARK_MODE_BIT: "--dark-mode-bit",
   ROUNDNESS: "--roundness",
   BUTTON_FONT_STYLE: "--button-font-style",
+  BUTTON_DEFAULT_VARIANT: "--button-default-variant",
   MAIN_GUTTERS_BASE_WIDTH: "--main-gutters-baseWidth",
 };
 
@@ -119,7 +119,7 @@ export function color(
 ) {
   if (modifier === "text") {
     const invertedBit = `var(${varName(color, "inverted", "bit")})`;
-    if (shade < 5) {
+    if (shade < 6) {
       return `hsl(0, 0%, calc(${invertedBit} * 100%))`;
     } else if (shade > 10) {
       return `hsl(0, 0%, calc((1 - ${invertedBit}) * 100%))`;
@@ -134,7 +134,7 @@ export function color(
       high
         ? `calc(0.1 + (${invertedBit} / 10))`
         : `calc(0.1 + ((1 - ${invertedBit}) / 10))`;
-    if (shade < 5) {
+    if (shade < 6) {
       return `hsla(0, 0%, calc(${invertedBit} * 100%), ${transparency(true)})`;
     } else if (shade > 10) {
       return `hsla(0, 0%, calc((1 - ${invertedBit}) * 100%), 0.1)`;
@@ -149,7 +149,7 @@ export function color(
       high
         ? `calc(0.15 + (${invertedBit} / 10))`
         : `calc(0.1 + ((1 - ${invertedBit}) / 10))`;
-    if (shade < 5) {
+    if (shade < 6) {
       return `hsla(0, 0%, calc(${invertedBit} * 100%), ${transparency(true)})`;
     } else if (shade > 10) {
       return `hsla(0, 0%, calc((1 - ${invertedBit}) * 100%), 0.15)`;
@@ -226,7 +226,6 @@ export function Theme({
   roundness = 6,
   button,
   mainGutters,
-  controlElement
 }: {
   baseTheme: Theme.Config;
   darkTheme?: Partial<Theme.Config>;
@@ -236,13 +235,11 @@ export function Theme({
   roundness?: number;
   button?: {
     fontStyle?: string;
+    defaultVariant?: "contained" | "outlined" | "transparent";
   };
   mainGutters?: {
     baseWidth?: number | string;
   };
-  controlElement?: {
-    backgroundColor?: string
-  }
 }) {
   function darkMode(styles: string) {
     if (useDarkTheme === true) {
@@ -259,24 +256,21 @@ export function Theme({
     ${VARIABLE_NAMES.DARK_MODE_BIT}: 0;
     ${VARIABLE_NAMES.ROUNDNESS}: ${roundness};
     ${VARIABLE_NAMES.BUTTON_FONT_STYLE}: ${button?.fontStyle ?? "italic"};
+    ${VARIABLE_NAMES.BUTTON_DEFAULT_VARIANT}: ${button?.defaultVariant ?? ''};
     ${VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH}: ${
     mainGutters?.baseWidth ?? "800px"
   };
 
     ${darkMode(`${VARIABLE_NAMES.DARK_MODE_BIT}: 1;`)}
-    background-color: hsl(${hslToString(baseTheme.gray({ l: 100, shade: 0 }))});
-    color: hsl(${hslToString(baseTheme.gray({ l: 0, shade: SHADE_STOPS }))});
+    background-color: ${color('gray', 0)};
+    color: ${color('gray', 0, 'text')};
 
     ${
       darkTheme.gray
         ? darkMode(
             `
-              background-color: hsl(${hslToString(
-                darkTheme.gray({ l: 100, shade: 0 })
-              )});
-              color: hsl(${hslToString(
-                darkTheme.gray({ l: 0, shade: SHADE_STOPS })
-              )});
+              background-color: ${color('gray', 1)};
+              color: ${color('gray', 1, 'text')};
             `
           )
         : ""
@@ -287,15 +281,15 @@ export function Theme({
     }
 
     *::selection {
-      background: ${color("accent1", 7, 0.5)};
+      background: ${color("accent1", 7, 0.8)};
     }
     *::-moz-selection {
-      background: ${color("accent1", 7, 0.5)}; 
+      background: ${color("accent1", 7, 0.8)}; 
     }
   `;
 
   return (
-    <ThemeProvider theme={{ darkMode }}>
+    <ThemeProvider theme={{ darkMode, button: { defaultVariant: button?.defaultVariant ?? 'contained' } }}>
       <Provider>
         {addBodyStyles && (
           <GlobalStyles

@@ -1,27 +1,28 @@
 import {
+  Animation,
+  animations,
+  AspectRatioBox,
   Checkbox,
+  Display,
   Form,
   Grid,
   Input,
   Label,
   Navbar,
   Paper,
+  ReactChildren,
   SC,
   StatefulDatepicker,
   Text,
   TextArea,
   theme,
   ToggleSwitch,
-  Animation,
-  animations,
-  ReactChildren,
-  AspectRatioBox,
 } from "@christianjuth/ui";
 import { useBreakPoint } from "@christianjuth/ui/components/Grid/context";
 import Image from "next/image";
-import { CSSProperties } from "react";
-import { use100vh } from "react-div-100vh";
+import { CSSProperties, useEffect, useState } from "react";
 import { MdDesignServices } from "react-icons/md";
+import Typist from "react-typist";
 import styled from "styled-components";
 import architecture1 from "../../assets/architecture1.jpeg";
 import bobbyBerkDecor from "../../assets/bobby-berk-decor.jpeg";
@@ -30,6 +31,8 @@ import mitBuilding from "../../assets/mit-building.jpg";
 import neumorphicDesign from "../../assets/neumorphic-design.webp";
 import thomBrowneFassion from "../../assets/phoebe-bridgers-thom-browne-fassion.jpeg";
 import { Section } from "../../components";
+
+import { BsChevronCompactDown } from "react-icons/bs";
 
 function FadeIn({
   children,
@@ -62,12 +65,13 @@ function FadeIn({
   );
 }
 
-const Highlight = styled.span`
+const Highlight = styled.span<{ $animate?: boolean }>`
   position: relative;
   color: ${theme.color("accent1", 10, "text")};
   margin: 0 0.15em;
   hyphens: none;
   display: inline-block;
+  z-index: ${theme.zIndex("page", 10)};
 
   ::after {
     content: "";
@@ -81,6 +85,10 @@ const Highlight = styled.span`
     z-index: -1;
     border-radius: 2px;
   }
+`;
+
+const HighlightText = styled.span`
+  color: ${theme.color("accent1", 6)};
 `;
 
 const Figure = styled.figure`
@@ -98,7 +106,11 @@ const Figure = styled.figure`
 `;
 
 function PresentationOne() {
-  const pageHeight = Math.max((use100vh() ?? 0) - Navbar.height("md"), 0);
+  const [pageHeight, setPageHeight] = useState("100vh");
+
+  useEffect(() => {
+    setPageHeight(`${window.innerHeight - Navbar.height("md")}px`);
+  }, []);
 
   return (
     <>
@@ -122,14 +134,32 @@ function PresentationOne() {
         ]}
       />
       <Section dark style={{ minHeight: pageHeight }}>
-        <FadeIn style={{ flex: 1 }} animations={[animations.fadeIn]}>
-          <Text variant="h1" style={{ lineHeight: "1.3em" }}>
-            What is <Highlight>Good</Highlight> Design to Me?
-          </Text>
-          <Text variant="h6" style={{ fontStyle: "italic", fontWeight: "300" }}>
-            By Christian Juth
-          </Text>
-        </FadeIn>
+        <SC.FlexCol $centerContent="vertical" style={{ flex: 1 }}>
+          <div style={{ minHeight: "max(calc(300px - 15vw), 200px)" }}>
+            <Typist cursor={{ show: false }}>
+              <Text variant="h1" style={{ lineHeight: "1.3em" }}>
+                What is <HighlightText>Good</HighlightText>
+                <Display xs={true} lg={false} tag="br" /> Design to Me?
+              </Text>
+            </Typist>
+            <Typist startDelay={3000} cursor={{ show: false }}>
+              <Text
+                variant="h6"
+                style={{ fontStyle: "italic", fontWeight: "300" }}
+              >
+                By Christian Juth
+              </Text>
+            </Typist>
+          </div>
+        </SC.FlexCol>
+
+        <Animation
+          animations={[animations.fadeIn]}
+          config={{ distance: 5, duration: 1500, delay: 4500 }}
+          style={{ position: "absolute", bottom: 30, alignSelf: "center" }}
+        >
+          <BsChevronCompactDown size={40} color={theme.colorPresets.textMuted} />
+        </Animation>
       </Section>
 
       <Section id="architecture">

@@ -200,6 +200,7 @@ export function Datepicker({ date, update, min, max, name, id, labelledBy }: Dat
               }}
               name={name}
               data-date={date?.format()}
+              tabIndex={-1}
             />
             <BsFillCalendarFill size={20} fill={color("gray", 4)} />
           </CalendarButtonWrap>

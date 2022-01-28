@@ -8,7 +8,7 @@ import { DomEvents } from "./types";
 const itemStyles = css`
   && {
     background-color: ${color("gray", 0)};
-    color: ${color("gray", 0, 'text')};
+    color: ${color("gray", 0, "text")};
     border-radius: 0;
   }
   &&,
@@ -44,13 +44,17 @@ export declare namespace ActionMenu {
       ReturnType<typeof useMenuState> {}
 }
 
-function ActionMenuItem({ link, button }: ActionMenu.Item) {
+function ActionMenuItem({ link, button, onClick }: ActionMenu.Item) {
   if (link) {
-    return <MenuButton href={link.href}>{link.children}</MenuButton>;
+    return (
+      <MenuButton href={link.href} onClick={onClick}>
+        {link.children}
+      </MenuButton>
+    );
   }
 
   if (button) {
-    return <MenuButton {...button} />;
+    return <MenuButton onClick={onClick} {...button} />;
   }
 
   return null;
@@ -68,7 +72,7 @@ export function ActionMenu({ trigger, items, ...menuState }: ActionMenu.Props) {
                 {...item}
                 {...props}
                 onClick={(e) => {
-                  // item.onClick?.(e);
+                  item.onClick?.(e);
                   menuState.toggle(false);
                 }}
               />

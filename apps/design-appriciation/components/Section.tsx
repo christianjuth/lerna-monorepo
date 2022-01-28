@@ -17,7 +17,7 @@ export function Section({
   return (
     <MainGutters
       id={id}
-      style={{ backgroundColor: theme.color("gray", 0) }}
+      style={{ backgroundColor: dark ? theme.color("gray", 0): undefined }}
       innerStyle={{ padding: slim ? theme.spacing(5, 0) : '5vw 0', ...style }}
       className={dark ? "dark-mode" : undefined}
     >

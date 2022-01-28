@@ -8516,6 +8516,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react-typist@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "@types/react-typist@npm:2.0.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 584d50ea787d2157742a0bbadba1be9bcdd080eb86fe99094c205f6a7d0e1ad85e69eb7161dff0175c1238d624ef294f2a03f65112abe4b54749ee2aa9945543
+  languageName: node
+  linkType: hard
+
 "@types/react@npm:*, @types/react@npm:17.0.37, @types/react@npm:~17.0.21":
   version: 17.0.37
   resolution: "@types/react@npm:17.0.37"
@@ -13485,6 +13494,7 @@ __metadata:
     "@types/node": "*"
     "@types/react": 17.0.37
     "@types/react-syntax-highlighter": ^13.5.2
+    "@types/react-typist": ^2.0.3
     "@types/styled-components": ^5.1.15
     next: 12.0.8
     next-transpile-modules: ^9.0.0
@@ -13494,6 +13504,7 @@ __metadata:
     react-icons: ^4.3.1
     react-markdown: ^7.1.0
     react-syntax-highlighter: ^15.4.5
+    react-typist: ^2.0.5
     styled-components: ^5.3.3
     typescript: 4.x
   languageName: unknown
@@ -26025,6 +26036,18 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: da3d0192825df3d9f27eef33e7eddf928359a7e3e2b01ae7f7f672ecf4e5c1f7a34f27bdde9ccc24e2e9fbe1d1b9dd2a39c7d47323c9bdf63e7b9bd05c325a71
+  languageName: node
+  linkType: hard
+
+"react-typist@npm:^2.0.5":
+  version: 2.0.5
+  resolution: "react-typist@npm:2.0.5"
+  dependencies:
+    prop-types: ^15.5.10
+  peerDependencies:
+    react: ^0.14 || ^15.0 || ^16.0
+    react-dom: "*"
+  checksum: 6f2e7f8b7c087d87df2cb84c7f80a67021c879dabb67f40feeb8e2f754c9a5bfaab44f757664388c124aec9911151e8e4eee9357789ed3f9af1e6bc5fc0e2f85
   languageName: node
   linkType: hard
 
