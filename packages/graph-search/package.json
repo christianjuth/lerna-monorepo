@@ -35,7 +35,7 @@
     "url": "https://github.com/christianjuth/lerna-monorepo/issues"
   },
   "devDependencies": {
-    "@christianjuth/tsconfig": "workspace:*",
+    "@christianjuth/tsconfig": "*",
     "@swc/cli": "*",
     "@swc/core": "*",
     "@swc/jest": "*",

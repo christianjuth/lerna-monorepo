@@ -2929,7 +2929,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/game-of-life@workspace:packages/game-of-life"
   dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"
@@ -2942,7 +2942,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/genetics@workspace:packages/genetics"
   dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"
@@ -2955,7 +2955,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/graph-search@workspace:packages/graph-search"
   dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"
@@ -2998,7 +2998,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/minimax@workspace:packages/minimax"
   dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"
@@ -3011,7 +3011,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/sudoku-solver@workspace:packages/sudoku-solver"
   dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"
@@ -3025,7 +3025,7 @@ __metadata:
   resolution: "@christianjuth/tictactoe-engine@workspace:packages/tictactoe-engine"
   dependencies:
     "@christianjuth/minimax": ^0.0.1-alpha.17
-    "@christianjuth/tsconfig": "workspace:*"
+    "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
     "@swc/jest": "*"

@@ -33,7 +33,7 @@
   },
   "gitHead": "5aab34b23e150c428d0e5870f76441cabb23b16e",
   "devDependencies": {
-    "@christianjuth/tsconfig": "workspace:*",
+    "@christianjuth/tsconfig": "*",
     "@swc/cli": "*",
     "@swc/core": "*",
     "@swc/jest": "*",
