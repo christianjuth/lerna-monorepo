@@ -1,6 +1,6 @@
 {
   "name": "@christianjuth/ts-cli-generator",
-  "version": "0.0.1-alpha.7",
+  "version": "0.0.1-alpha.8",
   "description": "Generate a CLI from TypeScript functions",
   "keywords": [
     "cli"
