@@ -43,6 +43,10 @@ export async function init() {
       function add(x: number, y: number) {
         return x + y;
       }
+
+      export const cli = {
+        add,
+      };
     `
   );
 
@@ -83,14 +87,26 @@ export async function init() {
 
   execSync(`cd ${name} && npm install`);
 
-  console.log(dedent`
-    # start
-    ${cliColor.green("npm start")}
+  console.log(
+    "\n" +
+      dedent`
+        ${cliColor.bold("Getting started")}
+          # navigate to project
+          ${cliColor.green(`cd ${name}`)}
 
-    # Build
-    ${cliColor.green("npm run build")}
+          # edit index.ts
 
-    # Test locally
-    ${cliColor.green("npm link")} 
-  `);
+        ${cliColor.bold("Commands")}
+          # Start
+          ${cliColor.green("npm start")}
+
+          # Build
+          ${cliColor.green("npm run build")}
+
+          # Install locally
+          ${cliColor.green("npm link")}
+          ${cliColor.green(name)} 
+      ` +
+      "\n"
+  );
 }
