@@ -30,12 +30,10 @@ export async function init() {
       start: `${config.buildPackageExec} && node .`,
       dev: `nodemon -e ts --ignore *.tmp.ts -x '${config.buildPackageExec} && node . $1'`,
     },
-    dependencies: {
-      [config.packageName]: "*",
-      typescript: "*",
-    },
     devDependencies: {
+      [config.packageName]: "*",
       nodemon: "2.x",
+      typescript: "*",
     },
   };
 
@@ -58,7 +56,7 @@ export async function init() {
        * Get the length of a string
        */
       function lengthOfString(str: string) {
-        return str.length
+        return str.length;
       }
 
       export const cli = {
@@ -145,5 +143,7 @@ export async function init() {
         ` +
         "\n"
     );
+
+    exec("git init", { cwd: name });
   });
 }
