@@ -9,8 +9,9 @@ import path from "path";
 import chmod from "chmod";
 
 const arg = process.argv[2];
+const isNpx = process.argv[0] === "npx";
 
-if (arg === "init") {
+if (arg === "init" || isNpx) {
   init();
 } else {
   try {
