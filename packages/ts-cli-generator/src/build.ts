@@ -149,7 +149,7 @@ export async function build() {
     JSON.stringify(definitions, null, 2)
   );
 
-  const tmpBuiltPath = `.${uuid()}.ts`;
+  const tmpBuiltPath = `.${uuid()}.tmp.ts`;
 
   await fs.writeFile(
     tmpBuiltPath,

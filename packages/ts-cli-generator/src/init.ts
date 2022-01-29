@@ -28,10 +28,14 @@ export async function init() {
     scripts: {
       build: config.buildPackageExec,
       start: `${config.buildPackageExec} && node .`,
+      dev: `nodemon -e ts --ignore *.tmp.ts -x '${config.buildPackageExec} && node . $1'`,
     },
     dependencies: {
       [config.packageName]: "*",
       typescript: "*",
+    },
+    devDependencies: {
+      nodemon: "2.x",
     },
   };
 
@@ -43,12 +47,23 @@ export async function init() {
   await fs.writeFile(
     path.join(name, "index.ts"),
     dedent`
+      /**
+       * Add two numbers
+       */
       function add(x: number, y: number) {
         return x + y;
       }
 
+      /**
+       * Get the length of a string
+       */
+      function lengthOfString(str: string) {
+        return str.length
+      }
+
       export const cli = {
         add,
+        lengthOfString,
       };
     `
   );
@@ -58,19 +73,26 @@ export async function init() {
     dedent`
       # ${name}
 
-      ### Run cli without installing
+      ### Run CLI
       ${CODE_BLOCK}bash
         npm start
       ${CODE_BLOCK}
 
-      ### Build cli
+      ### Run with nodemon
+      ${CODE_BLOCK}bash
+        npm run dev
+      ${CODE_BLOCK}
+
+      ### Build
       ${CODE_BLOCK}bash
         npm run build
       ${CODE_BLOCK}
 
-      ### Install cli locally
+      ### Install CLI locally
       ${CODE_BLOCK}bash
+        # (make sure you build before linking)
         npm link
+        ${name}
       ${CODE_BLOCK}
     `
   );
@@ -107,13 +129,17 @@ export async function init() {
             # edit index.ts
   
           ${cliColor.bold("Commands")}
-            # Start
+            # Run CLI
             ${cliColor.green("npm start")}
+
+            # Run with nodemon
+            ${cliColor.green("npm run dev")}
   
             # Build
             ${cliColor.green("npm run build")}
   
-            # Install locally
+            # Install CLI locally
+            # (make sure you build before linking)
             ${cliColor.green("npm link")}
             ${cliColor.green(name)} 
         ` +
