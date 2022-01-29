@@ -1,8 +1,8 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 import prompts from "prompts";
 import path from "path";
 import dedent from "dedent";
-import { execSync } from "child_process";
+import { exec } from "child_process";
 import cliColor from "cli-color";
 import { config } from "./config";
 import { createSpinner } from "nanospinner";
@@ -16,9 +16,9 @@ export async function init() {
     message: "Enter a name for your cli",
   });
 
-  const spinner = createSpinner("Creating project files").start();
+  const creatingFilesSpinner = createSpinner("Creating project files").start();
 
-  fs.mkdirSync(name, { recursive: false });
+  await fs.mkdir(name, { recursive: false });
 
   const pjson = {
     name,
@@ -35,12 +35,12 @@ export async function init() {
     },
   };
 
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(name, "package.json"),
     JSON.stringify(pjson, null, 2)
   );
 
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(name, "index.ts"),
     dedent`
       function add(x: number, y: number) {
@@ -53,7 +53,7 @@ export async function init() {
     `
   );
 
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(name, "README.md"),
     dedent`
       # ${name}
@@ -83,35 +83,41 @@ export async function init() {
     exclude: ["node_modules"],
   };
 
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(name, "tsconfig.json"),
     JSON.stringify(tsConfig, null, 2)
   );
 
-  execSync(`cd ${name} && npm install`);
+  creatingFilesSpinner.success();
 
-  spinner.success();
+  const npmInstallSpinner = createSpinner(
+    "Installing npm dependencies"
+  ).start();
 
-  console.log(
-    "\n" +
-      dedent`
-        ${cliColor.bold("Getting started")}
-          # navigate to project
-          ${cliColor.green(`cd ${name}`)}
+  exec(`npm install`, { cwd: name }, () => {
+    npmInstallSpinner.success();
 
-          # edit index.ts
-
-        ${cliColor.bold("Commands")}
-          # Start
-          ${cliColor.green("npm start")}
-
-          # Build
-          ${cliColor.green("npm run build")}
-
-          # Install locally
-          ${cliColor.green("npm link")}
-          ${cliColor.green(name)} 
-      ` +
-      "\n"
-  );
+    console.log(
+      "\n" +
+        dedent`
+          ${cliColor.bold("Getting started")}
+            # navigate to project
+            ${cliColor.green(`cd ${name}`)}
+  
+            # edit index.ts
+  
+          ${cliColor.bold("Commands")}
+            # Start
+            ${cliColor.green("npm start")}
+  
+            # Build
+            ${cliColor.green("npm run build")}
+  
+            # Install locally
+            ${cliColor.green("npm link")}
+            ${cliColor.green(name)} 
+        ` +
+        "\n"
+    );
+  });
 }

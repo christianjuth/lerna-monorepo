@@ -1,11 +1,19 @@
 import dedent from "dedent";
-import fs from "fs";
+import { promises as fs } from "fs";
 import path from "path";
 import { Node, Project, ts, Type } from "ts-morph";
 import { config } from "./config";
 import { createSpinner } from "nanospinner";
 
 const INTERNAL_METHODS = ["__onStart__", "__version__", "__help__"];
+
+function uuid() {
+  function randomString() {
+    return Math.random().toString(36).substring(2);
+  }
+
+  return Array(4).fill(0).map(randomString).join("-");
+}
 
 export async function build() {
   const detectingTypesspinner = createSpinner(
@@ -125,17 +133,19 @@ export async function build() {
     }
   }
 
-  detectingTypesspinner.stop();
+  detectingTypesspinner.success();
 
   const writingFileSpinner = createSpinner("Writing cli files").start();
 
-  fs.writeFileSync(
+  await fs.writeFile(
     path.join(config.outputDir, "cli.json"),
     JSON.stringify(definitions, null, 2)
   );
 
-  fs.writeFileSync(
-    "cli.ts",
+  const tmpBuiltPath = `.${uuid()}.ts`;
+
+  await fs.writeFile(
+    tmpBuiltPath,
     dedent`
       #!/usr/bin/env node
       import { cli } from "./index";
@@ -144,5 +154,7 @@ export async function build() {
     `
   );
 
-  writingFileSpinner.stop();
+  writingFileSpinner.success();
+
+  return tmpBuiltPath;
 }
