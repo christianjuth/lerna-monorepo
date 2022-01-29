@@ -12,9 +12,7 @@ import { createSpinner } from "nanospinner";
 const arg = process.argv[2];
 
 async function bin() {
-  if (arg === "init") {
-    init();
-  } else {
+  if (arg === "build") {
     try {
       await fs.mkdir(config.outputDir, { recursive: false });
     } catch (e) {}
@@ -50,6 +48,8 @@ async function bin() {
         fs.unlink(tmpBuildPFile);
       }
     });
+  } else {
+    init();
   }
 }
 

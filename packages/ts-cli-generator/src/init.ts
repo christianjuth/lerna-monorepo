@@ -26,8 +26,8 @@ export async function init() {
     main: "./.cli/cli.js",
     bin: "./.cli/cli.js",
     scripts: {
-      build: config.packageExec,
-      start: `${config.packageExec} && node .`,
+      build: config.buildPackageExec,
+      start: `${config.buildPackageExec} && node .`,
     },
     dependencies: {
       [config.packageName]: "*",

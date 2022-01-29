@@ -11,6 +11,23 @@ const camelCaseToHyphen = (name: string) =>
 const hyphenToCamelCase = (name: string) =>
   name.replace(/-./g, (m) => m[1].toUpperCase());
 
+function padRight(str: string, length: number) {
+  const padding = Math.max(length - str.length, 0);
+  return `${str}${" ".repeat(padding)}`;
+}
+
+function formatTable(items: { name: string; description: string }[]) {
+  let length = 0;
+
+  for (const item of items) {
+    length = Math.max(length, item.name.length);
+  }
+
+  return items.map(
+    ({ name, description }) => `${padRight(name, length)}\t${description}`
+  );
+}
+
 type ParamType = string | ParamItem;
 
 type ParamItem = {
@@ -143,7 +160,10 @@ function help({
 }: {
   name: string;
   version: string;
-  commands: string[];
+  commands: {
+    name: string;
+    description: string;
+  }[];
 }) {
   return console.log(
     dedent`
@@ -152,7 +172,7 @@ function help({
     ${cliColor.xterm(240)(`Powered by ${config.packageName}`)}
 
     ${cliColor.bold("Commands:")}
-      ${commands.map((name) => camelCaseToHyphen(name)).join("\n      ")}
+      ${formatTable(commands).join("\n      ")}
   ` + "\n"
   );
 }
@@ -187,7 +207,12 @@ export async function run<T extends string>(
     help({
       name: fns.__name__?.() ?? name,
       version: fns.__version__?.() ?? version,
-      commands: Object.keys(data).filter((name) => Boolean(fns[name])),
+      commands: Object.entries(data)
+        .filter(([name]) => Boolean(fns[name]))
+        .map(([name, value]) => ({
+          name: camelCaseToHyphen(name),
+          description: (value as any).description,
+        })),
     });
   } else {
     let cancledRef = { current: false };

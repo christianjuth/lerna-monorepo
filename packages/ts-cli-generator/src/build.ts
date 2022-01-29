@@ -40,6 +40,7 @@ export async function build() {
     string,
     {
       params: ParamItem[];
+      description: string;
     }
   > = {};
 
@@ -114,6 +115,11 @@ export async function build() {
   }
 
   for (let fn of functions) {
+    let description = fn.getJsDocs().at(0)?.getDescription() ?? "";
+    if (description === "undefined") {
+      description = "";
+    }
+
     let params = [];
 
     for (const param of fn.getParameters()) {
@@ -129,6 +135,7 @@ export async function build() {
     if (name) {
       definitions[name] = {
         params,
+        description: dedent(description).replace("\n", " "),
       };
     }
   }
