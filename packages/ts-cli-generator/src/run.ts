@@ -187,7 +187,7 @@ export async function run<T extends string>(
     help({
       name: fns.__name__?.() ?? name,
       version: fns.__version__?.() ?? version,
-      commands: Object.keys(data),
+      commands: Object.keys(data).filter((name) => Boolean(fns[name])),
     });
   } else {
     let cancledRef = { current: false };

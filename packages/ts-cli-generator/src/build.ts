@@ -3,10 +3,15 @@ import fs from "fs";
 import path from "path";
 import { Node, Project, ts, Type } from "ts-morph";
 import { config } from "./config";
+import { createSpinner } from "nanospinner";
 
 const INTERNAL_METHODS = ["__onStart__", "__version__", "__help__"];
 
 export async function build() {
+  const detectingTypesspinner = createSpinner(
+    "Detecting cli functions"
+  ).start();
+
   const project = new Project({
     compilerOptions: { outDir: "dist", declaration: true, strict: true },
   });
@@ -120,6 +125,10 @@ export async function build() {
     }
   }
 
+  detectingTypesspinner.stop();
+
+  const writingFileSpinner = createSpinner("Writing cli files").start();
+
   fs.writeFileSync(
     path.join(config.outputDir, "cli.json"),
     JSON.stringify(definitions, null, 2)
@@ -134,4 +143,6 @@ export async function build() {
       run(__dirname, cli);
     `
   );
+
+  writingFileSpinner.stop();
 }

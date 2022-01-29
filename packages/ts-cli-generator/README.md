@@ -1,11 +1,7 @@
-# `@christianjuth/cli-generator`
+# `@christianjuth/ts-cli-generator`
 
-> TODO: description
+## Create a new project
 
-## Usage
-
-```
-const cliGenerator = require('@christianjuth/cli-generator');
-
-// TODO: DEMONSTRATE API
+```bash
+npx @christianjuth/ts-cli-generator init
 ```

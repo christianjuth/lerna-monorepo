@@ -5,6 +5,7 @@ import dedent from "dedent";
 import { execSync } from "child_process";
 import cliColor from "cli-color";
 import { config } from "./config";
+import { createSpinner } from "nanospinner";
 
 const CODE_BLOCK = "```";
 
@@ -15,13 +16,15 @@ export async function init() {
     message: "Enter a name for your cli",
   });
 
+  const spinner = createSpinner("Creating project files").start();
+
   fs.mkdirSync(name, { recursive: false });
 
   const pjson = {
     name,
     version: "0.0.0",
     main: "./.cli/cli.js",
-    exec: "./.cli/cli.js",
+    bin: "./.cli/cli.js",
     scripts: {
       build: config.packageExec,
       start: `${config.packageExec} && node .`,
@@ -86,6 +89,8 @@ export async function init() {
   );
 
   execSync(`cd ${name} && npm install`);
+
+  spinner.success();
 
   console.log(
     "\n" +

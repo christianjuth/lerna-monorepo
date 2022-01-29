@@ -1834,6 +1834,7 @@ __metadata:
     dedent: ^0.7.0
     find-root: ^1.1.0
     make-executable: ^1.0.1
+    nanospinner: ^1.0.0
     nodemon: "*"
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.9
@@ -19880,6 +19881,15 @@ __metadata:
     snapdragon: ^0.8.1
     to-regex: ^3.0.1
   checksum: 54d4166d6ef08db41252eb4e96d4109ebcb8029f0374f9db873bd91a1f896c32ec780d2a2ea65c0b2d7caf1f28d5e1ea33746a470f32146ac8bba821d80d38d8
+  languageName: node
+  linkType: hard
+
+"nanospinner@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "nanospinner@npm:1.0.0"
+  dependencies:
+    picocolors: ^1.0.0
+  checksum: 25ea14db154f1284d76b59f74822b46a28b0358d2d59f0b61c6b39e7c890b0870a543826d3166fd4f22023e300dff043c389621a0ad0514808e73c86e71a5881
   languageName: node
   linkType: hard
 
