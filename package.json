@@ -46,53 +46,6 @@
     "apps/*",
     "rust/*"
   ],
-  "turbo": {
-    "pipeline": {
-      "clean": {
-        "outputs": [
-          "esm/**",
-          "cjs/**"
-        ]
-      },
-      "build:esm": {
-        "dependsOn": [
-          "clean",
-          "^build:esm"
-        ],
-        "outputs": [
-          "esm/**"
-        ]
-      },
-      "build:cjs": {
-        "dependsOn": [
-          "clean",
-          "^build:cjs"
-        ],
-        "outputs": [
-          "cjs/**"
-        ]
-      },
-      "build": {
-        "dependsOn": [
-          "^build",
-          "build:esm",
-          "build:cjs"
-        ],
-        "outputs": [
-          ".next/**"
-        ]
-      },
-      "test:once": {
-        "outputs": []
-      },
-      "dev": {
-        "cache": false
-      },
-      "start": {
-        "cache": false
-      }
-    }
-  },
   "packageManager": "yarn@3.1.1",
   "dependencies": {
     "expo": "44.0.0",

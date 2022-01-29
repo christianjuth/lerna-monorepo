@@ -33,7 +33,7 @@ export function Readme({
   return (
     <ReactMarkdown 
       components={{
-        code({node, inline, className, children, ref, ...props}) {
+        code({node, inline, className, children, ...props}) {
           if (node.tagName === 'code') {
             const match = /language-(\w+)/.exec(className || '')
             return !inline && match ? (
