@@ -41,6 +41,7 @@
     "find-root": "^1.1.0",
     "make-executable": "^1.0.1",
     "prompts": "^2.4.2",
+    "regenerator-runtime": "^0.13.9",
     "ts-morph": "^13.0.3"
   },
   "devDependencies": {

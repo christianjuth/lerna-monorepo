@@ -1777,7 +1777,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@christianjuth/minimax@^0.0.1-alpha.17, @christianjuth/minimax@workspace:*, @christianjuth/minimax@workspace:packages/minimax":
+"@christianjuth/minimax@^0.0.1-alpha.18, @christianjuth/minimax@workspace:*, @christianjuth/minimax@workspace:packages/minimax":
   version: 0.0.0-use.local
   resolution: "@christianjuth/minimax@workspace:packages/minimax"
   dependencies:
@@ -1807,7 +1807,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@christianjuth/tictactoe-engine@workspace:packages/tictactoe-engine"
   dependencies:
-    "@christianjuth/minimax": ^0.0.1-alpha.17
+    "@christianjuth/minimax": ^0.0.1-alpha.18
     "@christianjuth/tsconfig": "*"
     "@swc/cli": "*"
     "@swc/core": "*"
@@ -1836,6 +1836,7 @@ __metadata:
     make-executable: ^1.0.1
     nodemon: "*"
     prompts: ^2.4.2
+    regenerator-runtime: ^0.13.9
     swc: "*"
     ts-morph: ^13.0.3
   bin:

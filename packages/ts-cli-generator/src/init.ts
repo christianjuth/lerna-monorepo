@@ -28,6 +28,7 @@ export async function init() {
     },
     dependencies: {
       [config.packageName]: "*",
+      typescript: "*",
     },
   };
 
