@@ -7,6 +7,8 @@ npx @christianjuth/ts-cli-generator
 ```
 
 
+[Read my article on building a CLI](https://dev.to/christianjuth/turn-your-resume-into-an-interactive-cli-in-10-minutes-with-typescript-25fc).
+
 ### Demo
 ![demo video](https://s10.gifyu.com/images/ezgif-2-2d9459aa6c.gif)
 

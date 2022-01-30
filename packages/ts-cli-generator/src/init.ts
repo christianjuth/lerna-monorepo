@@ -25,6 +25,7 @@ export async function init() {
     version: "0.0.0",
     main: "./.cli/cli.js",
     bin: "./.cli/cli.js",
+    files: [".cli", "README.md"],
     scripts: {
       build: config.buildPackageExec,
       start: `${config.buildPackageExec} && node .`,
