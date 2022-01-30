@@ -84,7 +84,7 @@ async function getValue(param: ParamItem, argQueue: string[]): Promise<any> {
   }
 
   // handle literals
-  if (selectedType.indexOf(":")) {
+  if (selectedType.indexOf(":") !== -1) {
     const [aparentType, literal] = selectedType.split(":");
     switch (aparentType) {
       case "string":
