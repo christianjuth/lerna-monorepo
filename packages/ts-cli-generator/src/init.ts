@@ -32,9 +32,11 @@ export async function init() {
       dev: `nodemon -e ts --ignore *.tmp.ts -x '${config.buildPackageExec} && node . $1'`,
     },
     devDependencies: {
-      [config.packageName]: "*",
       nodemon: "2.x",
       typescript: "*",
+    },
+    dependencies: {
+      [config.packageName]: "*",
     },
   };
 
@@ -93,6 +95,22 @@ export async function init() {
         npm link
         ${name}
       ${CODE_BLOCK}
+    `
+  );
+
+  await fs.writeFile(
+    path.join(name, ".gitignore"),
+    dedent`
+      # Logs
+      logs
+      *.log
+      npm-debug.log*
+
+      # Node
+      node_modules/
+
+      # Mac
+      .DS_Store
     `
   );
 
