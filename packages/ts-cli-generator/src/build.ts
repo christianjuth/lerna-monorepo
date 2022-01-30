@@ -70,7 +70,23 @@ export async function build() {
         const unionTypeName = unionType.getText();
 
         if (unionType.isLiteral()) {
-          return unionType.getApparentType().getText().toLowerCase();
+          const aparentType = unionType
+            .getApparentType()
+            .getText()
+            .toLowerCase();
+
+          switch (aparentType) {
+            case "string":
+              const str = unionType
+                .getText()
+                .replace(/(^("|'|`)|("|'|`)$)/g, "");
+              return `string:${str}`;
+            case "number":
+              const num = unionType.getText();
+              return `string:${num}`;
+            default:
+              return aparentType;
+          }
         }
 
         switch (unionTypeName.toLowerCase()) {

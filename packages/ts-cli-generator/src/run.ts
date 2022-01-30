@@ -38,22 +38,13 @@ type ParamItem = {
   object?: ParamItem[];
 };
 
-async function getValue(
-  param: ParamItem,
-  onCancel: () => any,
-  cancledRef: { current: boolean },
-  argQueue: string[]
-): Promise<any> {
-  if (cancledRef.current) {
-    return;
-  }
-
+async function getValue(param: ParamItem, argQueue: string[]): Promise<any> {
   if (param.object) {
     const obj: Record<string, any> = {};
 
     for (const prop of param.object) {
       if (prop.key) {
-        obj[prop.key] = await getValue(prop, onCancel, cancledRef, argQueue);
+        obj[prop.key] = await getValue(prop, argQueue);
       }
     }
 
@@ -73,8 +64,13 @@ async function getValue(
           message: `Select praram type for ${param.name}`,
           choices: param.types.map((t) => {
             const value = typeof t === "string" ? t : t.name;
+            let title = value;
+            if (title.indexOf(":") !== -1) {
+              const [_, literal] = title.split(":");
+              title = literal;
+            }
             return {
-              title: value,
+              title,
               value,
             };
           }),
@@ -85,6 +81,17 @@ async function getValue(
   } else if (param.types.length === 1) {
     const firstType = param.types[0];
     selectedType = typeof firstType === "string" ? firstType : firstType.name;
+  }
+
+  // handle literals
+  if (selectedType.indexOf(":")) {
+    const [aparentType, literal] = selectedType.split(":");
+    switch (aparentType) {
+      case "string":
+        return literal;
+      case "number":
+        return +literal;
+    }
   }
 
   const argument = argQueue.shift();
@@ -148,7 +155,7 @@ async function getValue(
 
   for (const type of param.types) {
     if (typeof type !== "string" && type.name === selectedType) {
-      return getValue(type, onCancel, cancledRef, argQueue);
+      return getValue(type, argQueue);
     }
   }
 }
@@ -215,19 +222,18 @@ export async function run<T extends string>(
         })),
     });
   } else {
-    let cancledRef = { current: false };
-
-    function onCancel() {
-      cancledRef.current = true;
-    }
-
     const params = [];
     for (const param of fnConfig.params) {
-      params.push(await getValue(param, onCancel, cancledRef, argQueue));
+      params.push(await getValue(param, argQueue));
     }
 
-    if (!cancledRef.current) {
-      console.log(await fn(...params));
+    const output = await fn(...params);
+    if (output !== undefined) {
+      console.log(output);
     }
   }
+}
+
+function onCancel() {
+  process.exit();
 }
