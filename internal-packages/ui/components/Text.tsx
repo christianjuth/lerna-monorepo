@@ -94,6 +94,13 @@ export const textStyles = css`
       "Segoe UI Symbol";
   }
 
+  ${variants.map(v => `.${genName(v)}.${genName(v)} a`).join(',')} {
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    padding: 0;
+  }
+
   .${genName("h1")} {
     font-size: ${headingSize(45)};
     font-style: normal;
