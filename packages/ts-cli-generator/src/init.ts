@@ -33,6 +33,7 @@ export async function init() {
     },
     devDependencies: {
       nodemon: "2.x",
+      "ts-morph": "13.x",
       typescript: "*",
     },
     dependencies: {
