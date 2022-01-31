@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "chmod": "^0.2.1",
-    "cli-color": "^2.0.1",
     "dedent": "^0.7.0",
     "find-root": "^1.1.0",
     "make-executable": "^1.0.1",

@@ -1,9 +1,10 @@
-import cliColor from "cli-color";
 import prompts from "prompts";
 import dedent from "dedent";
 import path from "path";
 import findRoot from "find-root";
 import { config } from "./config";
+import { ParamsPartial } from "./types";
+import kleur from "kleur";
 
 const camelCaseToHyphen = (name: string) =>
   name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
@@ -174,19 +175,106 @@ function help({
 }) {
   return console.log(
     dedent`
-    ${cliColor.xterm(240)(`${name} CLI ${version}`)}
+    ${kleur.gray(`${name} ${version}`)}
 
-    ${cliColor.xterm(240)(`Powered by ${config.packageName}`)}
+    ${kleur.gray(`Powered by ${config.packageName}`)}
 
-    ${cliColor.bold("Commands:")}
+    ${kleur.bold("Commands:")}
       ${formatTable(commands).join("\n      ")}
+
+    ${kleur.bold("Options:")}
+      ${formatTable([
+        {
+          name: "-i, --interactive",
+          description: "Run CLI in interactive mode",
+        },
+      ])}
   ` + "\n"
   );
 }
 
+let _dir = "";
+let _functions: Record<string, (...args: any) => any> = {};
+
 export async function run<T extends string>(
   dir: string,
   functions: Record<T, (...args: any) => any>
+) {
+  _dir = dir;
+  _functions = functions;
+
+  const data = await require(path.join(dir, "./cli.json"));
+
+  const flags = [];
+  const args = process.argv.slice(2);
+
+  // keep removing items until we encounter
+  // something that isn't a flag
+  while (args.length > 0) {
+    const crnt = args[0];
+    // is flag
+    if (crnt && crnt[0] === "-") {
+      flags.push(args.shift());
+    } else {
+      break;
+    }
+  }
+
+  let functionName = args.shift() ?? "";
+  if (functionName[0] === "_") {
+    // disallow calling of hidden functions
+    functionName = "";
+  }
+
+  if (flags.includes("-i") || flags.includes("--interactive")) {
+    while (true) {
+      let helpText: any;
+
+      const { command } = await prompts(
+        {
+          type: "autocomplete",
+          name: "command",
+          message: "",
+          choices: [
+            ...Object.keys(data)
+              .filter((name) => name[0] !== "_")
+              .map((key) => ({
+                title: camelCaseToHyphen(key),
+                value: key,
+              })),
+          ],
+          onState({ value }) {
+            Object.entries(data).find(([name, data]) => {
+              if (name === value) {
+                helpText = (data as any).description;
+              }
+            });
+          },
+          // @ts-ignore
+          onRender() {
+            // @ts-ignore
+            this.msg = [
+              "Select a command",
+              helpText ? kleur.gray(`(${helpText})`) : null,
+            ]
+              .filter(Boolean)
+              .join(" ");
+          },
+        },
+        { onCancel }
+      );
+      await runInternal(dir, functions, command);
+    }
+  }
+
+  runInternal(dir, functions, functionName);
+}
+
+export async function runInternal<T extends string>(
+  dir: string,
+  functions: Record<T, (...args: any) => any>,
+  functionName: string,
+  paramQueue: any[] = process.argv.slice(3)
 ) {
   const root = findRoot(dir);
   let version = "unknown";
@@ -204,8 +292,7 @@ export async function run<T extends string>(
 
   const data = await require(path.join(dir, "./cli.json"));
 
-  const command = hyphenToCamelCase(process.argv[2] ?? "");
-  const argQueue = process.argv.slice(3);
+  const command = hyphenToCamelCase(functionName);
 
   const fnConfig = data[command];
   const fn = fns[command];
@@ -215,7 +302,7 @@ export async function run<T extends string>(
       name: fns.__name__?.() ?? name,
       version: fns.__version__?.() ?? version,
       commands: Object.entries(data)
-        .filter(([name]) => Boolean(fns[name]))
+        .filter(([name]) => Boolean(fns[name]) && name[0] !== "_")
         .map(([name, value]) => ({
           name: camelCaseToHyphen(name),
           description: (value as any).description,
@@ -224,14 +311,23 @@ export async function run<T extends string>(
   } else {
     const params = [];
     for (const param of fnConfig.params) {
-      params.push(await getValue(param, argQueue));
+      params.push(await getValue(param, paramQueue));
     }
 
     const output = await fn(...params);
-    if (output !== undefined) {
-      console.log(output);
-    }
+
+    return output;
   }
+}
+
+export function call<R, T extends (...args: any) => R>(fn: T) {
+  return async (...params: ParamsPartial<T>) => {
+    const name = fn.name;
+    if (_dir && _functions && name) {
+      console.log(camelCaseToHyphen(name.replace(/^_/, "")));
+      return await runInternal(_dir, _functions, name, params);
+    }
+  };
 }
 
 function onCancel() {

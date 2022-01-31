@@ -1,2 +1,3 @@
 export { build } from "./build";
-export { run } from "./run";
+export { run, call } from "./run";
+export { CLI } from "./types";
