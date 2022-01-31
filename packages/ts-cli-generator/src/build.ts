@@ -1,7 +1,7 @@
 import dedent from "dedent";
 import { promises as fs } from "fs";
 import path from "path";
-import { Node, Project, ts, Type } from "ts-morph";
+import type { Node, ts, Type } from "ts-morph";
 import { config } from "./config";
 import { createSpinner } from "nanospinner";
 // @ts-ignore
@@ -21,6 +21,8 @@ function uuid() {
 }
 
 async function buildTypeScript(tmpBuiltPath: string) {
+  const { ts } = await import("ts-morph");
+
   await fs.writeFile(
     tmpBuiltPath,
     dedent`
@@ -63,6 +65,8 @@ async function buildTypeScript(tmpBuiltPath: string) {
 }
 
 async function buildCli() {
+  const { Project } = await import("ts-morph");
+
   const detectingTypesspinner = createSpinner("Detecting CLI commands").start();
 
   const project = new Project({
