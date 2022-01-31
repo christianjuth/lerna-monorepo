@@ -4,6 +4,11 @@ import path from "path";
 import { Node, Project, ts, Type } from "ts-morph";
 import { config } from "./config";
 import { createSpinner } from "nanospinner";
+// @ts-ignore
+import { symbols } from "nanospinner/consts";
+// @ts-ignore
+import chmod from "chmod";
+import kleur from "kleur";
 
 const INTERNAL_METHODS = ["__onStart__", "__version__", "__help__"];
 
@@ -15,10 +20,50 @@ function uuid() {
   return Array(4).fill(0).map(randomString).join("-");
 }
 
-export async function build() {
-  const detectingTypesspinner = createSpinner(
-    "Detecting cli functions"
-  ).start();
+async function buildTypeScript(tmpBuiltPath: string) {
+  await fs.writeFile(
+    tmpBuiltPath,
+    dedent`
+      #!/usr/bin/env node
+      import { cli } from "./index";
+      import { run } from "${config.packageName}";
+      run(__dirname, cli);
+    `
+  );
+
+  try {
+    const emitSpinner = createSpinner("Emitting CLI build");
+
+    const program = ts.createProgram([tmpBuiltPath], {
+      module: ts.ModuleKind.CommonJS,
+      sourceMap: false,
+      outDir: config.outputDir,
+    });
+
+    program.emit();
+
+    fs.unlink(tmpBuiltPath);
+    tmpBuiltPath = tmpBuiltPath.replace(/\.ts$/, ".js");
+
+    chmod(path.join(config.outputDir, tmpBuiltPath), {
+      execute: true,
+    });
+
+    fs.rename(
+      path.join(config.outputDir, tmpBuiltPath),
+      path.join(config.outputDir, "cli.js")
+    );
+
+    emitSpinner.success();
+  } catch (e) {
+    console.log(e);
+    // cleanup
+    fs.unlink(tmpBuiltPath);
+  }
+}
+
+async function buildCli() {
+  const detectingTypesspinner = createSpinner("Detecting CLI commands").start();
 
   const project = new Project({
     compilerOptions: { outDir: "dist", declaration: true, strict: true },
@@ -26,6 +71,9 @@ export async function build() {
 
   project.addSourceFilesAtPaths("index.ts");
   const file = project.getSourceFile("index.ts");
+
+  // TODO: recursivly follow import statements
+  // console.log(file?.getImportStringLiterals().map(l => l.getText()))
 
   if (!file) {
     throw new Error(`index.js does not exsist`);
@@ -130,7 +178,49 @@ export async function build() {
     return output;
   }
 
+  const { cli } = await require(config.jsEntry);
+  let warning = false;
+
   for (let fn of functions) {
+    const name = fn.getName();
+
+    if (!name) {
+      warning = true;
+      console.warn(
+        kleur.yellow("Warning: CLI functions must be named functions")
+      );
+      continue;
+    }
+
+    const [matchingFnExportName, matchingFn] =
+      Object.entries(cli).find(([_, fn]: any) => fn.name === name) ?? [];
+
+    if (!cli[name] && matchingFn !== undefined) {
+      warning = true;
+      console.warn(
+        "\n" +
+          kleur.yellow(dedent`
+            Warning: CLI function exported name must match function definition name
+
+            ${kleur.bold("Correct")}
+            function ${name}() {}
+
+            export const cli = {
+              ${name},
+            }
+
+            ${kleur.bold("Incorrect")}
+            function ${name}() {}
+
+            export const cli = {
+              // don't rename functions
+              ${matchingFnExportName}: ${name}
+            }
+          `)
+      );
+      continue;
+    }
+
     let description = fn.getJsDocs().at(0)?.getDescription() ?? "";
     if (description === "undefined") {
       description = "";
@@ -147,7 +237,6 @@ export async function build() {
       );
     }
 
-    const name = fn.getName();
     if (name) {
       definitions[name] = {
         params,
@@ -156,28 +245,30 @@ export async function build() {
     }
   }
 
-  detectingTypesspinner.success();
+  if (warning) {
+    // @ts-ignore
+    detectingTypesspinner.success({ mark: kleur.yellow(symbols.tick) });
+  } else {
+    detectingTypesspinner.success();
+  }
 
-  const writingFileSpinner = createSpinner("Writing cli files").start();
+  const writingFileSpinner = createSpinner("Writing CLI data files").start();
 
   await fs.writeFile(
     path.join(config.outputDir, "cli.json"),
     JSON.stringify(definitions, null, 2)
   );
 
+  writingFileSpinner.success();
+}
+
+export async function build() {
+  try {
+    await fs.mkdir(config.outputDir, { recursive: false });
+  } catch (e) {}
+
   const tmpBuiltPath = `.${uuid()}.tmp.ts`;
 
-  await fs.writeFile(
-    tmpBuiltPath,
-    dedent`
-      #!/usr/bin/env node
-      import { cli } from "./index";
-      import { run } from "${config.packageName}";
-      run(__dirname, cli);
-    `
-  );
-
-  writingFileSpinner.success();
-
-  return tmpBuiltPath;
+  await buildTypeScript(tmpBuiltPath);
+  await buildCli();
 }

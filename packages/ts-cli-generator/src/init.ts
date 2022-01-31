@@ -3,7 +3,7 @@ import prompts from "prompts";
 import path from "path";
 import dedent from "dedent";
 import { exec } from "child_process";
-import cliColor from "cli-color";
+import kleur from "kleur";
 import { config } from "./config";
 import { createSpinner } from "nanospinner";
 
@@ -159,26 +159,26 @@ export async function init() {
     console.log(
       "\n" +
         dedent`
-          ${cliColor.bold("Getting started")}
+          ${kleur.bold("Getting started")}
             # navigate to project
-            ${cliColor.green(`cd ${name}`)}
+            ${kleur.green(`cd ${name}`)}
   
             # edit index.ts
   
-          ${cliColor.bold("Commands")}
+          ${kleur.bold("Commands")}
             # Run CLI
-            ${cliColor.green("npm start")}
+            ${kleur.green("npm start")}
 
             # Run with nodemon
-            ${cliColor.green("npm run dev")}
+            ${kleur.green("npm run dev")}
   
             # Build
-            ${cliColor.green("npm run build")}
+            ${kleur.green("npm run build")}
   
             # Install CLI locally
             # (make sure you build before linking)
-            ${cliColor.green("npm link")}
-            ${cliColor.green(name)} 
+            ${kleur.green("npm link")}
+            ${kleur.green(name)} 
         ` +
         "\n"
     );

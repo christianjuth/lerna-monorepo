@@ -39,13 +39,22 @@ type ParamItem = {
   object?: ParamItem[];
 };
 
-async function getValue(param: ParamItem, argQueue: string[]): Promise<any> {
+async function getValue(
+  param: ParamItem,
+  argQueue: string[],
+  onCancel: () => any,
+  cancledRef: { current: boolean }
+): Promise<any> {
+  if (cancledRef.current) {
+    return;
+  }
+
   if (param.object) {
     const obj: Record<string, any> = {};
 
     for (const prop of param.object) {
       if (prop.key) {
-        obj[prop.key] = await getValue(prop, argQueue);
+        obj[prop.key] = await getValue(prop, argQueue, onCancel, cancledRef);
       }
     }
 
@@ -156,7 +165,7 @@ async function getValue(param: ParamItem, argQueue: string[]): Promise<any> {
 
   for (const type of param.types) {
     if (typeof type !== "string" && type.name === selectedType) {
-      return getValue(type, argQueue);
+      return getValue(type, argQueue, onCancel, cancledRef);
     }
   }
 }
@@ -185,23 +194,25 @@ function help({
     ${kleur.bold("Options:")}
       ${formatTable([
         {
+          name: "-h, --help",
+          description: "Output usage information",
+        },
+        {
           name: "-i, --interactive",
           description: "Run CLI in interactive mode",
         },
-      ])}
+      ]).join("\n      ")}
   ` + "\n"
   );
 }
 
 let _dir = "";
-let _functions: Record<string, (...args: any) => any> = {};
 
 export async function run<T extends string>(
   dir: string,
   functions: Record<T, (...args: any) => any>
 ) {
   _dir = dir;
-  _functions = functions;
 
   const data = await require(path.join(dir, "./cli.json"));
 
@@ -226,6 +237,12 @@ export async function run<T extends string>(
     functionName = "";
   }
 
+  if (flags.includes("-h" || flags.includes("--help"))) {
+    // empty command prints usage
+    await runInternal(dir, functions, "");
+    return;
+  }
+
   if (flags.includes("-i") || flags.includes("--interactive")) {
     while (true) {
       let helpText: any;
@@ -237,7 +254,9 @@ export async function run<T extends string>(
           message: "",
           choices: [
             ...Object.keys(data)
-              .filter((name) => name[0] !== "_")
+              .filter(
+                (name) => Boolean((functions as any)[name]) && name[0] !== "_"
+              )
               .map((key) => ({
                 title: camelCaseToHyphen(key),
                 value: key,
@@ -261,7 +280,7 @@ export async function run<T extends string>(
               .join(" ");
           },
         },
-        { onCancel }
+        { onCancel: exit }
       );
       await runInternal(dir, functions, command);
     }
@@ -297,7 +316,7 @@ export async function runInternal<T extends string>(
   const fnConfig = data[command];
   const fn = fns[command];
 
-  if (!fnConfig || !fn) {
+  if (!command || !fnConfig || !fn) {
     help({
       name: fns.__name__?.() ?? name,
       version: fns.__version__?.() ?? version,
@@ -309,13 +328,25 @@ export async function runInternal<T extends string>(
         })),
     });
   } else {
+    let cancledRef = { current: false };
+    function onCancel() {
+      console.log("Press CTRL-C again to exit");
+      cancledRef.current = true;
+    }
+
     const params = [];
     for (const param of fnConfig.params) {
-      params.push(await getValue(param, paramQueue));
+      if (cancledRef.current) {
+        return;
+      }
+      params.push(await getValue(param, paramQueue, onCancel, cancledRef));
+    }
+
+    if (cancledRef.current) {
+      return;
     }
 
     const output = await fn(...params);
-
     return output;
   }
 }
@@ -323,13 +354,13 @@ export async function runInternal<T extends string>(
 export function call<R, T extends (...args: any) => R>(fn: T) {
   return async (...params: ParamsPartial<T>) => {
     const name = fn.name;
-    if (_dir && _functions && name) {
+    if (_dir && name) {
       console.log(camelCaseToHyphen(name.replace(/^_/, "")));
-      return await runInternal(_dir, _functions, name, params);
+      return await runInternal(_dir, { [name]: fn }, name, params);
     }
   };
 }
 
-function onCancel() {
+function exit() {
   process.exit();
 }
