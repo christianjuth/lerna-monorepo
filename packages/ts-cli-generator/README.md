@@ -6,7 +6,11 @@
 npx @christianjuth/ts-cli-generator
 ```
 
-[Read my article on building a CLI](https://dev.to/christianjuth/turn-your-resume-into-an-interactive-cli-in-10-minutes-with-typescript-25fc).
+
+
+### Resources
+* [Read my article on building a CLI](https://dev.to/christianjuth/turn-your-resume-into-an-interactive-cli-in-10-minutes-with-typescript-25fc)
+* [Check out some examples](https://github.com/christianjuth/monorepo/tree/main/packages/ts-cli-generator/examples)
 
 ### Demo
 ![demo video](https://s10.gifyu.com/images/ezgif-2-2d9459aa6c.gif)

@@ -1,0 +1,56 @@
+{
+  "uuid": {
+    "params": [],
+    "description": ""
+  },
+  "getToken": {
+    "params": [],
+    "description": ""
+  },
+  "exposeToken": {
+    "params": [],
+    "description": ""
+  },
+  "apiLogin": {
+    "params": [
+      {
+        "name": "username",
+        "types": [
+          "string"
+        ]
+      },
+      {
+        "name": "password",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "login": {
+    "params": [
+      {
+        "name": "username",
+        "types": [
+          "string"
+        ]
+      },
+      {
+        "name": "password",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "logout": {
+    "params": [],
+    "description": ""
+  },
+  "iRequireAuth": {
+    "params": [],
+    "description": ""
+  }
+}

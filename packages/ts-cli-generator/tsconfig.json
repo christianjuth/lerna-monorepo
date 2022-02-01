@@ -1,3 +1,6 @@
 {
-  "extends": "@christianjuth/tsconfig/swc.json"
+  "extends": "@christianjuth/tsconfig/swc.json",
+  "compilerOptions": {
+    "resolveJsonModule": true
+  }
 }

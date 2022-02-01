@@ -207,12 +207,14 @@ function help({
 }
 
 let _dir = "";
+let _functions: Record<string, (...args: any) => any> = {};
 
 export async function run<T extends string>(
   dir: string,
   functions: Record<T, (...args: any) => any>
 ) {
   _dir = dir;
+  _functions = functions;
 
   const data = await require(path.join(dir, "./cli.json"));
 
@@ -289,9 +291,9 @@ export async function run<T extends string>(
   runInternal(dir, functions, functionName);
 }
 
-export async function runInternal<T extends string>(
+export async function runInternal(
   dir: string,
-  functions: Record<T, (...args: any) => any>,
+  fns: Record<string, (...args: any) => any>,
   functionName: string,
   paramQueue: any[] = process.argv.slice(3)
 ) {
@@ -304,8 +306,6 @@ export async function runInternal<T extends string>(
     version = pjson.version ?? version;
     name = pjson.name ? pjson.name.replace(/@[^\/]+\//, "") : name;
   } catch (e) {}
-
-  const fns = functions as Record<string, (...args: any) => any>;
 
   await fns.__onStart__?.();
 
@@ -328,6 +328,8 @@ export async function runInternal<T extends string>(
         })),
     });
   } else {
+    await fns.__beforeFn__?.(fn);
+
     let cancledRef = { current: false };
     function onCancel() {
       console.log("Press CTRL-C again to exit");
@@ -355,8 +357,12 @@ export function call<R, T extends (...args: any) => R>(fn: T) {
   return async (...params: ParamsPartial<T>) => {
     const name = fn.name;
     if (_dir && name) {
-      console.log(camelCaseToHyphen(name.replace(/^_/, "")));
-      return await runInternal(_dir, { [name]: fn }, name, params);
+      return await runInternal(
+        _dir,
+        { ..._functions, [name]: fn },
+        name,
+        params
+      );
     }
   };
 }

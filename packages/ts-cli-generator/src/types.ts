@@ -13,3 +13,10 @@ export type ParamsPartial<T extends (...args: any) => any> =
   | [];
 
 export type CLI = Record<string, (...args: any) => any>;
+
+export type Events = {
+  __onStart__: () => any;
+  __version__: () => any;
+  __help__: () => any;
+  __beforeFn__: (fn: () => any) => any;
+};

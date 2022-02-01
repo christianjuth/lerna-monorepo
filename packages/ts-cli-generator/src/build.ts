@@ -9,8 +9,7 @@ import { symbols } from "nanospinner/consts";
 // @ts-ignore
 import chmod from "chmod";
 import kleur from "kleur";
-
-const INTERNAL_METHODS = ["__onStart__", "__version__", "__help__"];
+import { Events } from "./types";
 
 function uuid() {
   function randomString() {
@@ -84,8 +83,8 @@ async function buildCli() {
   }
 
   let functions = file.getFunctions().filter((fn) => {
-    const name = fn.getName();
-    return name && !INTERNAL_METHODS.includes(name);
+    const name = fn.getName() as keyof Events;
+    return name && !config.internalMethods.includes(name);
   });
 
   const definitions: Record<
