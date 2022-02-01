@@ -16,9 +16,48 @@ export async function init() {
     message: "Enter a name for your cli",
   });
 
+  const templates = (
+    await fs.readdir(path.join(config.pkgRoot, "examples"))
+  ).filter((name) => name[0] !== ".");
+
+  const { template } = await prompts({
+    type: "select",
+    name: "template",
+    message: "Pick a template",
+    choices: templates.map((template) => ({
+      title: template,
+      value: template,
+    })),
+  });
+
+  let indexData = dedent`
+    import { CLI } from "@christianjuth/ts-cli-generator";
+
+    /**
+     * Add two numbers
+     */
+    function add(x: number, y: number) {
+      console.log(x + y);
+    }
+    
+    export const cli: CLI = {
+      add,
+    };
+  `;
+
+  try {
+    indexData = (
+      await fs.readFile(
+        path.join(config.pkgRoot, "examples", template, "index.ts")
+      )
+    ).toString();
+  } catch (e) {}
+
   const creatingFilesSpinner = createSpinner("Creating project files").start();
 
   await fs.mkdir(name, { recursive: false });
+
+  await fs.writeFile(path.join(name, "index.ts"), indexData);
 
   const pjson = {
     name,
@@ -44,50 +83,6 @@ export async function init() {
   await fs.writeFile(
     path.join(name, "package.json"),
     JSON.stringify(pjson, null, 2)
-  );
-
-  await fs.writeFile(
-    path.join(name, "index.ts"),
-    dedent`
-      import { call, CLI } from "@christianjuth/ts-cli-generator";
-
-      /**
-       * Add two numbers
-       */
-      function add(x: number, y: number) {
-        console.log(x + y);
-      }
-      
-      /**
-       * Subtract two numbers
-       */
-      function _subtract(x: number, y: number) {
-        return x - y;
-      }
-      
-      /**
-       * Add then subtract as seprate interactions
-       */
-      async function addSubtract(x: number, y: number) {
-        console.log(x + y);
-        console.log(await call(_subtract)());
-      }
-      
-      /**
-       * Get the length of a string
-       */
-      function lengthOfString(str: string) {
-        console.log(str.length);
-      }
-      
-      export const cli: CLI = {
-        add,
-        addSubtract,
-        lengthOfString,
-        // underscore means function is available but hidden
-        _subtract,
-      };
-    `
   );
 
   await fs.writeFile(

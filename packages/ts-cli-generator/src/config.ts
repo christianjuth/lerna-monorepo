@@ -3,7 +3,17 @@ import path from "path";
 import { Events } from "./types";
 
 const ENTRY_NAME = "index";
-const root = findRoot(process.cwd());
+
+let cliRoot = "";
+try {
+  cliRoot = findRoot(process.cwd());
+} catch (e) {}
+
+let pkgRoot = "";
+try {
+  pkgRoot = findRoot(__dirname);
+} catch (e) {}
+
 const outputDir = ".cli";
 
 const INTERNAL_METHODS: (keyof Events)[] = [
@@ -17,8 +27,9 @@ export const config = {
   outputDir,
   packageName: "@christianjuth/ts-cli-generator",
   buildPackageExec: "ts-cli-generator build",
-  root,
-  tsEntry: path.join(root, `${ENTRY_NAME}.ts`),
-  jsEntry: path.join(root, outputDir, `${ENTRY_NAME}.js`),
+  cliRoot,
+  tsEntry: path.join(cliRoot, `${ENTRY_NAME}.ts`),
+  jsEntry: path.join(cliRoot, outputDir, `${ENTRY_NAME}.js`),
+  pkgRoot,
   internalMethods: INTERNAL_METHODS,
 };
