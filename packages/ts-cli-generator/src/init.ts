@@ -16,20 +16,6 @@ export async function init() {
     message: "Enter a name for your cli",
   });
 
-  const templates = (
-    await fs.readdir(path.join(config.pkgRoot, "examples"))
-  ).filter((name) => name[0] !== ".");
-
-  const { template } = await prompts({
-    type: "select",
-    name: "template",
-    message: "Pick a template",
-    choices: templates.map((template) => ({
-      title: template,
-      value: template,
-    })),
-  });
-
   let indexData = dedent`
     import { CLI } from "@christianjuth/ts-cli-generator";
 
@@ -46,6 +32,20 @@ export async function init() {
   `;
 
   try {
+    const templates = (
+      await fs.readdir(path.join(config.pkgRoot, "examples"))
+    ).filter((name) => name[0] !== ".");
+
+    const { template } = await prompts({
+      type: "select",
+      name: "template",
+      message: "Pick a template",
+      choices: templates.map((template) => ({
+        title: template,
+        value: template,
+      })),
+    });
+
     indexData = (
       await fs.readFile(
         path.join(config.pkgRoot, "examples", template, "index.ts")

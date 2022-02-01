@@ -16,7 +16,8 @@
     "cjs",
     "esm",
     "src",
-    "README.md"
+    "README.md",
+    "examples"
   ],
   "publishConfig": {
     "access": "public"
