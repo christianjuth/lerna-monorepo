@@ -31,6 +31,9 @@ export async function init() {
     };
   `;
 
+  let templateDeps = {};
+  let templateDevDeps = {};
+
   try {
     const templates = (
       await fs.readdir(path.join(config.pkgRoot, "examples"))
@@ -51,6 +54,15 @@ export async function init() {
         path.join(config.pkgRoot, "examples", template, "index.ts")
       )
     ).toString();
+
+    const { dependencies, devDependencies } = await require(path.join(
+      config.pkgRoot,
+      "examples",
+      template,
+      "package.json"
+    ));
+    templateDeps = dependencies;
+    templateDevDeps = devDependencies;
   } catch (e) {}
 
   const creatingFilesSpinner = createSpinner("Creating project files").start();
@@ -71,11 +83,13 @@ export async function init() {
       dev: `nodemon -e ts --ignore *.tmp.ts -x '${config.buildPackageExec} && node . $1'`,
     },
     devDependencies: {
+      ...templateDevDeps,
       nodemon: "2.x",
       "ts-morph": "13.x",
       typescript: "*",
     },
     dependencies: {
+      ...templateDeps,
       [config.packageName]: "*",
     },
   };

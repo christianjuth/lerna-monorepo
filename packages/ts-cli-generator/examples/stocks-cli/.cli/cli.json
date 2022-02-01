@@ -1,0 +1,108 @@
+{
+  "fetchJson": {
+    "params": [
+      {
+        "name": "url",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "getPriceFromApi": {
+    "params": [
+      {
+        "name": "ticker",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "getNewsFromApi": {
+    "params": [
+      {
+        "name": "quote",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "checkStockPrice": {
+    "params": [
+      {
+        "name": "ticker",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "checkStock": {
+    "params": [
+      {
+        "name": "ticker",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": "Get data about a stock from its ticker (e.g. AAPL, GOOGL)"
+  },
+  "getIndex": {
+    "params": [
+      {
+        "name": "max",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "index",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "getShouldOpenInBrowser": {
+    "params": [
+      {
+        "name": "openInBrowser",
+        "types": [
+          "boolean"
+        ]
+      }
+    ],
+    "description": ""
+  },
+  "readNews": {
+    "params": [
+      {
+        "name": "ticker",
+        "types": [
+          "string"
+        ]
+      }
+    ],
+    "description": "Get related to a stock"
+  },
+  "techStocks": {
+    "params": [
+      {
+        "name": "tickers",
+        "types": [
+          "string:AAPL",
+          "string:GOOGL"
+        ]
+      }
+    ],
+    "description": ""
+  }
+}

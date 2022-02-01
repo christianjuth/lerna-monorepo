@@ -12,6 +12,10 @@ export type ParamsPartial<T extends (...args: any) => any> =
   | Reverse<PartialTurple<Reverse<Parameters<T>>>>
   | [];
 
+export type ParamsArrayPartial<T extends any[]> =
+  | Reverse<PartialTurple<Reverse<T>>>
+  | [];
+
 export type CLI = Record<string, (...args: any) => any>;
 
 export type Events = {

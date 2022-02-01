@@ -1,3 +1,4 @@
+import dedent from "dedent";
 import findRoot from "find-root";
 import path from "path";
 
@@ -48,3 +49,37 @@ export const hash = (x: string | Record<string, any> | any[]) => {
   }
   return phash(SEED, str) + "";
 };
+
+function padRight(str: string, length: number) {
+  const padding = Math.max(length - str.length, 0);
+  return `${str}${" ".repeat(padding)}`;
+}
+
+export function formatTable(data: string[][]) {
+  const colWidths: number[] = [];
+
+  for (const row of data) {
+    for (let i = 0; i < row.length; i++) {
+      colWidths[i] = Math.max(colWidths[i] ?? 0, row[i].length);
+    }
+  }
+
+  let table = "";
+
+  for (const row of data) {
+    for (let i = 0; i < row.length; i++) {
+      const col = row[i];
+      if (i > 0) {
+        table += "\t";
+      }
+      table += padRight(col, colWidths[i]);
+    }
+    table += "\n";
+  }
+
+  return dedent(table);
+}
+
+export function printTable(data: string[][]) {
+  console.log(formatTable(data));
+}

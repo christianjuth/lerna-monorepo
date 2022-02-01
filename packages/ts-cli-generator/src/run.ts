@@ -3,7 +3,7 @@ import dedent from "dedent";
 import path from "path";
 import findRoot from "find-root";
 import { config } from "./config";
-import { ParamsPartial } from "./types";
+import { ParamsArrayPartial } from "./types";
 import kleur from "kleur";
 
 const camelCaseToHyphen = (name: string) =>
@@ -106,6 +106,8 @@ async function getValue(
 
   const argument = argQueue.shift();
 
+  const message = camelCaseToHyphen(param.name);
+
   switch (selectedType) {
     case "string":
       return (
@@ -115,7 +117,7 @@ async function getValue(
             {
               type: "text",
               name: "value",
-              message: `param: ${param.name}`,
+              message,
             },
             { onCancel }
           )
@@ -130,7 +132,7 @@ async function getValue(
             {
               type: "number",
               name: "value",
-              message: `param: ${param.name}`,
+              message,
             },
             { onCancel }
           )
@@ -146,7 +148,7 @@ async function getValue(
             {
               type: "select",
               name: "value",
-              message: `param: ${param.name}`,
+              message,
               choices: [
                 { value: "true", title: "True" },
                 { value: "false", title: "False" },
@@ -334,6 +336,8 @@ export async function runInternal(
     function onCancel() {
       console.log("Press CTRL-C again to exit");
       cancledRef.current = true;
+      // thowing will cancel the current interaction
+      throw "";
     }
 
     const params = [];
@@ -348,13 +352,19 @@ export async function runInternal(
       return;
     }
 
-    const output = await fn(...params);
-    return output;
+    try {
+      const output = await fn(...params);
+      return output;
+    } catch (e: any) {
+      if (e.message) {
+        console.error(kleur.red(e.message));
+      }
+    }
   }
 }
 
-export function call<R, T extends (...args: any) => R>(fn: T) {
-  return async (...params: ParamsPartial<T>) => {
+export function call<Args extends any[], R>(fn: (...any: Args) => R) {
+  return async (...params: ParamsArrayPartial<Args>): Promise<R> => {
     const name = fn.name;
     if (_dir && name) {
       return await runInternal(
@@ -364,6 +374,7 @@ export function call<R, T extends (...args: any) => R>(fn: T) {
         params
       );
     }
+    throw Error(`Could not find function with name ${fn}`);
   };
 }
 

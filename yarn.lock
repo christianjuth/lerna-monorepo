@@ -6838,6 +6838,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/openurl@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@types/openurl@npm:1.0.0"
+  dependencies:
+    "@types/node": "*"
+  checksum: 7b1e2931a768a7be2a791375e7af9de2fbade77d5684ab0e060e4e045da5a2963529be139a3039feb4ca14c513ffb7cc9ecf78eddafa024f1fe352219c4719c9
+  languageName: node
+  linkType: hard
+
 "@types/overlayscrollbars@npm:^1.12.0":
   version: 1.12.1
   resolution: "@types/overlayscrollbars@npm:1.12.1"
@@ -16706,6 +16715,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"isomorphic-fetch@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "isomorphic-fetch@npm:3.0.0"
+  dependencies:
+    node-fetch: ^2.6.1
+    whatwg-fetch: ^3.4.1
+  checksum: e5ab79a56ce5af6ddd21265f59312ad9a4bc5a72cebc98b54797b42cb30441d5c5f8d17c5cd84a99e18101c8af6f90c081ecb8d12fd79e332be1778d58486d75
+  languageName: node
+  linkType: hard
+
 "isstream@npm:~0.1.2":
   version: 0.1.2
   resolution: "isstream@npm:0.1.2"
@@ -20784,6 +20803,13 @@ __metadata:
     is-docker: ^2.1.1
     is-wsl: ^2.2.0
   checksum: e9545bec64cdbf30a0c35c1bdc310344adf8428a117f7d8df3c0af0a0a24c513b304916a6d9b11db0190ff7225c2d578885080b761ed46a3d5f6f1eebb98b63c
+  languageName: node
+  linkType: hard
+
+"openurl@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "openurl@npm:1.1.1"
+  checksum: c90f2f065bc5950f1402aff67a3ce4b5fb0e4475cb07b5ff84247686f7436fbc5bc2d0e38bda4ebc9cf8aea866788424e07f25a68f7e97502d412527964351a9
   languageName: node
   linkType: hard
 
@@ -26004,6 +26030,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stocks-cli@workspace:packages/ts-cli-generator/examples/stocks-cli":
+  version: 0.0.0-use.local
+  resolution: "stocks-cli@workspace:packages/ts-cli-generator/examples/stocks-cli"
+  dependencies:
+    "@christianjuth/ts-cli-generator": "workspace:*"
+    "@types/openurl": ^1.0.0
+    isomorphic-fetch: ^3.0.0
+    nodemon: 2.x
+    openurl: ^1.1.1
+    ts-morph: 13.x
+    typescript: "*"
+  bin:
+    stocks-cli: ./.cli/cli.js
+  languageName: unknown
+  linkType: soft
+
 "store2@npm:^2.12.0":
   version: 2.13.1
   resolution: "store2@npm:2.13.1"
@@ -29007,7 +29049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.0.0, whatwg-fetch@npm:^3.6.2":
+"whatwg-fetch@npm:>=0.10.0, whatwg-fetch@npm:^3.0.0, whatwg-fetch@npm:^3.4.1, whatwg-fetch@npm:^3.6.2":
   version: 3.6.2
   resolution: "whatwg-fetch@npm:3.6.2"
   checksum: ee976b7249e7791edb0d0a62cd806b29006ad7ec3a3d89145921ad8c00a3a67e4be8f3fb3ec6bc7b58498724fd568d11aeeeea1f7827e7e1e5eae6c8a275afed
