@@ -1,0 +1,137 @@
+{
+  "add": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Add two numbers"
+  },
+  "subtract": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Subtract two numbers"
+  },
+  "multiply": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Multiply two numbers"
+  },
+  "divide": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Divider one number by the other"
+  },
+  "square": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Square a number"
+  },
+  "cube": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Cube a number"
+  },
+  "sqrt": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Cube a number"
+  },
+  "bitwiseAnd": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Bitwise and"
+  },
+  "bitwiseOr": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Bitwise or"
+  }
+}

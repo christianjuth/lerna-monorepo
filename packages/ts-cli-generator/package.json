@@ -23,19 +23,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christianjuth/lerna-monorepo.git"
+    "url": "git+https://github.com/christianjuth/lerna-monorepo.git",
+    "directory": "packages/ts-cli-generator"
   },
   "scripts": {
     "clean": "rm -rf ./esm/* || true  && rm -rf ./cjs/* || true",
     "build:esm": "swc ./src -d esm -C module.type=es6",
     "build:cjs": "swc ./src -d cjs -C module.type=commonjs",
-    "dev": "nodemon --config nodemon.json"
+    "dev": "nodemon --config nodemon.json",
+    "test:once": "jest",
+    "test": "jest --watchAll"
   },
   "bugs": {
     "url": "https://github.com/christianjuth/lerna-monorepo/issues"
   },
   "dependencies": {
-    "caller-callsite": "^5.0.0",
     "chmod": "^0.2.1",
     "dedent": "^0.7.0",
     "find-root": "^1.1.0",
@@ -53,6 +55,7 @@
     "@types/dedent": "^0.7.0",
     "@types/find-root": "^1.1.2",
     "@types/prompts": "^2.0.14",
+    "jest": "*",
     "nodemon": "*",
     "swc": "*"
   },

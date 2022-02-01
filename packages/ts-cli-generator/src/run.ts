@@ -307,7 +307,7 @@ export async function runInternal<T extends string>(
 
   const fns = functions as Record<string, (...args: any) => any>;
 
-  fns.__onStart__?.();
+  await fns.__onStart__?.();
 
   const data = await require(path.join(dir, "./cli.json"));
 

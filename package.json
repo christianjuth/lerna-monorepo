@@ -44,7 +44,8 @@
     "packages/*",
     "internal-packages/*",
     "apps/*",
-    "rust/*"
+    "rust/*",
+    "packages/ts-cli-generator/examples/*"
   ],
   "packageManager": "yarn@3.1.1",
   "dependencies": {
