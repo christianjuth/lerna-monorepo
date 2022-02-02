@@ -148,6 +148,7 @@ export async function init() {
     compilerOptions: {
       noImplicitAny: true,
       strict: true,
+      lib: ["ESNext", "DOM"],
     },
     exclude: ["node_modules"],
   };
