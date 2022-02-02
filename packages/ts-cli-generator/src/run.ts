@@ -5,6 +5,9 @@ import findRoot from "find-root";
 import { config } from "./config";
 import { ParamsArrayPartial } from "./types";
 import kleur from "kleur";
+// @ts-ignore
+import * as getFn from "get-function-location";
+const getFnLoc = getFn.default;
 
 const camelCaseToHyphen = (name: string) =>
   name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
@@ -41,7 +44,7 @@ type ParamItem = {
 
 async function getValue(
   param: ParamItem,
-  argQueue: string[],
+  argQueue: any[],
   onCancel: () => any,
   cancledRef: { current: boolean }
 ): Promise<any> {
@@ -78,7 +81,6 @@ async function getValue(
             if (title.indexOf(":") !== -1) {
               const [_, literal] = title.split(":");
               title = literal;
-              packages / ts - cli - generator / src / run.ts;
             }
             return {
               title,
@@ -105,6 +107,7 @@ async function getValue(
     }
   }
 
+  const hasArgument = argQueue.length > 0;
   const argument = argQueue.shift();
 
   const message = camelCaseToHyphen(param.name);
@@ -164,12 +167,15 @@ async function getValue(
     case "undefined":
       return undefined;
     // case "symbol":
-    default:
-      return argument;
+  }
+
+  if (hasArgument) {
+    return argument;
   }
 
   for (const type of param.types) {
     if (typeof type !== "string" && type.name === selectedType) {
+      console.log("SELECT", type, argument);
       return getValue(type, argQueue, onCancel, cancledRef);
     }
   }
@@ -190,8 +196,6 @@ function help({
   return console.log(
     dedent`
     ${kleur.gray(`${name} ${version}`)}
-
-    ${kleur.gray(`Powered by ${config.packageName}`)}
 
     ${kleur.bold("Commands:")}
       ${formatTable(commands).join("\n      ")}
@@ -214,6 +218,26 @@ function help({
 let _dir = "";
 let _functions: Record<string, (...args: any) => any> = {};
 
+type Data = {
+  params: ParamItem[];
+  description: string;
+  file: string;
+  name: string;
+}[];
+
+async function getFunctionData(data: Data, fn: (...args: any) => any) {
+  const normalize = (p: string) => p.replace(/(\/|\\)/, "-");
+
+  const loc = (await getFnLoc(fn)).source;
+  const file = loc
+    .replace(config.outputDir, "")
+    .replace(/\.js$/, "")
+    .replace("file:///", "");
+  return data.filter((item) => {
+    return item.name === fn.name && normalize(item.file) === normalize(file);
+  })?.[0];
+}
+
 export async function run<T extends string>(
   dir: string,
   functions: Record<T, (...args: any) => any>
@@ -221,7 +245,10 @@ export async function run<T extends string>(
   _dir = dir;
   _functions = functions;
 
-  const data = await require(path.join(dir, "./cli.json"));
+  // @ts-ignore
+  await functions.__onStart__?.();
+
+  const data = (await require(path.join(dir, "./cli.json"))) as Data;
 
   const flags = [];
   const args = process.argv.slice(2);
@@ -260,21 +287,19 @@ export async function run<T extends string>(
           name: "command",
           message: "",
           choices: [
-            ...Object.keys(data)
-              .filter(
-                (name) => Boolean((functions as any)[name]) && name[0] !== "_"
-              )
+            ...Object.keys(functions)
+              .filter((name) => name[0] !== "_")
               .map((key) => ({
                 title: camelCaseToHyphen(key),
                 value: key,
               })),
           ],
-          onState({ value }) {
-            Object.entries(data).find(([name, data]) => {
-              if (name === value) {
-                helpText = (data as any).description;
-              }
-            });
+          onState: async ({ value }) => {
+            const d = await getFunctionData(
+              data,
+              functions[value as keyof typeof functions]
+            );
+            helpText = d.description;
           },
           // @ts-ignore
           onRender() {
@@ -312,28 +337,39 @@ export async function runInternal(
     name = pjson.name ? pjson.name.replace(/@[^\/]+\//, "") : name;
   } catch (e) {}
 
-  await fns.__onStart__?.();
-
   const data = await require(path.join(dir, "./cli.json"));
 
   const command = hyphenToCamelCase(functionName);
 
-  const fnConfig = data[command];
+  // const fnConfig = data[command];
   const fn = fns[command];
 
-  if (!command || !fnConfig || !fn) {
+  if (!command || !fn) {
+    const commands = [];
+
+    for (const [name, value] of Object.entries(fns).filter(
+      ([name]) => name[0] !== "_"
+    )) {
+      const functionData = await getFunctionData(data, value);
+      commands.push({
+        name: camelCaseToHyphen(name),
+        description: functionData?.description ?? "",
+      });
+    }
+
     help({
       name: fns.__name__?.() ?? name,
       version: fns.__version__?.() ?? version,
-      commands: Object.entries(data)
-        .filter(([name]) => Boolean(fns[name]) && name[0] !== "_")
-        .map(([name, value]) => ({
-          name: camelCaseToHyphen(name),
-          description: (value as any).description,
-        })),
+      commands,
     });
   } else {
     await fns.__beforeFn__?.(fn);
+
+    const fnConfig = await getFunctionData(data, fn);
+
+    if (!fnConfig) {
+      throw Error(`filed to idenfity params for ${fn.name}`);
+    }
 
     let cancledRef = { current: false };
     function onCancel() {

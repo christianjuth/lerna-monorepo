@@ -1,5 +1,5 @@
-{
-  "add": {
+[
+  {
     "params": [
       {
         "name": "x",
@@ -14,9 +14,11 @@
         ]
       }
     ],
-    "description": "Add two numbers"
+    "description": "Add two numbers",
+    "file": "index",
+    "name": "add"
   },
-  "subtract": {
+  {
     "params": [
       {
         "name": "x",
@@ -31,9 +33,11 @@
         ]
       }
     ],
-    "description": "Subtract two numbers"
+    "description": "Subtract two numbers",
+    "file": "index",
+    "name": "subtract"
   },
-  "multiply": {
+  {
     "params": [
       {
         "name": "x",
@@ -48,9 +52,11 @@
         ]
       }
     ],
-    "description": "Multiply two numbers"
+    "description": "Multiply two numbers",
+    "file": "index",
+    "name": "multiply"
   },
-  "divide": {
+  {
     "params": [
       {
         "name": "x",
@@ -65,9 +71,11 @@
         ]
       }
     ],
-    "description": "Divider one number by the other"
+    "description": "Divider one number by the other",
+    "file": "index",
+    "name": "divide"
   },
-  "square": {
+  {
     "params": [
       {
         "name": "x",
@@ -76,9 +84,11 @@
         ]
       }
     ],
-    "description": "Square a number"
+    "description": "Square a number",
+    "file": "index",
+    "name": "square"
   },
-  "cube": {
+  {
     "params": [
       {
         "name": "x",
@@ -87,9 +97,11 @@
         ]
       }
     ],
-    "description": "Cube a number"
+    "description": "Cube a number",
+    "file": "index",
+    "name": "cube"
   },
-  "sqrt": {
+  {
     "params": [
       {
         "name": "x",
@@ -98,26 +110,11 @@
         ]
       }
     ],
-    "description": "Cube a number"
+    "description": "Cube a number",
+    "file": "index",
+    "name": "sqrt"
   },
-  "bitwiseAnd": {
-    "params": [
-      {
-        "name": "x",
-        "types": [
-          "number"
-        ]
-      },
-      {
-        "name": "y",
-        "types": [
-          "number"
-        ]
-      }
-    ],
-    "description": "Bitwise and"
-  },
-  "bitwiseOr": {
+  {
     "params": [
       {
         "name": "x",
@@ -132,9 +129,11 @@
         ]
       }
     ],
-    "description": "Bitwise or"
+    "description": "Bitwise and",
+    "file": "index",
+    "name": "bitwiseAnd"
   },
-  "bitwiseXor": {
+  {
     "params": [
       {
         "name": "x",
@@ -149,6 +148,27 @@
         ]
       }
     ],
-    "description": "Bitwise xor"
+    "description": "Bitwise or",
+    "file": "index",
+    "name": "bitwiseOr"
+  },
+  {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Bitwise xor",
+    "file": "index",
+    "name": "bitwiseXor"
   }
-}
+]

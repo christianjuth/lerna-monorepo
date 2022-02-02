@@ -1831,6 +1831,7 @@ __metadata:
     chmod: ^0.2.1
     dedent: ^0.7.0
     find-root: ^1.1.0
+    get-function-location: ^2.0.0
     jest: "*"
     make-executable: ^1.0.1
     nanospinner: ^1.0.0
@@ -14420,6 +14421,15 @@ __metadata:
   version: 2.0.5
   resolution: "get-caller-file@npm:2.0.5"
   checksum: b9769a836d2a98c3ee734a88ba712e62703f1df31b94b784762c433c27a386dd6029ff55c2a920c392e33657d80191edbf18c61487e198844844516f843496b9
+  languageName: node
+  linkType: hard
+
+"get-function-location@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "get-function-location@npm:2.0.0"
+  dependencies:
+    semver: ^5.6.0
+  checksum: 076035056202fba5f3f1d489b7e77d19cf84e31b9f2825bba1674ea8780188f362351fef78df0d7faf3af7cec4a8aadba65ec6fa32a407b543b46dd26f1a71aa
   languageName: node
   linkType: hard
 

@@ -1,13 +1,17 @@
-{
-  "uuid": {
+[
+  {
     "params": [],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "uuid"
   },
-  "getToken": {
+  {
     "params": [],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "getToken"
   },
-  "apiLogin": {
+  {
     "params": [
       {
         "name": "username",
@@ -22,9 +26,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "apiLogin"
   },
-  "login": {
+  {
     "params": [
       {
         "name": "username",
@@ -39,18 +45,26 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "login"
   },
-  "exposeToken": {
+  {
     "params": [],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "exposeToken"
   },
-  "logout": {
+  {
     "params": [],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "logout"
   },
-  "iRequireAuth": {
+  {
     "params": [],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "iRequireAuth"
   }
-}
+]

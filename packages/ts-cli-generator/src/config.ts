@@ -14,8 +14,6 @@ try {
   pkgRoot = findRoot(__dirname);
 } catch (e) {}
 
-const outputDir = ".cli";
-
 const INTERNAL_METHODS: (keyof Events)[] = [
   "__onStart__",
   "__version__",
@@ -23,13 +21,15 @@ const INTERNAL_METHODS: (keyof Events)[] = [
   "__beforeFn__",
 ];
 
+const outputDir = path.join(cliRoot, ".cli");
+
 export const config = {
   outputDir,
   packageName: "@christianjuth/ts-cli-generator",
   buildPackageExec: "ts-cli-generator build",
   cliRoot,
   tsEntry: path.join(cliRoot, `${ENTRY_NAME}.ts`),
-  jsEntry: path.join(cliRoot, outputDir, `${ENTRY_NAME}.js`),
+  jsEntry: path.join(outputDir, `${ENTRY_NAME}.js`),
   pkgRoot,
   internalMethods: INTERNAL_METHODS,
 };

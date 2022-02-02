@@ -1,5 +1,5 @@
-{
-  "fetchJson": {
+[
+  {
     "params": [
       {
         "name": "url",
@@ -8,9 +8,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "fetchJson"
   },
-  "getPriceFromApi": {
+  {
     "params": [
       {
         "name": "ticker",
@@ -19,9 +21,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "getPriceFromApi"
   },
-  "getNewsFromApi": {
+  {
     "params": [
       {
         "name": "quote",
@@ -30,9 +34,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "getNewsFromApi"
   },
-  "checkStockPrice": {
+  {
     "params": [
       {
         "name": "ticker",
@@ -41,9 +47,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "checkStockPrice"
   },
-  "checkStock": {
+  {
     "params": [
       {
         "name": "ticker",
@@ -52,9 +60,11 @@
         ]
       }
     ],
-    "description": "Get data about a stock from its ticker (e.g. AAPL, GOOGL)"
+    "description": "Get data about a stock from its ticker (e.g. AAPL, GOOGL)",
+    "file": "index",
+    "name": "checkStock"
   },
-  "getIndex": {
+  {
     "params": [
       {
         "name": "max",
@@ -69,9 +79,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "getIndex"
   },
-  "getShouldOpenInBrowser": {
+  {
     "params": [
       {
         "name": "openInBrowser",
@@ -80,9 +92,11 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "getShouldOpenInBrowser"
   },
-  "readNews": {
+  {
     "params": [
       {
         "name": "ticker",
@@ -91,9 +105,11 @@
         ]
       }
     ],
-    "description": "Get related to a stock"
+    "description": "Get related to a stock",
+    "file": "index",
+    "name": "readNews"
   },
-  "techStocks": {
+  {
     "params": [
       {
         "name": "tickers",
@@ -103,6 +119,8 @@
         ]
       }
     ],
-    "description": ""
+    "description": "",
+    "file": "index",
+    "name": "techStocks"
   }
-}
+]
