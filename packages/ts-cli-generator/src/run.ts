@@ -1,12 +1,12 @@
-import prompts from "prompts";
 import dedent from "dedent";
-import path from "path";
 import findRoot from "find-root";
-import { config } from "./config";
-import { ParamsArrayPartial } from "./types";
-import kleur from "kleur";
 // @ts-ignore
 import * as getFn from "get-function-location";
+import kleur from "kleur";
+import path from "path";
+import prompts from "prompts";
+import { config } from "./config";
+import { ParamsArrayPartial } from "./types";
 const getFnLoc = getFn.default;
 
 const camelCaseToHyphen = (name: string) =>
@@ -72,7 +72,7 @@ async function getValue(
     selectedType = (
       await prompts(
         {
-          type: "select",
+          type: "autocomplete",
           name: "type",
           message: `Select praram type for ${param.name}`,
           choices: param.types.map((t) => {
@@ -175,7 +175,6 @@ async function getValue(
 
   for (const type of param.types) {
     if (typeof type !== "string" && type.name === selectedType) {
-      console.log("SELECT", type, argument);
       return getValue(type, argQueue, onCancel, cancledRef);
     }
   }
@@ -225,17 +224,33 @@ type Data = {
   name: string;
 }[];
 
+async function swallowErrors(fn: () => any, onCancel: () => any) {
+  try {
+    await fn();
+  } catch (e: any) {
+    if (e === "exit") {
+      onCancel();
+    } else if (e.message) {
+      console.error(kleur.red(e.message));
+    }
+  }
+}
+
 async function getFunctionData(data: Data, fn: (...args: any) => any) {
   const normalize = (p: string) => p.replace(/(\/|\\)/, "-");
 
-  const loc = (await getFnLoc(fn)).source;
-  const file = loc
-    .replace(config.outputDir, "")
-    .replace(/\.js$/, "")
-    .replace("file:///", "");
-  return data.filter((item) => {
-    return item.name === fn.name && normalize(item.file) === normalize(file);
-  })?.[0];
+  try {
+    const loc = (await getFnLoc(fn)).source;
+    const file = loc
+      .replace(config.outputDir, "")
+      .replace(/\.js$/, "")
+      .replace("file:///", "");
+    return data.filter((item) => {
+      return item.name === fn.name && normalize(item.file) === normalize(file);
+    })?.[0];
+  } catch (e) {
+    return undefined;
+  }
 }
 
 export async function run<T extends string>(
@@ -299,7 +314,7 @@ export async function run<T extends string>(
               data,
               functions[value as keyof typeof functions]
             );
-            helpText = d.description;
+            helpText = d ? d.description : "";
           },
           // @ts-ignore
           onRender() {
@@ -312,13 +327,25 @@ export async function run<T extends string>(
               .join(" ");
           },
         },
-        { onCancel: exit }
+        {
+          onCancel: exit,
+        }
       );
-      await runInternal(dir, functions, command);
+      await swallowErrors(
+        async () => {
+          await runInternal(dir, functions, command);
+        },
+        () => {
+          console.log("Press CTRL-C again to exit");
+        }
+      );
     }
   }
 
-  runInternal(dir, functions, functionName);
+  await swallowErrors(async () => {
+    await runInternal(dir, functions, functionName);
+  }, exit);
+  exit();
 }
 
 export async function runInternal(
@@ -351,10 +378,14 @@ export async function runInternal(
       ([name]) => name[0] !== "_"
     )) {
       const functionData = await getFunctionData(data, value);
-      commands.push({
-        name: camelCaseToHyphen(name),
-        description: functionData?.description ?? "",
-      });
+      if (functionData) {
+        commands.push({
+          name: camelCaseToHyphen(name),
+          description: functionData?.description ?? "",
+        });
+      } else {
+        console.error(`failed to identify paramaters for function ${name}`);
+      }
     }
 
     help({
@@ -373,10 +404,9 @@ export async function runInternal(
 
     let cancledRef = { current: false };
     function onCancel() {
-      console.log("Press CTRL-C again to exit");
       cancledRef.current = true;
       // thowing will cancel the current interaction
-      throw "";
+      throw "exit";
     }
 
     const params = [];
@@ -391,14 +421,8 @@ export async function runInternal(
       return;
     }
 
-    try {
-      const output = await fn(...params);
-      return output;
-    } catch (e: any) {
-      if (e.message) {
-        console.error(kleur.red(e.message));
-      }
-    }
+    const output = await fn(...params);
+    return output;
   }
 }
 
