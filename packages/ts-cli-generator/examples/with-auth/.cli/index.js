@@ -53,6 +53,18 @@ function getToken() {
         });
     });
 }
+function apiLogin(username, password) {
+    // pretend this uuid is a auth token
+    return uuid();
+}
+// END MOCK API CALLS
+function login(username, password) {
+    var token = apiLogin(username, password);
+    ts_cli_generator_1.credentials.set({
+        login: username,
+        password: token
+    });
+}
 function exposeToken() {
     return __awaiter(this, void 0, void 0, function () {
         var token, _a, _b;
@@ -69,22 +81,16 @@ function exposeToken() {
         });
     });
 }
-function apiLogin(username, password) {
-    // pretend this uuid is a auth token
-    return uuid();
-}
-// END MOCK API CALLS
-function login(username, password) {
-    var token = apiLogin(username, password);
-    ts_cli_generator_1.credentials.set({
-        login: username,
-        password: token
-    });
-}
 function logout() {
-    ts_cli_generator_1.credentials.set({
-        login: undefined,
-        password: undefined
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, ts_cli_generator_1.credentials.clear()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
     });
 }
 function iRequireAuth() {

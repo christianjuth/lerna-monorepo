@@ -26,7 +26,12 @@ async function get(): Promise<Credentials> {
   return netrc(key);
 }
 
+async function clear() {
+  await set({ login: undefined, password: undefined });
+}
+
 export const credentials = {
   get,
   set,
+  clear,
 };

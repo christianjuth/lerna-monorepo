@@ -55,6 +55,12 @@ function bitwiseAnd(x, y) {
 function bitwiseOr(x, y) {
     console.log(x | y);
 }
+/**
+ * Bitwise xor
+ */
+function bitwiseXor(x, y) {
+    console.log(x ^ y);
+}
 exports.cli = {
     add: add,
     subtract: subtract,
@@ -64,5 +70,6 @@ exports.cli = {
     cube: cube,
     sqrt: sqrt,
     bitwiseAnd: bitwiseAnd,
-    bitwiseOr: bitwiseOr
+    bitwiseOr: bitwiseOr,
+    bitwiseXor: bitwiseXor
 };

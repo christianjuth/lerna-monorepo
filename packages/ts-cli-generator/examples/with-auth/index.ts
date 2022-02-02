@@ -15,11 +15,6 @@ async function getToken() {
   return (await credentials.get()).password;
 }
 
-async function exposeToken() {
-  const token = getToken();
-  console.log(await token);
-}
-
 function apiLogin(username: string, password: string) {
   // pretend this uuid is a auth token
   return uuid();
@@ -34,11 +29,13 @@ function login(username: string, password: string) {
   });
 }
 
-function logout() {
-  credentials.set({
-    login: undefined,
-    password: undefined,
-  });
+async function exposeToken() {
+  const token = getToken();
+  console.log(await token);
+}
+
+async function logout() {
+  await credentials.clear();
 }
 
 function iRequireAuth() {

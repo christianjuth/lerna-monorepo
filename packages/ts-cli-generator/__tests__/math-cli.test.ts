@@ -59,13 +59,19 @@ describe("math cli", () => {
 
   test("bitwiseAnd", async () => {
     const [x, y] = randomInts(2);
-    const result = await promiseExec(`node . bitwiseAnd ${x} ${y}`, CWD);
+    const result = await promiseExec(`node . bitwise-and ${x} ${y}`, CWD);
     expect(result).toBe(String(x & y));
   });
 
   test("bitwiseOr", async () => {
     const [x, y] = randomInts(2);
-    const result = await promiseExec(`node . bitwiseOr ${x} ${y}`, CWD);
+    const result = await promiseExec(`node . bitwise-or ${x} ${y}`, CWD);
     expect(result).toBe(String(x | y));
+  });
+
+  test("bitwiseOr", async () => {
+    const [x, y] = randomInts(2);
+    const result = await promiseExec(`node . bitwise-xor ${x} ${y}`, CWD);
+    expect(result).toBe(String(x ^ y));
   });
 });

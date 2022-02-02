@@ -133,5 +133,22 @@
       }
     ],
     "description": "Bitwise or"
+  },
+  "bitwiseXor": {
+    "params": [
+      {
+        "name": "x",
+        "types": [
+          "number"
+        ]
+      },
+      {
+        "name": "y",
+        "types": [
+          "number"
+        ]
+      }
+    ],
+    "description": "Bitwise xor"
   }
 }

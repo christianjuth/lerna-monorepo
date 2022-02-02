@@ -78,6 +78,7 @@ async function getValue(
             if (title.indexOf(":") !== -1) {
               const [_, literal] = title.split(":");
               title = literal;
+              packages / ts - cli - generator / src / run.ts;
             }
             return {
               title,
@@ -163,6 +164,8 @@ async function getValue(
     case "undefined":
       return undefined;
     // case "symbol":
+    default:
+      return argument;
   }
 
   for (const type of param.types) {

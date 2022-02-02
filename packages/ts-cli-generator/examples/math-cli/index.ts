@@ -63,6 +63,13 @@ function bitwiseOr(x: number, y: number) {
   console.log(x | y);
 }
 
+/**
+ * Bitwise xor
+ */
+function bitwiseXor(x: number, y: number) {
+  console.log(x ^ y);
+}
+
 export const cli: CLI = {
   add,
   subtract,
@@ -73,4 +80,5 @@ export const cli: CLI = {
   sqrt,
   bitwiseAnd,
   bitwiseOr,
+  bitwiseXor,
 };
