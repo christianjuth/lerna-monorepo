@@ -24897,6 +24897,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rss-reader-cli@workspace:packages/ts-cli-generator/examples/rss-reader-cli":
+  version: 0.0.0-use.local
+  resolution: "rss-reader-cli@workspace:packages/ts-cli-generator/examples/rss-reader-cli"
+  dependencies:
+    "@christianjuth/ts-cli-generator": "workspace:*"
+    "@types/openurl": ^1.0.0
+    isomorphic-fetch: ^3.0.0
+    nodemon: 2.x
+    openurl: ^1.1.1
+    ts-morph: 13.x
+    typescript: "*"
+  bin:
+    rss-reader-cli: ./.cli/cli.js
+  languageName: unknown
+  linkType: soft
+
 "rsvp@npm:^4.8.4":
   version: 4.8.5
   resolution: "rsvp@npm:4.8.5"
