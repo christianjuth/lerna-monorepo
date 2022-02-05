@@ -8,6 +8,7 @@ import {
   Text,
   Theme,
   theme,
+  SkipNav
 } from "@christianjuth/ui";
 import { CSSProperties, Fragment, useEffect, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
@@ -37,7 +38,7 @@ const MORE_CATEGORIES = [
   "Documentaries",
   "Critically Acclaimed Films",
   "Romantic Movies",
-  "Emmy-winnine Witty TV Shows",
+  "Emmy-winning Witty TV Shows",
   "TV Shows",
 ];
 
@@ -72,10 +73,12 @@ const Show = styled.a`
   && {
     color: white;
     background-color: gray;
-    text-decoration: none;
   }
   :focus {
     outline-color: white;
+  }
+  &&, &&:hover {
+    text-decoration: none;
   }
 `;
 
@@ -133,6 +136,7 @@ export function Netflix() {
       }}
       pageBackground={theme.color("gray", 0)}
     >
+      <SkipNav.Link/>
       <Navbar
         defaultItemSize="md"
         logo={<Logo style={{ width: 100, alignSelf: "center" }} />}
@@ -175,6 +179,7 @@ export function Netflix() {
           position: "relative",
         }}
       >
+        <SkipNav.Content/>
         <SC.FlexCol style={{ alignItems: "flex-start" }}>
           <Text uppercase>
             <RiNetflixFill
@@ -239,10 +244,7 @@ export function Netflix() {
           rightButtonIcon={CAROUSEL_RIGHT_ICON}
           leftButtonIcon={CAROUSEL_LEFT_ICON}
           renderItem={({ index, isVisible, width }) => (
-            <AspectRatioBox
-              aspectRatio={16 / 9}
-              style={{ display: "flex", overflow: "hidden" }}
-            >
+            <AspectRatioBox aspectRatio={16 / 9} style={{ display: "flex" }}>
               <Text
                 variant="h1"
                 noPadding
@@ -254,6 +256,7 @@ export function Netflix() {
                   display: "block",
                   transform: "translate(0, -1.5%)",
                   letterSpacing: "-0.1em",
+                  overflow: "hidden",
                 }}
               >
                 {index + 1}

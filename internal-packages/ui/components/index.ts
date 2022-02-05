@@ -31,3 +31,4 @@ export * from "./hooks";
 export * from "./Animations";
 export * from "./AspectRatioBox";
 export * from "./Carousel";
+export * from "./SkipNav";
