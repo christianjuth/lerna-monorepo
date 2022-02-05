@@ -226,6 +226,7 @@ export function Theme({
   roundness = 6,
   button,
   mainGutters,
+  pageBackground,
 }: {
   baseTheme: Theme.Config;
   darkTheme?: Partial<Theme.Config>;
@@ -236,10 +237,12 @@ export function Theme({
   button?: {
     fontStyle?: string;
     defaultVariant?: "contained" | "outlined" | "transparent";
+    defaultThemeColor?: Theme.ColorName;
   };
   mainGutters?: {
     baseWidth?: number | string;
   };
+  pageBackground?: string;
 }) {
   function darkMode(styles: string) {
     if (useDarkTheme === true) {
@@ -256,25 +259,33 @@ export function Theme({
     ${VARIABLE_NAMES.DARK_MODE_BIT}: 0;
     ${VARIABLE_NAMES.ROUNDNESS}: ${roundness};
     ${VARIABLE_NAMES.BUTTON_FONT_STYLE}: ${button?.fontStyle ?? "italic"};
-    ${VARIABLE_NAMES.BUTTON_DEFAULT_VARIANT}: ${button?.defaultVariant ?? ''};
+    ${VARIABLE_NAMES.BUTTON_DEFAULT_VARIANT}: ${button?.defaultVariant ?? ""};
     ${VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH}: ${
     mainGutters?.baseWidth ?? "800px"
   };
-
     ${darkMode(`${VARIABLE_NAMES.DARK_MODE_BIT}: 1;`)}
-    background-color: ${color('gray', 0)};
-    color: ${color('gray', 0, 'text')};
 
     ${
-      darkTheme.gray
-        ? darkMode(
-            `
-              background-color: ${color('gray', 1)};
-              color: ${color('gray', 1, 'text')};
-            `
-          )
-        : ""
+      pageBackground
+        ? `
+      background-color: ${pageBackground};
+    `
+        : `
+      background-color: ${color("gray", 0)};
+      ${
+        darkTheme.gray
+          ? darkMode(
+              `
+                background-color: ${color("gray", 1)};
+                color: ${color("gray", 1, "text")};
+              `
+            )
+          : ""
+      }
+    `
     }
+
+    color: ${color("gray", 0, "text")};
 
     * {
       box-sizing: border-box;
@@ -289,7 +300,15 @@ export function Theme({
   `;
 
   return (
-    <ThemeProvider theme={{ darkMode, button: { defaultVariant: button?.defaultVariant ?? 'contained' } }}>
+    <ThemeProvider
+      theme={{
+        darkMode,
+        button: {
+          defaultVariant: button?.defaultVariant ?? "contained",
+          defaultThemeColor: button?.defaultThemeColor ?? "accent1",
+        },
+      }}
+    >
       <Provider>
         {addBodyStyles && (
           <GlobalStyles
@@ -336,5 +355,5 @@ export const theme = {
   colorPresets,
   darkModeBit,
   VARIABLE_NAMES,
-  mediaQuery
+  mediaQuery,
 };

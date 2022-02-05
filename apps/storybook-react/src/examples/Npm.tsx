@@ -9,7 +9,6 @@ import {
   Text,
   theme,
   Theme,
-  Button,
 } from "@christianjuth/ui";
 import { BiSearch } from "react-icons/bi";
 import { FaFire, FaNpm } from "react-icons/fa";
@@ -80,10 +79,10 @@ export function Npm() {
       baseTheme={{
         primary: ({ l }) => [0, 0, l],
         accent1: ({ l }) => [0, 0, l],
-        gray: ({ l, shade }) => [218, (shade/2), l],
+        gray: ({ l, shade }) => [218, shade / 2, l],
       }}
       darkTheme={{
-        gray: ({ l, shade }) => [218, 8 - (shade/2), 100 - l],
+        gray: ({ l, shade }) => [218, 8 - shade / 2, 100 - l],
       }}
       useDarkTheme={darkMode}
       roundness={0}

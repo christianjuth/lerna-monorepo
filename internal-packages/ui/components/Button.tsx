@@ -11,7 +11,7 @@ const BORDER_WIDTH = 1;
 
 type StyleProps = {
   $size: Button.Size;
-  $variant: Button.Variant;
+  $variant?: Button.Variant;
   $themeColor: Button.Color;
   $fullWidth: boolean;
   $uppercase: boolean;
@@ -90,6 +90,7 @@ const style = css<StyleProps>`
     }
   }}
   ${({ $variant, $themeColor, $disabled, theme }) => {
+    $themeColor = $themeColor ?? theme?.button?.defaultThemeColor
     switch ($variant ?? theme?.button?.defaultVariant) {
       case "contained":
         return `
@@ -213,7 +214,7 @@ export function Button({
    * is gray when variant is transparent since gray is the
    * themeColor used for background.
    */
-  themeColor = variant === "transparent" ? "gray" : "accent1",
+  themeColor = variant === "transparent" ? "gray" : undefined,
   fullWidth = false,
   uppercase = false,
   tabIndex,

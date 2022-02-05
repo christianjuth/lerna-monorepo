@@ -171,24 +171,21 @@ export function debounce(func: () => any, wait = 20, immediate = false) {
 }
 
 export function useDebouncedCallback(fn: () => any, deps: any[]) {
-  const unmoutedRef = useRef(false)
+  const unmoutedRef = useRef(false);
 
   useEffect(() => {
     return () => {
-      unmoutedRef.current = true
-    }
-  }, [])
+      unmoutedRef.current = true;
+    };
+  }, []);
 
-  const debounced = useMemo(
-    () => {
-      return debounce(() => {
-        if (!unmoutedRef.current) {
-          fn()
-        }
-      })
-    },
-    [deps]
-  )
+  const debounced = useMemo(() => {
+    return debounce(() => {
+      if (!unmoutedRef.current) {
+        fn();
+      }
+    });
+  }, [deps]);
 
-  return debounced
+  return debounced;
 }

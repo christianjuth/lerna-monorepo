@@ -150,11 +150,7 @@ export function AspectRatioBox({
         ...style,
       }}
     >
-      {Array.isArray(children) ? (
-        <AbsoluteFillDiv>{children}</AbsoluteFillDiv>
-      ) : (
-        children
-      )}
+      {children}
     </AspectRatioDiv>
   );
 }

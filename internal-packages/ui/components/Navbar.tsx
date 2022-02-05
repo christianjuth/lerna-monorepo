@@ -15,13 +15,13 @@ import { Avatar } from "./Avatar";
 import { elevationStyle } from "./Paper";
 import { theme } from "./Theme";
 import { cn } from "./utils";
+import { CSSProperties } from "react";
 
 const GlobalStyles = createGlobalStyle<{ $navbarHeight: number }>`
   *[id] {
     ${({ $navbarHeight }) => `scroll-margin-top: ${$navbarHeight}px;`}
   }
 `;
-
 
 export const Items = styled.div<{
   $spacing?: number;
@@ -49,33 +49,45 @@ const Bar = styled(MainGutters)<{
   $themeColor: Theme.ColorName;
   $themeShade: number;
   $elevation: number;
+  $variant: "contained" | "transparent";
 }>`
-  border-bottom: 1px solid ${theme.colorPresets.border};
   position: sticky;
   top: 0;
   z-index: ${zIndex("header")};
-  backdrop-filter: blur(15px);
+  transition: background-color 0.2s;
 
-  ${({ $themeColor, $themeShade }) => `
-    background-color: ${
-      $themeColor === "gray"
-        ? color($themeColor, 0, 0.9)
-        : color($themeColor, $themeShade)
-    };
-    color: ${
-      $themeColor === "gray"
-        ? color($themeColor, 0, "text")
-        : color($themeColor, $themeShade, "text")
-    };
-
-    ${
-      $themeColor !== "gray"
-        ? `
-      border: none;
-    `
-        : ""
+  ${({ $themeColor, $themeShade, $variant }) => {
+    switch ($variant) {
+      case "contained":
+        return `
+          backdrop-filter: blur(15px);
+          background-color: ${
+            $themeColor === "gray"
+              ? color($themeColor, 0, 0.9)
+              : color($themeColor, $themeShade)
+          };
+          color: ${
+            $themeColor === "gray"
+              ? color($themeColor, 0, "text")
+              : color($themeColor, $themeShade, "text")
+          };
+      
+          ${
+            $themeColor !== "gray"
+              ? `
+            border: none;
+          `
+              : `
+              border-bottom: 1px solid ${theme.colorPresets.border};
+          `
+          }
+        `;
+      case "transparent":
+        return `
+          background-color: transparent;
+        `;
     }
-  `}
+  }}
   ${elevationStyle}
 `;
 
@@ -118,6 +130,8 @@ export declare namespace Navbar {
     defaultItemSize?: GenericProps.Size;
     centerItem?: Item;
     elevation?: number;
+    style?: CSSProperties;
+    variant?: "contained" | "transparent";
   };
 
   export type Item = {
@@ -190,7 +204,7 @@ function Item({
       <StyledLink
         href={link.href}
         $themeColor={themeColor}
-        className={cn('navbar-link', className)}
+        className={cn("navbar-link", className)}
         themeColor={themeColor}
         variant="transparent"
         size={defaultItemSize}
@@ -216,7 +230,7 @@ function Item({
 }
 
 Navbar.height = getHeight;
-function getHeight(size: GenericProps.Size) {
+function getHeight(size: GenericProps.Size = 'sm') {
   let height = 55;
   switch (size) {
     case "md":
@@ -239,6 +253,8 @@ export function Navbar({
   defaultItemSize = "sm",
   centerItem,
   elevation = 0,
+  style,
+  variant = "contained",
 }: Navbar.Props) {
   const className = dark || themeColor !== "gray" ? "dark-mode" : undefined;
 
@@ -268,10 +284,16 @@ export function Navbar({
         }}
         className={dark ? "dark-mode" : undefined}
         $elevation={elevation}
+        style={style}
+        $variant={variant}
       >
         <Link
           href="/"
-          style={{ color: "unset", marginRight: spacing(spacingMultiplier) }}
+          style={{
+            color: "unset",
+            marginRight: spacing(spacingMultiplier),
+            display: "flex",
+          }}
           className={className}
         >
           {typeof logo === "string" ? (

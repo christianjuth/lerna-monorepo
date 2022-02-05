@@ -30,3 +30,4 @@ export * from "./ScrollLock";
 export * from "./hooks";
 export * from "./Animations";
 export * from "./AspectRatioBox";
+export * from "./Carousel";
