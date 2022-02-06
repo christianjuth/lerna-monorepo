@@ -8,7 +8,7 @@ import {
   Text,
   Theme,
   theme,
-  SkipNav
+  SkipNav,
 } from "@christianjuth/ui";
 import { CSSProperties, Fragment, useEffect, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
@@ -47,7 +47,7 @@ function useTransparentNavbar() {
 
   useEffect(() => {
     function handleScroll() {
-      const newTransparent = window.scrollY < 10;
+      const newTransparent = window.scrollY < 15;
       if (newTransparent !== transparent) {
         setTransparent(newTransparent);
       }
@@ -77,7 +77,8 @@ const Show = styled.a`
   :focus {
     outline-color: white;
   }
-  &&, &&:hover {
+  &&,
+  &&:hover {
     text-decoration: none;
   }
 `;
@@ -136,7 +137,7 @@ export function Netflix() {
       }}
       pageBackground={theme.color("gray", 0)}
     >
-      <SkipNav.Link/>
+      <SkipNav.Link />
       <Navbar
         defaultItemSize="md"
         logo={<Logo style={{ width: 100, alignSelf: "center" }} />}
@@ -149,16 +150,14 @@ export function Netflix() {
         ]}
         style={{
           position: "fixed",
-          background: transparentNavbar
-            ? `linear-gradient(
+          background: `linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.7) 65%,
-            rgba(255, 255, 255, 0) 100%
-          )`
-            : "",
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 0) 100%
+          )`,
         }}
         variant={transparentNavbar ? "transparent" : "contained"}
-        rightItems={[{ search: {} }]}
+        centerItem={{ search: { style: { maxWidth: 300 } } }}
       />
 
       <div style={{ height: "70vh", width: "100%", position: "absolute" }}>
@@ -179,7 +178,7 @@ export function Netflix() {
           position: "relative",
         }}
       >
-        <SkipNav.Content/>
+        <SkipNav.Content />
         <SC.FlexCol style={{ alignItems: "flex-start" }}>
           <Text uppercase>
             <RiNetflixFill

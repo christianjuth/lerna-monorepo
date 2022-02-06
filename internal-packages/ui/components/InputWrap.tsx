@@ -28,6 +28,7 @@ const InputWrapDiv = styled.div<{
   ${({ $variant }) =>
     $variant === "transparent"
       ? `
+        backdrop-filter: blur(10px) contrast(0.8);
         background-color: ${color('gray', 3, 'transparent-overlay-1')};
 
         &[data-active="true"] {

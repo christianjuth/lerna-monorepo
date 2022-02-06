@@ -90,7 +90,7 @@ export declare namespace Carousel {
       item: T;
       index: number;
       isVisible: boolean;
-      width: number
+      width: number;
     }) => ReactChildren;
     keyExtractor: (item: T, index: number) => string | number;
     inverted?: boolean;
@@ -134,6 +134,7 @@ export function Carousel<T>({
   const [index, setIndex] = useState(initialIndex);
   const indexRef = useRef(index);
   const [numVisible, setNumVisible] = useState(0);
+  const [snap, setSnap] = useState(true);
 
   useEffect(() => {
     const elm = ref.current;
@@ -170,14 +171,29 @@ export function Carousel<T>({
     indexRef.current = index;
   }, [index]);
 
+  const timeoutRef = useRef<number>();
   const updateScroll = useCallback(
     (offset: number) => {
-      if (ref.current) {
-        ref.current.scrollBy({
+      const scrollElm = ref.current;
+      if (scrollElm) {
+        window.clearTimeout(timeoutRef.current);
+        setSnap(false);
+
+        // THIS IS A HACK
+        // TODO: find a way to fix this
+        // Without this react is too slow to apply this
+        // change possible do to batching when calling setState
+        scrollElm.style.scrollSnapType = "";
+
+        scrollElm.scrollBy({
           top: 0,
           left: computedWidth * offset,
           behavior: "smooth",
         });
+
+        timeoutRef.current = window.setTimeout(() => {
+          setSnap(true);
+        }, 500);
       }
     },
     [computedWidth]
@@ -201,10 +217,7 @@ export function Carousel<T>({
   }
 
   return (
-    <ScrollWrap
-      style={{ scrollSnapType: "x mandatory", ...style }}
-      className={className}
-    >
+    <ScrollWrap style={style} className={className}>
       {!hideButtons && (
         <Button
           direction="left"
@@ -235,6 +248,9 @@ export function Carousel<T>({
         }}
         aria-live="polite"
         id={carouselId}
+        style={{
+          scrollSnapType: snap ? "x mandatory" : undefined,
+        }}
       >
         {(inverted ? data.reverse() : data).map((item: any, i: number) => (
           <Fragment key={keyExtractor(item, i)}>
@@ -253,7 +269,7 @@ export function Carousel<T>({
                 item,
                 index: i,
                 isVisible: i >= index && i < index + numVisible,
-                width
+                width,
               })}
             </Item>
           </Fragment>

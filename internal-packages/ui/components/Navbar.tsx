@@ -54,40 +54,50 @@ const Bar = styled(MainGutters)<{
   position: sticky;
   top: 0;
   z-index: ${zIndex("header")};
-  transition: background-color 0.2s;
 
-  ${({ $themeColor, $themeShade, $variant }) => {
-    switch ($variant) {
-      case "contained":
-        return `
-          backdrop-filter: blur(15px);
-          background-color: ${
-            $themeColor === "gray"
-              ? color($themeColor, 0, 0.9)
-              : color($themeColor, $themeShade)
-          };
-          color: ${
-            $themeColor === "gray"
-              ? color($themeColor, 0, "text")
-              : color($themeColor, $themeShade, "text")
-          };
-      
-          ${
-            $themeColor !== "gray"
-              ? `
-            border: none;
-          `
-              : `
-              border-bottom: 1px solid ${theme.colorPresets.border};
-          `
-          }
-        `;
-      case "transparent":
-        return `
-          background-color: transparent;
-        `;
+  :before {
+    display: block;
+    content: " ";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    transition: all 0.4s;
+  }
+
+  & > * {
+    position: relative;
+  }
+
+  ${({ $themeColor, $themeShade, $variant }) => `
+    :before {
+      opacity: ${$variant === "transparent" ? "0" : "1"};
+      backdrop-filter: blur(15px);
+      background-color: ${
+        $themeColor === "gray"
+          ? color($themeColor, 0, 0.9)
+          : color($themeColor, $themeShade)
+      };
+      color: ${
+        $themeColor === "gray"
+          ? color($themeColor, 0, "text")
+          : color($themeColor, $themeShade, "text")
+      };
+
+      ${
+        $themeColor !== "gray"
+          ? `
+          border: none;
+      `
+          : `
+          border-bottom: 1px solid ${theme.colorPresets.border};
+      `
+      }
     }
-  }}
+  `}
+
   ${elevationStyle}
 `;
 
@@ -116,6 +126,9 @@ const StyledLink = styled(Button)<{ $themeColor: Theme.ColorName }>`
 
 const CenterItemWrap = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 
 export declare namespace Navbar {
@@ -174,6 +187,10 @@ function Item({
         size={defaultItemSize}
         variant="transparent"
         {...search}
+        style={{
+          width: "100%",
+          ...search.style,
+        }}
         className={[
           {
             [className ?? ""]:
@@ -230,7 +247,7 @@ function Item({
 }
 
 Navbar.height = getHeight;
-function getHeight(size: GenericProps.Size = 'sm') {
+function getHeight(size: GenericProps.Size = "sm") {
   let height = 55;
   switch (size) {
     case "md":
@@ -245,10 +262,10 @@ function getHeight(size: GenericProps.Size = 'sm') {
 export function Navbar({
   logo,
   themeColor = "gray",
+  dark = themeColor !== "gray",
   themeShade = 9,
   leftItems = [],
   rightItems = [],
-  dark = false,
   defaultButtonVariant = "outlined",
   defaultItemSize = "sm",
   centerItem,
