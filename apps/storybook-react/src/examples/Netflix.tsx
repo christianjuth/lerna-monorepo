@@ -10,6 +10,7 @@ import {
   theme,
   SkipNav,
 } from "@christianjuth/ui";
+import { useBreakPoint } from "@christianjuth/ui/components/Grid/context";
 import { CSSProperties, Fragment, useEffect, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
 import { BsFillPlayFill } from "react-icons/bs";
@@ -62,6 +63,35 @@ function useTransparentNavbar() {
   return transparent;
 }
 
+const OutlineText = styled.span`
+  font-weight: 700;
+  overflow: hidden;
+  color: transparent;
+
+  :before {
+    content: attr(data-title);
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: red;
+    -webkit-text-stroke-width: 8px;
+    -webkit-text-stroke-color: ${theme.colorPresets.text};
+    text-align: inherit;
+  }
+
+  :after {
+    content: attr(data-title);
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: ${theme.colorPresets.background};
+    -webkit-text-stroke-width: 0px;
+    text-align: inherit;
+  }
+`;
+
 const Show = styled.a`
   display: flex;
   position: absolute;
@@ -113,6 +143,7 @@ function Logo({ style }: { style?: CSSProperties }) {
 
 export function Netflix() {
   const transparentNavbar = useTransparentNavbar();
+  const isDesktop = useBreakPoint("md");
 
   return (
     <Theme
@@ -137,6 +168,12 @@ export function Netflix() {
       }}
       pageBackground={theme.color("gray", 0)}
     >
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap"
+        rel="stylesheet"
+      ></link>
       <SkipNav.Link />
       <Navbar
         defaultItemSize="md"
@@ -216,11 +253,15 @@ export function Netflix() {
               data={Array(20).fill(0)}
               keyExtractor={(_, i) => i}
               spaceBetween={10}
-              width={250}
+              width={isDesktop ? 250 : 110}
+              fullWidthOnMobile={false}
+              hideButtons={!isDesktop}
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
               renderItem={({ index, isVisible }) => (
-                <AspectRatioBox aspectRatio={16 / 9}>
+                <AspectRatioBox
+                  aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
+                >
                   <Show href="#" tabIndex={isVisible ? undefined : -1}>
                     {index + 1}
                   </Show>
@@ -239,34 +280,56 @@ export function Netflix() {
           data={Array(10).fill(0)}
           keyExtractor={(_, i) => i}
           spaceBetween={10}
-          width={250}
+          width={isDesktop ? 250 : 110 * (3 / 2)}
+          fullWidthOnMobile={false}
+          hideButtons={!isDesktop}
           rightButtonIcon={CAROUSEL_RIGHT_ICON}
           leftButtonIcon={CAROUSEL_LEFT_ICON}
           renderItem={({ index, isVisible, width }) => (
-            <AspectRatioBox aspectRatio={16 / 9} style={{ display: "flex" }}>
-              <Text
-                variant="h1"
-                noPadding
-                style={{
-                  fontSize: width * 0.6,
-                  lineHeight: width / (16 / 9) + "px",
-                  textAlign: "end",
-                  minWidth: "45%",
-                  display: "block",
-                  transform: "translate(0, -1.5%)",
-                  letterSpacing: "-0.1em",
-                  overflow: "hidden",
-                }}
-              >
-                {index + 1}
-              </Text>
+            <AspectRatioBox
+              aspectRatioByBreakpoint={{ xs: (11 / 16) * (3 / 2), md: 16 / 9 }}
+              style={{ display: "flex" }}
+            >
+              {isDesktop && (
+                <OutlineText
+                  data-title={index + 1}
+                  style={{
+                    fontSize: width * 0.6,
+                    lineHeight: width / (16 / 9) + "px",
+                    textAlign: "end",
+                    minWidth: "50%",
+                    display: "block",
+                    transform: "translate(0, -1.5%)",
+                    overflow: "hidden",
+                    // double digit numbers
+                    letterSpacing: index >= 9 ? "-0.1em" : undefined,
+                  }}
+                >
+                  {index + 1}
+                </OutlineText>
+              )}
               <Show
                 href="#"
                 tabIndex={isVisible ? undefined : -1}
-                style={{ left: "50%" }}
+                style={{ left: isDesktop ? "50%" : "33%" }}
               >
                 {index + 1}
               </Show>
+              {!isDesktop && (
+                <OutlineText
+                  data-title={index + 1}
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    display: "block",
+                    fontSize: width * 0.6,
+                    lineHeight: "0.9em",
+                  }}
+                >
+                  {index + 1}
+                </OutlineText>
+              )}
             </AspectRatioBox>
           )}
         />
@@ -282,11 +345,15 @@ export function Netflix() {
               data={Array(20).fill(0)}
               keyExtractor={(_, i) => i}
               spaceBetween={10}
-              width={250}
+              width={isDesktop ? 250 : 110}
+              fullWidthOnMobile={false}
+              hideButtons={!isDesktop}
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
               renderItem={({ index, isVisible }) => (
-                <AspectRatioBox aspectRatio={16 / 9}>
+                <AspectRatioBox
+                  aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
+                >
                   <Show href="#" tabIndex={isVisible ? undefined : -1}>
                     {index + 1}
                   </Show>

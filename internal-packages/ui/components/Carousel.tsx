@@ -1,20 +1,25 @@
 import {
-  useEffect,
-  useState,
   CSSProperties,
   Fragment,
-  useRef,
   useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
-import { ReactChildren } from "./types";
-import styled from "styled-components";
-import { theme } from "./Theme";
 import {
   IoIosArrowDropleftCircle,
   IoIosArrowDroprightCircle,
 } from "react-icons/io";
+import styled from "styled-components";
 import { useBreakPoint } from "../components/Grid/context";
+import { theme } from "./Theme";
+import { ReactChildren } from "./types";
 import { useComponentId } from "./utils";
+import smoothscroll from "smoothscroll-polyfill";
+// kick off the polyfill!
+smoothscroll.polyfill();
+
+const SCROLL_SNAP_CLASS = "carousel-scroll-snap";
 
 const Item = styled.div`
   display: flex;
@@ -23,7 +28,7 @@ const Item = styled.div`
   scroll-snap-stop: always;
 `;
 
-const HorizontalScroll = styled.div`
+const HorizontalScroll = styled.div<{ $snap: boolean }>`
   padding: 3px 0;
   display: flex;
   flex-direction: row;
@@ -34,9 +39,20 @@ const HorizontalScroll = styled.div`
   max-height: 100%;
   overflow-scrolling: touch;
   min-height: 100%;
+
+  scrollbar-width: none;
   ::-webkit-scrollbar {
     display: none;
   }
+
+  ${({ $snap }) =>
+    $snap
+      ? `
+        &.${SCROLL_SNAP_CLASS} {
+          scroll-snap-type: x mandatory;
+        }
+      `
+      : ""}
 `;
 
 const ScrollWrap = styled.div`
@@ -105,6 +121,7 @@ export declare namespace Carousel {
     scrollBy?: "item" | "row";
     rightButtonIcon?: ReactChildren;
     leftButtonIcon?: ReactChildren;
+    fullWidthOnMobile?: boolean;
   };
 }
 
@@ -124,17 +141,18 @@ export function Carousel<T>({
   scrollBy = "item",
   rightButtonIcon,
   leftButtonIcon,
+  fullWidthOnMobile = true,
 }: Carousel.Props<T>) {
   const [containerWidth, setContainerWidth] = useState(0);
   const isDesktop = useBreakPoint("sm");
-  width = isDesktop ? width : Math.max(containerWidth, width);
+  width =
+    isDesktop || !fullWidthOnMobile ? width : Math.max(containerWidth, width);
 
   const carouselId = useComponentId("carousel");
   const ref = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(initialIndex);
   const indexRef = useRef(index);
   const [numVisible, setNumVisible] = useState(0);
-  const [snap, setSnap] = useState(true);
 
   useEffect(() => {
     const elm = ref.current;
@@ -177,13 +195,14 @@ export function Carousel<T>({
       const scrollElm = ref.current;
       if (scrollElm) {
         window.clearTimeout(timeoutRef.current);
-        setSnap(false);
 
         // THIS IS A HACK
         // TODO: find a way to fix this
         // Without this react is too slow to apply this
         // change possible do to batching when calling setState
-        scrollElm.style.scrollSnapType = "";
+        if (numVisible > 1) {
+          scrollElm.classList.remove(SCROLL_SNAP_CLASS);
+        }
 
         scrollElm.scrollBy({
           top: 0,
@@ -192,11 +211,11 @@ export function Carousel<T>({
         });
 
         timeoutRef.current = window.setTimeout(() => {
-          setSnap(true);
+          scrollElm.classList.add(SCROLL_SNAP_CLASS);
         }, 500);
       }
     },
-    [computedWidth]
+    [computedWidth, numVisible]
   );
 
   useEffect(() => {
@@ -248,9 +267,8 @@ export function Carousel<T>({
         }}
         aria-live="polite"
         id={carouselId}
-        style={{
-          scrollSnapType: snap ? "x mandatory" : undefined,
-        }}
+        className={SCROLL_SNAP_CLASS}
+        $snap={!hideButtons}
       >
         {(inverted ? data.reverse() : data).map((item: any, i: number) => (
           <Fragment key={keyExtractor(item, i)}>
