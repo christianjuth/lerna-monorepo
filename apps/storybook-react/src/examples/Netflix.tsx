@@ -9,11 +9,18 @@ import {
   Theme,
   theme,
   SkipNav,
+  ReactChildren,
 } from "@christianjuth/ui";
 import { useBreakPoint } from "@christianjuth/ui/components/Grid/context";
-import { CSSProperties, Fragment, useEffect, useState } from "react";
+import { CSSProperties, Fragment, useEffect, useRef, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
-import { BsFillPlayFill } from "react-icons/bs";
+import {
+  BsFillPlayFill,
+  BsPlayCircleFill,
+  BsCheck2,
+  BsHandThumbsUp,
+  BsHandThumbsDown,
+} from "react-icons/bs";
 import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import { RiNetflixFill } from "react-icons/ri";
 import styled from "styled-components";
@@ -92,14 +99,15 @@ const OutlineText = styled.span`
   }
 `;
 
-const Show = styled.a`
+const Show = styled.a<{ $enableHover?: boolean }>`
   display: flex;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
-  padding: 5px;
+  border-radius: 4px;
+  transition: transform 0.4s, box-shadow 0.4s;
   && {
     color: white;
     background-color: gray;
@@ -111,6 +119,53 @@ const Show = styled.a`
   &&:hover {
     text-decoration: none;
   }
+  ${({ $enableHover }) =>
+    $enableHover
+      ? `
+    :hover {
+      transition-delay: 0.5s;
+      transform: scale(1.2) translate(0, -30px);
+      box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.6);
+      z-index: ${theme.zIndex("page", 5)};
+    }
+  `
+      : ""}
+`;
+
+const ShowDescription = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  background-color: ${theme.color("gray", 1)};
+  padding: 8px;
+  border-bottom-right-radius: inherit;
+  border-bottom-left-radius: inherit;
+  display: flex;
+  flex-direction: column;
+
+  animation-name: fade-in;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  animation-duration: 0.2s;
+  opacity: 0;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`;
+
+const ShowPreview = styled.video`
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-top-right-radius: inherit;
+  border-top-left-radius: inherit;
 `;
 
 const Overlay = styled.div`
@@ -125,6 +180,65 @@ const Overlay = styled.div`
   bottom: 0;
   left: 0;
 `;
+
+function Video({
+  disableFocus = false,
+  children,
+}: {
+  disableFocus: boolean;
+  children: ReactChildren;
+}) {
+  const [visible, setVisible] = useState(false);
+  const callbackRef = useRef<number>();
+
+  return (
+    <Show
+      href="#"
+      tabIndex={disableFocus ? -1 : undefined}
+      onMouseEnter={() => {
+        callbackRef.current = window.setTimeout(() => {
+          setVisible(true);
+        }, 500);
+      }}
+      onMouseLeave={() => {
+        window.clearTimeout(callbackRef.current);
+        setVisible(false);
+      }}
+      $enableHover={true}
+    >
+      {visible ? (
+        <>
+          <ShowPreview autoPlay playsInline muted>
+            <source
+              src="https://www.w3schools.com/html/mov_bbb.mp4"
+              type="video/mp4"
+            />
+          </ShowPreview>
+          <ShowDescription style={{ position: "absolute", top: "100%" }}>
+            <SC.FlexRow
+              $spacing={1.5}
+              style={{ alignItems: "center", paddingBottom: 8 }}
+            >
+              <BsPlayCircleFill size={28} />
+              <BsCheck2 size={28} />
+              <BsHandThumbsUp size={22} />
+              <BsHandThumbsDown size={22} />
+            </SC.FlexRow>
+            <Text
+              variant="copy-2"
+              style={{ color: "#46d369", display: "flex" }}
+              noPadding
+            >
+              90% Match
+            </Text>
+          </ShowDescription>
+        </>
+      ) : (
+        children
+      )}
+    </Show>
+  );
+}
 
 function Logo({ style }: { style?: CSSProperties }) {
   return (
@@ -258,13 +372,12 @@ export function Netflix() {
               hideButtons={!isDesktop}
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
+              overflowAmount={100}
               renderItem={({ index, isVisible }) => (
                 <AspectRatioBox
                   aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
                 >
-                  <Show href="#" tabIndex={isVisible ? undefined : -1}>
-                    {index + 1}
-                  </Show>
+                  <Video disableFocus={!isVisible}>{index + 1}</Video>
                 </AspectRatioBox>
               )}
             />
@@ -285,6 +398,7 @@ export function Netflix() {
           hideButtons={!isDesktop}
           rightButtonIcon={CAROUSEL_RIGHT_ICON}
           leftButtonIcon={CAROUSEL_LEFT_ICON}
+          overflowAmount={100}
           renderItem={({ index, isVisible, width }) => (
             <AspectRatioBox
               aspectRatioByBreakpoint={{ xs: (11 / 16) * (3 / 2), md: 16 / 9 }}
@@ -350,13 +464,12 @@ export function Netflix() {
               hideButtons={!isDesktop}
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
+              overflowAmount={100}
               renderItem={({ index, isVisible }) => (
                 <AspectRatioBox
                   aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
                 >
-                  <Show href="#" tabIndex={isVisible ? undefined : -1}>
-                    {index + 1}
-                  </Show>
+                  <Video disableFocus={!isVisible}>{index + 1}</Video>
                 </AspectRatioBox>
               )}
             />

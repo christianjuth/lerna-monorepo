@@ -33,6 +33,22 @@ export function Search({ showButton = false, ...props }: Search.Props) {
     };
   }, []);
 
+  useEffect(() => {
+    const elm = ref.current;
+    if (elm) {
+      function handleKeyPress(e: KeyboardEvent) {
+        if (e.key === "Escape") {
+          elm?.blur();
+        }
+      }
+
+      elm.addEventListener("keydown", handleKeyPress);
+      return () => {
+        elm.removeEventListener("keydown", handleKeyPress);
+      };
+    }
+  }, []);
+
   if (showButton) {
     return (
       <SC.FlexRow style={{ flex: 1 }}>

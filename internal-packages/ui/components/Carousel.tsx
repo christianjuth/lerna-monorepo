@@ -28,11 +28,12 @@ const Item = styled.div`
   scroll-snap-stop: always;
 `;
 
-const HorizontalScroll = styled.div<{ $snap: boolean }>`
-  padding: 3px 0;
+const HorizontalScroll = styled.div<{ $snap: boolean; $padding: number }>`
+  padding: ${({ $padding }) => $padding}px 0;
   display: flex;
   flex-direction: row;
   overflow-y: auto;
+  overflow-x: visible;
   flex: 1;
   height: 100%;
   min-height: 100%;
@@ -55,8 +56,9 @@ const HorizontalScroll = styled.div<{ $snap: boolean }>`
       : ""}
 `;
 
-const ScrollWrap = styled.div`
+const ScrollWrap = styled.div<{ $padding: number }>`
   position: relative;
+  margin: ${({ $padding }) => $padding * -1}px 0;
 `;
 
 const ButtonWrap = styled.button`
@@ -69,7 +71,7 @@ const ButtonWrap = styled.button`
   background: transparent;
   border: none;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
-  z-index: ${theme.zIndex("page", 1)};
+  z-index: ${theme.zIndex("page", 10)};
 `;
 
 function Button({
@@ -122,6 +124,7 @@ export declare namespace Carousel {
     rightButtonIcon?: ReactChildren;
     leftButtonIcon?: ReactChildren;
     fullWidthOnMobile?: boolean;
+    overflowAmount?: number;
   };
 }
 
@@ -142,6 +145,7 @@ export function Carousel<T>({
   rightButtonIcon,
   leftButtonIcon,
   fullWidthOnMobile = true,
+  overflowAmount = 3,
 }: Carousel.Props<T>) {
   const [containerWidth, setContainerWidth] = useState(0);
   const isDesktop = useBreakPoint("sm");
@@ -153,6 +157,7 @@ export function Carousel<T>({
   const [index, setIndex] = useState(initialIndex);
   const indexRef = useRef(index);
   const [numVisible, setNumVisible] = useState(0);
+  const numVisibleRef = useRef(numVisible);
 
   useEffect(() => {
     const elm = ref.current;
@@ -189,6 +194,25 @@ export function Carousel<T>({
     indexRef.current = index;
   }, [index]);
 
+  useEffect(() => {
+    numVisibleRef.current = numVisible;
+  }, [numVisible]);
+
+  const setFocus = useCallback((direction: number) => {
+    console.log(indexRef.current, numVisibleRef.current);
+    let index = indexRef.current;
+    if (direction < 0) {
+      index += Math.max(numVisibleRef.current - 1, 0);
+    }
+    const child = ref.current?.children[index];
+    if (child) {
+      const focusable = child.querySelector("button,a") as
+        | HTMLButtonElement
+        | undefined;
+      focusable?.focus();
+    }
+  }, []);
+
   const timeoutRef = useRef<number>();
   const updateScroll = useCallback(
     (offset: number) => {
@@ -212,10 +236,11 @@ export function Carousel<T>({
 
         timeoutRef.current = window.setTimeout(() => {
           scrollElm.classList.add(SCROLL_SNAP_CLASS);
-        }, 500);
+          setFocus(offset);
+        }, 1000);
       }
     },
-    [computedWidth, numVisible]
+    [computedWidth, numVisible, setFocus]
   );
 
   useEffect(() => {
@@ -236,7 +261,7 @@ export function Carousel<T>({
   }
 
   return (
-    <ScrollWrap style={style} className={className}>
+    <ScrollWrap style={style} className={className} $padding={overflowAmount}>
       {!hideButtons && (
         <Button
           direction="left"
@@ -269,6 +294,7 @@ export function Carousel<T>({
         id={carouselId}
         className={SCROLL_SNAP_CLASS}
         $snap={!hideButtons}
+        $padding={overflowAmount}
       >
         {(inverted ? data.reverse() : data).map((item: any, i: number) => (
           <Fragment key={keyExtractor(item, i)}>
