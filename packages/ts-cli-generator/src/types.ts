@@ -1,7 +1,3 @@
-type Reverse<Tuple> = Tuple extends [infer Head, ...infer Rest]
-  ? [...Reverse<Rest>, Head]
-  : [];
-
 type PartialTurple<L extends any[]> = L extends [infer One]
   ? [One] | []
   : L extends [infer Head, ...infer Rest]
@@ -9,12 +5,10 @@ type PartialTurple<L extends any[]> = L extends [infer One]
   : [];
 
 export type ParamsPartial<T extends (...args: any) => any> =
-  | Reverse<PartialTurple<Reverse<Parameters<T>>>>
+  | PartialTurple<Parameters<T>>
   | [];
 
-export type ParamsArrayPartial<T extends any[]> =
-  | Reverse<PartialTurple<Reverse<T>>>
-  | [];
+export type ParamsArrayPartial<T extends any[]> = PartialTurple<T> | [];
 
 export type CLI = Record<string, (...args: any) => any>;
 

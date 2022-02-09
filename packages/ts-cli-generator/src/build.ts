@@ -1,14 +1,14 @@
+// @ts-ignore
+import chmod from "chmod";
 import dedent from "dedent";
 import { promises as fs } from "fs";
-import path from "path";
-import type { FunctionDeclaration, Node, ts, Type } from "ts-morph";
-import { config } from "./config";
+import kleur from "kleur";
 import { createSpinner } from "nanospinner";
 // @ts-ignore
 import { symbols } from "nanospinner/consts";
-// @ts-ignore
-import chmod from "chmod";
-import kleur from "kleur";
+import path from "path";
+import type { FunctionDeclaration, Node, ts, Type } from "ts-morph";
+import { config } from "./config";
 import { Events } from "./types";
 
 async function crawlRecursive(
@@ -79,7 +79,7 @@ async function buildTypeScript(tmpBuiltPath: string) {
     const program = ts.createProgram([tmpBuiltPath], {
       module: ts.ModuleKind.CommonJS,
       sourceMap: false,
-      outDir: config.outputDir,
+      outDir: config.getOutputDir(),
     });
 
     program.emit();
@@ -87,13 +87,13 @@ async function buildTypeScript(tmpBuiltPath: string) {
     fs.unlink(tmpBuiltPath);
     tmpBuiltPath = tmpBuiltPath.replace(/\.ts$/, ".js");
 
-    chmod(path.join(config.outputDir, tmpBuiltPath), {
+    chmod(path.join(config.getOutputDir(), tmpBuiltPath), {
       execute: true,
     });
 
     fs.rename(
-      path.join(config.outputDir, tmpBuiltPath),
-      path.join(config.outputDir, "cli.js")
+      path.join(config.getOutputDir(), tmpBuiltPath),
+      path.join(config.getOutputDir(), "cli.js")
     );
 
     emitSpinner.success();
@@ -230,7 +230,7 @@ async function buildCli() {
     return output;
   }
 
-  const { cli } = await require(config.jsEntry);
+  const { cli } = await require(config.getJsEntry());
   let warning = false;
 
   for (const file in functions) {
@@ -311,7 +311,7 @@ async function buildCli() {
   const writingFileSpinner = createSpinner("Writing CLI data files").start();
 
   await fs.writeFile(
-    path.join(config.outputDir, "cli.json"),
+    path.join(config.getOutputDir(), "cli.json"),
     JSON.stringify(definitions, null, 2)
   );
 
@@ -320,7 +320,7 @@ async function buildCli() {
 
 export async function build() {
   try {
-    await fs.mkdir(config.outputDir, { recursive: false });
+    await fs.mkdir(config.getOutputDir(), { recursive: false });
   } catch (e) {}
 
   const tmpBuiltPath = `.${uuid()}.tmp.ts`;

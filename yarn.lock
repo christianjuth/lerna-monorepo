@@ -1827,6 +1827,7 @@ __metadata:
     "@swc/jest": "*"
     "@types/dedent": ^0.7.0
     "@types/find-root": ^1.1.2
+    "@types/omelette": ^0.4.1
     "@types/prompts": ^2.0.14
     chmod: ^0.2.1
     dedent: ^0.7.0
@@ -1837,6 +1838,7 @@ __metadata:
     nanospinner: ^1.0.0
     node-netrc: ^0.1.0
     nodemon: "*"
+    omelette: ^0.4.17
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.9
     swc: "*"
@@ -6838,6 +6840,13 @@ __metadata:
   version: 4.1.4
   resolution: "@types/npmlog@npm:4.1.4"
   checksum: 740f7431ccfc0e127aa8d162fe05c6ce8aa71290be020d179b2824806d19bd2c706c7e0c9a3c9963cefcdf2ceacb1dec6988c394c3694451387759dafe0aa927
+  languageName: node
+  linkType: hard
+
+"@types/omelette@npm:^0.4.1":
+  version: 0.4.1
+  resolution: "@types/omelette@npm:0.4.1"
+  checksum: 3a6a50e1f9c1d0def2cb1ebd06b52d47aff21e1e8a269e7ca8de1aef3eae36b89102309142d71c6655f4d2d09d2fb498d3398c38ac798c00b2d0172c1e79c73a
   languageName: node
   linkType: hard
 
@@ -20749,6 +20758,13 @@ __metadata:
   version: 1.1.2
   resolution: "obuf@npm:1.1.2"
   checksum: 41a2ba310e7b6f6c3b905af82c275bf8854896e2e4c5752966d64cbcd2f599cfffd5932006bcf3b8b419dfdacebb3a3912d5d94e10f1d0acab59876c8757f27f
+  languageName: node
+  linkType: hard
+
+"omelette@npm:^0.4.17":
+  version: 0.4.17
+  resolution: "omelette@npm:0.4.17"
+  checksum: 2ee00e88e6c78059fefabe65bb3f76d6d830696271f76dfd60de0af5c274c6472254e379d4324b6b20c2628a77232197fd999a0c7f7af4c0d077dfd046ed3d3f
   languageName: node
   linkType: hard
 

@@ -1,9 +1,10 @@
 // @ts-ignore
 import netrc from "node-netrc";
-import { getPckJson, getRoot, hash } from "./utils";
+import { hash } from "./utils";
+import { config, getRoot } from "./config";
 
 async function getStorageKey() {
-  const pkgName = (await getPckJson()).name ?? "";
+  const pkgName = (await config.getPkgJson()).name ?? "";
   const locationHash = Math.abs(+hash(getRoot()));
   return ["cli", pkgName, locationHash].filter(Boolean).join(".");
 }

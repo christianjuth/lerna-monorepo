@@ -1,4 +1,4 @@
-import { call, CLI } from "@christianjuth/ts-cli-generator";
+import { CLI } from "@christianjuth/ts-cli-generator";
 
 /**
  * Add two numbers

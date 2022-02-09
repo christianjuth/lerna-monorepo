@@ -1,46 +1,20 @@
 import dedent from "dedent";
-import findRoot from "find-root";
 // @ts-ignore
 import * as getFn from "get-function-location";
 import kleur from "kleur";
 import path from "path";
 import prompts from "prompts";
-import { config } from "./config";
+import { autocomplete } from "./autocomplete";
+import { config, Data, ParamItem, setRoot } from "./config";
 import { ParamsArrayPartial } from "./types";
+import { camelCaseToHyphen, formatTable, hyphenToCamelCase } from "./utils";
+
 const getFnLoc = getFn.default;
-
-const camelCaseToHyphen = (name: string) =>
-  name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
-
-const hyphenToCamelCase = (name: string) =>
-  name.replace(/-./g, (m) => m[1].toUpperCase());
 
 function padRight(str: string, length: number) {
   const padding = Math.max(length - str.length, 0);
   return `${str}${" ".repeat(padding)}`;
 }
-
-function formatTable(items: { name: string; description: string }[]) {
-  let length = 0;
-
-  for (const item of items) {
-    length = Math.max(length, item.name.length);
-  }
-
-  return items.map(
-    ({ name, description }) => `${padRight(name, length)}\t${description}`
-  );
-}
-
-type ParamType = string | ParamItem;
-
-type ParamItem = {
-  name: string;
-  key?: string;
-  index?: number;
-  types?: ParamType[];
-  object?: ParamItem[];
-};
 
 async function getValue(
   param: ParamItem,
@@ -196,33 +170,29 @@ function help({
     dedent`
     ${kleur.gray(`${name} ${version}`)}
 
-    ${kleur.bold("Commands:")}
-      ${formatTable(commands).join("\n      ")}
+    ${kleur.bold("Usage:")} 
+      $ ${name} <command>
 
-    ${kleur.bold("Options:")}
-      ${formatTable([
-        {
-          name: "-h, --help",
-          description: "Output usage information",
-        },
-        {
-          name: "-i, --interactive",
-          description: "Run CLI in interactive mode",
-        },
-      ]).join("\n      ")}
+    ${kleur.bold("Commands:")}
+      ${formatTable(
+        commands.map((c) => [c.name, c.description]),
+        6
+      )}
+
+    ${kleur.bold("Other commands:")}
+      ${formatTable(
+        [
+          ["help", "", "Output usage information"],
+          ["autocomplete", "[enable|disable]", "Setup autocomplete"],
+        ],
+        6
+      )}
   ` + "\n"
   );
 }
 
 let _dir = "";
 let _functions: Record<string, (...args: any) => any> = {};
-
-type Data = {
-  params: ParamItem[];
-  description: string;
-  file: string;
-  name: string;
-}[];
 
 async function swallowErrors(fn: () => any, onCancel: () => any) {
   try {
@@ -242,7 +212,7 @@ async function getFunctionData(data: Data, fn: (...args: any) => any) {
   try {
     const loc = (await getFnLoc(fn)).source;
     const file = loc
-      .replace(config.outputDir, "")
+      .replace(config.getOutputDir(), "")
       .replace(/\.js$/, "")
       .replace("file:///", "");
     return data.filter((item) => {
@@ -257,13 +227,16 @@ export async function run<T extends string>(
   dir: string,
   functions: Record<T, (...args: any) => any>
 ) {
+  setRoot(dir);
+  autocomplete.listen();
   _dir = dir;
   _functions = functions;
 
   // @ts-ignore
   await functions.__onStart__?.();
 
-  const data = (await require(path.join(dir, "./cli.json"))) as Data;
+  const pkgJson = await config.getPkgJson();
+  const data = await config.getDataFile();
 
   const flags = [];
   const args = process.argv.slice(2);
@@ -286,13 +259,24 @@ export async function run<T extends string>(
     functionName = "";
   }
 
-  if (flags.includes("-h" || flags.includes("--help"))) {
+  if (functionName === "autocomplete") {
+    if (args[0] === "disable") {
+      await autocomplete.uninstall();
+      return;
+    } else {
+      await autocomplete.setup();
+      return;
+    }
+  }
+
+  if (functionName === "help") {
     // empty command prints usage
     await runInternal(dir, functions, "");
     return;
   }
 
-  if (flags.includes("-i") || flags.includes("--interactive")) {
+  if (!functionName) {
+    console.log(kleur.gray(`Check usage by running "${pkgJson.name} help"`));
     while (true) {
       let helpText: any;
 
@@ -354,15 +338,12 @@ export async function runInternal(
   functionName: string,
   paramQueue: any[] = process.argv.slice(3)
 ) {
-  const root = findRoot(dir);
   let version = "unknown";
   let name = "untitled";
 
-  try {
-    const pjson = await require(path.join(root, "package.json"));
-    version = pjson.version ?? version;
-    name = pjson.name ? pjson.name.replace(/@[^\/]+\//, "") : name;
-  } catch (e) {}
+  const pkgJason = await config.getPkgJson();
+  version = pkgJason.version ?? version;
+  name = pkgJason.name ? pkgJason.name.replace(/@[^\/]+\//, "") : name;
 
   const data = await require(path.join(dir, "./cli.json"));
 

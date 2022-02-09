@@ -141,6 +141,9 @@ export async function init() {
 
       # Mac
       .DS_Store
+
+      # Builds
+      *.tmp.ts
     `
   );
 

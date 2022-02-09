@@ -1,27 +1,6 @@
+import { exec } from "child_process";
 import dedent from "dedent";
-import findRoot from "find-root";
-import path from "path";
-
-let root: string | null = null;
-
-export function getRoot() {
-  if (root) {
-    return root;
-  }
-
-  const r = findRoot(process.cwd());
-  root = r;
-  return r;
-}
-
-export async function getPckJson(): Promise<Record<string, any>> {
-  const root = getRoot();
-  try {
-    return await require(path.join(root, "package.json"));
-  } catch (e) {
-    return {};
-  }
-}
+import { createSpinner } from "nanospinner";
 
 // NOT CRYPTOGRAPHIC
 const SEED = 5381;
@@ -55,7 +34,7 @@ function padRight(str: string, length: number) {
   return `${str}${" ".repeat(padding)}`;
 }
 
-export function formatTable(data: string[][]) {
+export function formatTable(data: string[][], indent = 0) {
   const colWidths: number[] = [];
 
   for (const row of data) {
@@ -77,9 +56,38 @@ export function formatTable(data: string[][]) {
     table += "\n";
   }
 
-  return dedent(table);
+  return dedent(table)
+    .split("\n")
+    .join(`\n${" ".repeat(indent)}`);
 }
 
 export function printTable(data: string[][]) {
   console.log(formatTable(data));
 }
+
+export const camelCaseToHyphen = (name: string) =>
+  name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+
+export const hyphenToCamelCase = (name: string) =>
+  name.replace(/-./g, (m) => m[1].toUpperCase());
+
+export async function spinner<T>(
+  config: { name: string },
+  fn: () => T
+): Promise<T> {
+  const spinner = createSpinner(config.name);
+  const out = await fn();
+  spinner.success();
+  return out;
+}
+
+export const promiseExec = (command: string, cwd?: string) =>
+  new Promise<string>((resolve, reject) => {
+    exec(command, { cwd }, (error, stdout) => {
+      if (error) {
+        reject();
+      } else {
+        resolve(dedent(stdout));
+      }
+    });
+  });

@@ -46,6 +46,7 @@
     "make-executable": "^1.0.1",
     "nanospinner": "^1.0.0",
     "node-netrc": "^0.1.0",
+    "omelette": "^0.4.17",
     "prompts": "^2.4.2",
     "regenerator-runtime": "^0.13.9"
   },
@@ -56,6 +57,7 @@
     "@swc/jest": "*",
     "@types/dedent": "^0.7.0",
     "@types/find-root": "^1.1.2",
+    "@types/omelette": "^0.4.1",
     "@types/prompts": "^2.0.14",
     "jest": "*",
     "nodemon": "*",
