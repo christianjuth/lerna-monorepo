@@ -2,11 +2,15 @@ import omelette from "omelette";
 import { config } from "./config";
 import { camelCaseToHyphen, promiseExec, spinner } from "./utils";
 
-async function createShortcuts() {
+async function createShortcuts(
+  fns: Record<string, (...args: any) => any> = {}
+) {
   const pkgJson = await config.getPkgJson();
   const data = await config.getDataFile();
 
-  const commands = data.map((d) => camelCaseToHyphen(d.name));
+  const commands = Object.values(fns)
+    .filter((fn) => fn.name[0] !== "_")
+    .map((fn) => camelCaseToHyphen(fn.name));
   const internalCommands = ["help", "autocomplete"];
 
   const complete = omelette(`${pkgJson.name} <command>`);
@@ -18,8 +22,8 @@ async function createShortcuts() {
   return complete;
 }
 
-async function listen() {
-  const complete = await createShortcuts();
+async function listen(fns: Record<string, (...args: any) => any>) {
+  const complete = await createShortcuts(fns);
   complete.init();
 }
 

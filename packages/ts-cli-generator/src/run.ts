@@ -228,12 +228,9 @@ export async function run<T extends string>(
   functions: Record<T, (...args: any) => any>
 ) {
   setRoot(dir);
-  autocomplete.listen();
+  autocomplete.listen(functions);
   _dir = dir;
   _functions = functions;
-
-  // @ts-ignore
-  await functions.__onStart__?.();
 
   const pkgJson = await config.getPkgJson();
   const data = await config.getDataFile();
@@ -274,6 +271,9 @@ export async function run<T extends string>(
     await runInternal(dir, functions, "");
     return;
   }
+
+  // @ts-ignore
+  await functions.__onStart__?.();
 
   if (!functionName) {
     console.log(kleur.gray(`Check usage by running "${pkgJson.name} help"`));

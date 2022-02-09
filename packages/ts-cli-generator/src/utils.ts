@@ -85,6 +85,7 @@ export const promiseExec = (command: string, cwd?: string) =>
   new Promise<string>((resolve, reject) => {
     exec(command, { cwd }, (error, stdout) => {
       if (error) {
+        console.log(error);
         reject();
       } else {
         resolve(dedent(stdout));
