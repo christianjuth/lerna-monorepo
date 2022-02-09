@@ -290,15 +290,15 @@
                 ]
               },
               {
-                "name": "items.__@iterator@68830",
-                "key": "__@iterator@68830",
+                "name": "items.__@iterator@68938",
+                "key": "__@iterator@68938",
                 "types": [
                   null
                 ]
               },
               {
-                "name": "items.__@unscopables@68832",
-                "key": "__@unscopables@68832",
+                "name": "items.__@unscopables@68940",
+                "key": "__@unscopables@68940",
                 "types": [
                   null
                 ]
@@ -328,7 +328,9 @@
           "string:nytimes",
           "string:huffpost",
           "string:usa-today",
-          "string:yahoo-news"
+          "string:yahoo-news",
+          "string:npr",
+          "string:latimes"
         ]
       }
     ],

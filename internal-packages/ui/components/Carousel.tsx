@@ -4,20 +4,21 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
+  useState
 } from "react";
 import {
   IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle,
+  IoIosArrowDroprightCircle
 } from "react-icons/io";
+import smoothscroll from "smoothscroll-polyfill";
 import styled from "styled-components";
 import { useBreakPoint } from "../components/Grid/context";
 import { theme } from "./Theme";
 import { ReactChildren } from "./types";
 import { useComponentId } from "./utils";
-import smoothscroll from "smoothscroll-polyfill";
-// kick off the polyfill!
-smoothscroll.polyfill();
+if (typeof window !== "undefined") {
+  smoothscroll.polyfill();
+}
 
 const SCROLL_SNAP_CLASS = "carousel-scroll-snap";
 

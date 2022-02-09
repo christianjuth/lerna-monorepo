@@ -140,6 +140,12 @@ function selectNewsSource(source) {
                         case "yahoo-news":
                             url = "https://www.yahoo.com/news/rss";
                             break;
+                        case "npr":
+                            url = "https://feeds.npr.org/1001/rss.xml";
+                            break;
+                        case "latimes":
+                            url = "https://www.latimes.com/local/rss2.0.xml";
+                            break;
                     }
                     return [4 /*yield*/, fetchRssAsJson(url)];
                 case 1:
