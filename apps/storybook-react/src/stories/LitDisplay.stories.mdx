@@ -1,0 +1,18 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { Display } from "@christianjuth/react-is-lit";
+import { Box } from "../components/Box";
+
+<Meta title="Lit/Display" />
+
+# Column sizes can be controlled individually
+
+<Canvas>
+  <Story name="Responsive">
+    <Display xs={true} md={false}>
+      <Box>I'm only visible on small screens</Box>
+    </Display>
+    <Display xs={false} md={true}>
+      <Box>I'm only visible on large screens</Box>
+    </Display>
+  </Story>
+</Canvas>

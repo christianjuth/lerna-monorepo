@@ -1,0 +1,49 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import { Grid, GridItem } from "@christianjuth/react-is-lit";
+import { Box } from '../components/Box'
+
+<Meta title="Lit/Grid" />
+
+# Column sizes can be controlled individually
+
+<Canvas>
+  <Story name="Independent column sizes">
+    <Grid cols="1fr 200px 2fr 5vw" spacing={2}>
+      <GridItem>
+        <Box>1fr</Box>
+      </GridItem>
+      <GridItem>
+        <Box>200px</Box>
+      </GridItem>
+      <GridItem>
+        <Box>2fr</Box>
+      </GridItem>
+      <GridItem>
+        <Box>5vw</Box>
+      </GridItem>
+    </Grid>
+  </Story>
+</Canvas>
+
+
+<Canvas>
+  <Story name="Responsive columns">
+    <Grid cols={6} spacing={2}>
+      <GridItem xs={6} md={3}>
+        <Box/>
+      </GridItem>
+      <GridItem xs={6} md={3}>
+        <Box/>
+      </GridItem>
+      <GridItem xs={6} md={3} lg={2}>
+        <Box/>
+      </GridItem>
+      <GridItem xs={6} md={3} lg={2}>
+        <Box/>
+      </GridItem>
+      <GridItem xs={6} md={3} lg={2}>
+        <Box/>
+      </GridItem>
+    </Grid>
+  </Story>
+</Canvas>

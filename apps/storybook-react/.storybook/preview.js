@@ -1,4 +1,20 @@
-import { StoryWrapper, DocsWrapper } from './Providers'
+import { Theme } from '@christianjuth/react-is-lit'
+import { DocsWrapper, StoryWrapper } from './Providers'
+
+const LIT_HIDDEN_PROPS = [
+  'renderOptions',
+  'connectedCallback',
+  'disconnectedCallback',
+  'renderRoot',
+  'isUpdatePending',
+  'hasUpdated',
+  'addController',
+  'removeController',
+  'attributeChangedCallback',
+  'requestUpdate',
+  'updateComplete',
+  'render'
+]
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -7,12 +23,13 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+    exclude: [...LIT_HIDDEN_PROPS]
   },
   options: {
     storySort: {
       method: '',
-      order: ['Getting Started', 'Layout', 'Atoms', 'Molecules', 'Organisms'], 
-      locales: '', 
+      order: ['Getting Started', 'Layout', 'Atoms', 'Molecules', 'Organisms', 'Examples', 'Lit'],
+      locales: '',
     },
   },
   docs: {
@@ -21,9 +38,13 @@ export const parameters = {
 }
 
 export const decorators = [
-  (Story) => (
+  (Story, info) => info.title.indexOf('Lit') === 0 ? (
+    <Theme>
+      <Story />
+    </Theme>
+  ) : (
     <StoryWrapper>
       <Story />
     </StoryWrapper>
-  ),
+  )
 ]

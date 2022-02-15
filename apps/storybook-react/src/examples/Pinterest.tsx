@@ -1,5 +1,4 @@
 import {
-  MasonryGrid,
   Theme,
   Navbar,
   MainGutters,
@@ -14,6 +13,7 @@ import {
 import { FaPinterest, FaBell } from "react-icons/fa";
 import { AiFillMessage } from "react-icons/ai";
 import { useDarkMode } from "storybook-dark-mode";
+import { MasonryGrid, MasonryGridItem } from "@christianjuth/react-is-lit";
 
 const aspectRatios = [3 / 4, 16 / 9, 4 / 5];
 
@@ -91,9 +91,11 @@ export function Pinterest() {
         defaultButtonVariant="contained"
       />
       <MainGutters innerStyle={{ paddingTop: spacing(2) }}>
-        <MasonryGrid itemMinWidth={240}>
+        <MasonryGrid minItemWidth={240} spacing={2}>
           {data.map((_, index) => (
-            <Card key={index} index={index} />
+            <MasonryGridItem key={index}>
+              <Card index={index} />
+            </MasonryGridItem>
           ))}
         </MasonryGrid>
       </MainGutters>

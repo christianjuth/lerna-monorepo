@@ -1,0 +1,30 @@
+{
+  "name": "@christianjuth/react-is-lit",
+  "private": true,
+  "version": "0.0.0",
+  "main": "components/index.ts",
+  "types": "components/index.ts",
+  "license": "MIT",
+  "peerDependencies": {
+    "dayjs": "*",
+    "react": "*",
+    "react-icons": "*",
+    "styled-components": "*",
+    "use-deep-compare-effect": "*"
+  },
+  "devDependencies": {
+    "@christianjuth/eslint-config": "workspace:*",
+    "@types/smoothscroll-polyfill": "^0.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.6.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@christianjuth/get-lit": "workspace:*",
+    "@lit-labs/react": "^1.0.2",
+    "smoothscroll-polyfill": "^0.4.4"
+  }
+}

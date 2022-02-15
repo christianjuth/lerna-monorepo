@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@christianjuth/eslint-config": "workspace:*",
+    "@christianjuth/react-is-lit": "workspace:*",
     "@christianjuth/tsconfig": "workspace:*",
     "@christianjuth/ui": "workspace:*",
     "@storybook/addon-a11y": "^6.4.13",
