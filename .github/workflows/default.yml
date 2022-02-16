@@ -32,6 +32,8 @@ jobs:
         with:
           path: node_modules
           key: v1-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Build
+        run: yarn turbo run build --scope=@christianjuth/get-lit --no-deps --include-dependencies
       - name: Test
         run: cd apps/storybook-react/ && yarn chromatic --project-token $CHROMATIC_TOKEN --exit-zero-on-changes --exit-once-uploaded
         env:
