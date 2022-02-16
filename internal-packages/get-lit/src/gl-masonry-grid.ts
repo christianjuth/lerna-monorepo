@@ -38,8 +38,8 @@ export class MasonryGrid extends LitElement {
     return html`
       <style>
         :host {
-          prettier_html_placeholder_0_7_in_js: ${minItemWidth};
-          prettier_html_placeholder_2_7_in_js: ${theme.spacing(this.spacing)};
+          --masonry-grid-min-item-width: ${minItemWidth};
+          --masonry-grid-spacing: ${theme.spacing(this.spacing)};
         }
       </style>
       <slot></slot>
