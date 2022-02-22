@@ -10,8 +10,6 @@ export class Gutters extends LitElement {
     }
 
     :host > div > div {
-      display: flex;
-      flex-direction: column;
       grid-column: 2 / 3;
     }
   `;

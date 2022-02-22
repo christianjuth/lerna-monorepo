@@ -127,7 +127,7 @@ export declare namespace Theme {
 
   type ColorFn = (parmas: { l: number; shade: number }) => HSLColor;
 
-  type Config = Record<ColorName, ColorFn>;
+  type Config = Record<ColorName, ColorFn | [number, number, 1 | -1]>;
 }
 
 const SHADES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] as const;

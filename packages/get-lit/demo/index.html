@@ -1,47 +1,128 @@
 <!doctype html>
 <html lang="en-GB">
+
 <head>
   <meta charset="utf-8">
   <style>
-    body {
-    }
   </style>
 </head>
+
 <body>
-  <div id="demo"></div>
 
   <script type="module">
-    import { html, render } from 'lit';
-    import '../dist/src/gl-theme.js';
-    import '../dist/src/gl-button.js';
-    import '../dist/src/gl-gutters.js';
-    import '../dist/src/gl-text.js';
-    import '../dist/src/gl-grid.js';
-
-    const title = 'Hello owc World!';
-    render(
-      html`
-        <gl-theme>
-          <gl-gutters>
-            <gl-button size="md" themeColor="gray" variant="outlined" style="color:red">
-              some light-dom
-            </gl-button>
-            <gl-text tag="h2" variant="h1" uppercase>
-              Testing
-            </gl-text>
-
-            <gl-grid spacing="5">
-              <gl-grid-item xs="2" style="background: gray">Test</gl-grid-item>
-              <gl-grid-item>Test</gl-grid-item>
-              <gl-grid-item>Test</gl-grid-item>
-              <gl-grid-item>Test</gl-grid-item>
-              <gl-grid-item>Test</gl-grid-item>
-            </gl-grid>
-          </gl-gutters>
-        </gl-theme>
-      `,
-      document.querySelector('#demo')
-    );
+    import '../dist/src/index.js';
   </script>
+
+  <gl-theme
+    theme='{"baseTheme":{"primary":[191,82],"accent1":[256,100],"gray":[218,15]},"darkTheme":{"gray":[218,20,-1]}}'
+    addBodyStyles>
+    <gl-gutters>
+      <form style="max-width: 500px;">
+        <gl-grid cols="6" rowSpacing="6" colSpacing="3">
+          <gl-grid-item xs="6">
+            <gl-text heading>
+              <gl-text size="sm" muted>01</gl-text>
+              Personal Details
+            </gl-text>
+          </gl-grid-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>First name</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Last name</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Email</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Phone</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-grid-item xs="6">
+            <gl-divider></gl-divider>
+          </gl-grid-item>
+
+          <gl-grid-item xs="6">
+            <gl-text heading>
+              <gl-text size="sm" muted>02</gl-text>
+              Shipping Details
+            </gl-text>
+          </gl-grid-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Street address</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Zip code</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>City</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="3">
+            <label>Country</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6">
+            <gl-checkbox></gl-checkbox>
+            <label>Sent shipping updates via text</label>
+            <gl-text muted italic size="sm">Carrier rates may apply</gl-text>
+          </gl-form-item>
+
+          <gl-grid-item xs="6">
+            <gl-divider></gl-divider>
+          </gl-grid-item>
+
+          <gl-grid-item xs="6">
+            <gl-text heading>
+              <gl-text size="sm" muted>03</gl-text>
+              Payment Method
+            </gl-text>
+          </gl-grid-item>
+
+          <gl-form-item xs="6" md="2">
+            <label>Card number</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="2">
+            <label>Expiry date</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-form-item xs="6" md="2">
+            <label>CVC/CVV</label>
+            <gl-input></gl-input>
+          </gl-form-item>
+
+          <gl-grid-item xs="6">
+            <gl-divider></gl-divider>
+          </gl-grid-item>
+
+          <gl-grid-item xs="6">
+            <gl-button style="display: block;">Confirm</gl-button>
+          </gl-grid-item>
+
+
+
+        </gl-grid>
+      </form>
+      </gl-main-gutters>
+  </gl-theme>
 </body>
+
 </html>

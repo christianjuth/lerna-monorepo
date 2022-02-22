@@ -1,11 +1,10 @@
-import { css, html, LitElement } from 'lit';
+import { html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { styleMap } from 'lit/directives/style-map.js';
 import {
   generatePallet,
-  VARIABLE_NAMES,
-  Theme as ThemeType,
   theme as themeConst,
+  Theme as ThemeType,
+  VARIABLE_NAMES,
 } from './theme.js';
 
 const accessibilityKeys = [
@@ -21,33 +20,37 @@ const accessibilityKeys = [
 function generateTheme(theme: Partial<ThemeType.Config>) {
   let out: Record<string, string | number> = {};
 
-  Object.entries(theme).forEach(([key, value]) => {
-    out = {
-      ...out,
-      ...generatePallet(key as any, value),
-    };
-  });
+  for (const [key, value] of Object.entries(theme)) {
+    if (typeof value === 'function') {
+      out = {
+        ...out,
+        ...generatePallet(key as any, value),
+      };
+    } else {
+      out = {
+        ...out,
+        ...generatePallet(key as any, ({ l }) => {
+          const [h, s, invertL] = value;
+          return invertL < 0 ? [h, s, 100 - l] : [h, s, l];
+        }),
+      };
+    }
+  }
 
   return out;
 }
 
+function serializeTheme(obj: Record<string, string | number>) {
+  return Object.entries(obj)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(';');
+}
+
 @customElement('gl-theme')
 export class Theme extends LitElement {
-  static styles = css`
-    * {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol';
-    }
+  @property({ type: String }) addBodyStyles: 'true' | 'false' = 'false';
 
-    div {
-      color: ${themeConst.colorPresets.text};
-    }
-  `;
-
-  @property({ type: String }) primary = 'red';
-
-  @property({ type: Boolean }) hideOutline = false;
+  @property({ type: Boolean, state: true }) hideOutline = false;
 
   @property({ type: Object }) theme: {
     baseTheme?: ThemeType.Config;
@@ -75,6 +78,9 @@ export class Theme extends LitElement {
     window.addEventListener('mousedown', this.disableOutline);
     window.addEventListener('touchstart', this.disableOutline);
     window.addEventListener('keydown', this.handleKeyDown);
+
+    // global mode
+    this.elementChildren = Array.from(this.childNodes);
   }
 
   disconnectedCallback(): void {
@@ -90,19 +96,61 @@ export class Theme extends LitElement {
       ...this.theme,
     };
 
+    const baseVars = serializeTheme(
+      useDarkTheme
+        ? generateTheme({ ...(baseTheme ?? {}), ...(darkTheme ?? {}) })
+        : generateTheme(baseTheme ?? {})
+    );
+
+    let darkVars = '';
+    if (useDarkTheme === undefined && darkTheme) {
+      darkVars = serializeTheme(generateTheme(darkTheme));
+    }
+
     return html`
-      <div
-        style=${styleMap({
-          '--main-gutters': 'calc(800px + 22vw)',
-          ...(useDarkTheme
-            ? generateTheme({ ...baseTheme, ...darkTheme } ?? {})
-            : generateTheme(baseTheme ?? {})),
-          [VARIABLE_NAMES.ROUNDNESS]: roundness,
-          [VARIABLE_NAMES.OUTLINE]: this.hideOutline ? 'none' : 'auto',
-        })}
-      >
-        <slot></slot>
-      </div>
+      <style>
+        :host {
+          display: block;
+        }
+
+        * {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+            Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Symbol';
+        }
+
+        body, :host {
+          --main-gutters: calc(800px + 22vw);
+          ${baseVars};
+          ${VARIABLE_NAMES.ROUNDNESS}: ${roundness};
+          ${VARIABLE_NAMES.OUTLINE}: ${this.hideOutline ? 'none' : 'auto'};
+          background-color: ${themeConst.colorPresets.background};
+          color: ${themeConst.colorPresets.text};
+        }
+
+        @media (prefers-color-scheme: dark) {
+          body, :host {
+            ${darkVars};
+          }
+        }
+      </style>
+      <slot></slot>
     `;
+  }
+
+  // global mode
+  elementChildren: Array<any> = [];
+
+  slotContents: any;
+
+  get slotElements(): any[] {
+    return this.elementChildren;
+  }
+
+  createRenderRoot() {
+    if (this.addBodyStyles !== 'false') {
+      return this;
+    }
+    return super.createRenderRoot();
   }
 }
