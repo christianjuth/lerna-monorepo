@@ -4,11 +4,11 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import {
   IoIosArrowDropleftCircle,
-  IoIosArrowDroprightCircle
+  IoIosArrowDroprightCircle,
 } from "react-icons/io";
 import smoothscroll from "smoothscroll-polyfill";
 import styled from "styled-components";
@@ -57,7 +57,8 @@ const HorizontalScroll = styled.div<{ $snap: boolean; $padding: number }>`
       : ""}
 `;
 
-const ScrollWrap = styled.div<{ $padding: number }>`
+const ScrollWrap = styled.div<{ $padding: number, $loading: boolean }>`
+  opacity: ${({ $loading }) => $loading ? '0' : '1'}; 
   position: relative;
   margin: ${({ $padding }) => $padding * -1}px 0;
 `;
@@ -81,18 +82,20 @@ function Button({
   ariaLabel,
   ariaControls,
   children,
+  gutters,
 }: {
   onClick: () => any;
   direction: "left" | "right";
   ariaLabel: string;
   ariaControls: string;
   children: ReactChildren;
+  gutters: number;
 }) {
   return (
     <ButtonWrap
       onClick={onClick}
       style={{
-        [direction]: 0,
+        [direction]: gutters,
       }}
       aria-label={ariaLabel}
       aria-controls={ariaControls}
@@ -126,6 +129,7 @@ export declare namespace Carousel {
     leftButtonIcon?: ReactChildren;
     fullWidthOnMobile?: boolean;
     overflowAmount?: number;
+    gutterWidth: number;
   };
 }
 
@@ -145,13 +149,17 @@ export function Carousel<T>({
   scrollBy = "item",
   rightButtonIcon,
   leftButtonIcon,
-  fullWidthOnMobile = true,
+  // fullWidthOnMobile = true,
   overflowAmount = 3,
+  gutterWidth = 0,
 }: Carousel.Props<T>) {
-  const [containerWidth, setContainerWidth] = useState(0);
-  const isDesktop = useBreakPoint("sm");
+  const [containerWidth, setContainerWidth] = useState(5);
+  // const isDesktop = useBreakPoint("sm");
+
+  const numOfItems = Math.round(containerWidth / width);
   width =
-    isDesktop || !fullWidthOnMobile ? width : Math.max(containerWidth, width);
+    containerWidth / numOfItems -
+    (numOfItems / (numOfItems + 1)) * spaceBetween;
 
   const carouselId = useComponentId("carousel");
   const ref = useRef<HTMLDivElement>(null);
@@ -165,7 +173,7 @@ export function Carousel<T>({
 
     function calcualteVisible() {
       if (elm) {
-        const newContainerWidth = elm.offsetWidth;
+        const newContainerWidth = elm.offsetWidth - gutterWidth * 2;
         setContainerWidth(newContainerWidth);
         const visible = Math.round(newContainerWidth / (width + spaceBetween));
         setNumVisible(visible);
@@ -177,7 +185,7 @@ export function Carousel<T>({
     return () => {
       window.removeEventListener("reset", calcualteVisible);
     };
-  }, [index, width, spaceBetween]);
+  }, [index, width, spaceBetween, gutterWidth]);
 
   const computedWidth = width + spaceBetween;
 
@@ -200,7 +208,6 @@ export function Carousel<T>({
   }, [numVisible]);
 
   const setFocus = useCallback((direction: number) => {
-    console.log(indexRef.current, numVisibleRef.current);
     let index = indexRef.current;
     if (direction < 0) {
       index += Math.max(numVisibleRef.current - 1, 0);
@@ -262,9 +269,10 @@ export function Carousel<T>({
   }
 
   return (
-    <ScrollWrap style={style} className={className} $padding={overflowAmount}>
+    <ScrollWrap style={style} className={className} $padding={overflowAmount} $loading={containerWidth <= 5}>
       {!hideButtons && (
         <Button
+          gutters={gutterWidth}
           direction="left"
           onClick={() => updateScroll(scrollBy === "item" ? -1 : -numVisible)}
           ariaLabel="Previous slide"
@@ -310,19 +318,26 @@ export function Carousel<T>({
               role="group"
               aria-roledescription="slide"
             >
-              {renderItem({
-                item,
-                index: i,
-                isVisible: i >= index && i < index + numVisible,
-                width,
-              })}
+              <div
+                style={{ width, transform: `translate(${gutterWidth}px, 0)` }}
+              >
+                {renderItem({
+                  item,
+                  index: i,
+                  isVisible: i >= index && i < index + numVisible,
+                  width,
+                })}
+              </div>
             </Item>
           </Fragment>
         ))}
+
+        <Item style={{ minWidth: gutterWidth * 2 }} />
       </HorizontalScroll>
 
       {!hideButtons && (
         <Button
+          gutters={gutterWidth}
           direction="right"
           onClick={() => updateScroll(scrollBy === "item" ? 1 : numVisible)}
           ariaLabel="Next slide"

@@ -1,6 +1,7 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { theme } from './theme.js';
+import { Focusable } from './Focusable.js';
 
 const ACTIVE_BORDER_WIDTH = 2;
 
@@ -36,7 +37,7 @@ export class InputWrap extends LitElement {
     }
 
     [data-active='true']:before {
-      border-color: ${theme.color('accent1', 6)};
+      border-color: ${theme.color('accent1', 7)};
       border-width: ${ACTIVE_BORDER_WIDTH}px;
       opacity: 1;
     }
@@ -49,14 +50,19 @@ export class InputWrap extends LitElement {
   }
 }
 
-export class InputBase extends LitElement {
-  static styles = css`
-    gl-input-wrap > * {
-      border: none;
-      outline: none;
-      width: 100%;
-    }
-  `;
+export class InputBase extends Focusable {
+  static styles = [
+    css`
+      * {
+        box-sizing: border-box;
+      }
+
+      :host {
+        outline: none;
+        display: inline-block;
+      }
+    `,
+  ];
 
   @property({ type: String }) size: 'sm' | 'md' | 'lg' = 'md';
 
@@ -71,7 +77,7 @@ export class InputBase extends LitElement {
   }
 
   connectedCallback() {
-    super.connectedCallback();
+    super.connectedCallback?.();
     this.addEventListener('focus', this.handleFocus);
     this.addEventListener('blur', this.handleBlur);
   }
@@ -79,13 +85,17 @@ export class InputBase extends LitElement {
   disconnectedCallback() {
     this.removeEventListener('focus', this.handleFocus);
     this.removeEventListener('blur', this.handleBlur);
-    super.disconnectedCallback();
+    super.disconnectedCallback?.();
   }
 
   getStyle(style?: { padding?: string }) {
     switch (this.size) {
       case 'sm':
         return {
+          border: 'none',
+          outline: 'none',
+          width: '100%',
+          background: 'transparent',
           'min-height': '35px',
           'font-size': '1rem',
           padding: '2px 9px',
@@ -93,6 +103,10 @@ export class InputBase extends LitElement {
         };
       case 'lg':
         return {
+          border: 'none',
+          outline: 'none',
+          width: '100%',
+          background: 'transparent',
           'min-height': '48px',
           'font-size': '1.3rem',
           padding: '2px 9px',
@@ -100,6 +114,10 @@ export class InputBase extends LitElement {
         };
       default:
         return {
+          border: 'none',
+          outline: 'none',
+          width: '100%',
+          background: 'transparent',
           'min-height': '42px',
           'font-size': '1.1rem',
           padding: '2px 12px',

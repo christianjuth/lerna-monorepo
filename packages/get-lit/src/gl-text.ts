@@ -2,7 +2,6 @@ import { css, html, LitElement, unsafeCSS } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { classMap } from 'lit/directives/class-map.js';
 import { theme } from './theme.js';
-import { pxToRem } from './utils.js';
 
 const htmlTags = [
   'h1',
@@ -18,18 +17,8 @@ const htmlTags = [
   'label',
   'figcaption',
 ] as const;
-const variants = [
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'copy-1',
-  'copy-2',
-  'p',
-  'link',
-] as const;
+
+const sizes = ['sm', 'md', 'lg'] as const;
 
 type GetArrayElementType<T extends readonly any[]> =
   T extends readonly (infer U)[] ? U : never;
@@ -47,94 +36,31 @@ const genName = (
 const TRUNCATE_CLASS = genName('truncate');
 const NO_PADDING_CLASS = genName('no-padding');
 const UPPERCASE_CLASS = genName('uppercase');
+const ITALIC_CLASS = genName('italic');
+const PARAGRAPH_CLASS = genName('paragraph');
 const TEXT_MUTED_CLASS = genName('text-muted');
 const NUM_OF_LINES_VAR = genName('numOfLines');
-const SPACING_AFTER_TEXT = '10px';
 
-function headingSize(size: number) {
-  return `calc(${pxToRem(size)} + min(2vw, ${size / 2}px))`;
-}
-
-export const TEXT_STYLES = unsafeCSS(`
-  .${genName('h1')} {
-    font-size: ${headingSize(45)};
-    font-style: normal;
-    font-weight: 900;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('h2')} {
-    font-size: ${headingSize(38)};
-    font-style: normal;
-    font-weight: 900;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('h3')} {
-    font-size: ${headingSize(32)};
-    font-style: normal;
-    font-weight: 900;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('h4')} {
-    font-size: ${headingSize(27)};
-    font-style: normal;
-    font-weight: 900;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('h5')} {
-    font-size: ${headingSize(24)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('h6')} {
-    font-size: ${headingSize(18)};
-    font-style: normal;
-    font-weight: 700;
-    line-height: 1em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('copy-1')}, .${genName('copy-1')} a,
-  .${genName('p')}, p {
-    font-size: ${pxToRem(20)};
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.5em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('link')}, a {
-    font-size: ${pxToRem(18)};
-    font-style: normal;
-    font-weight: 400;
-    line-height: ${22 / 18}em;
-    text-decoration: none;
-    cursor: pointer;
-
-    color: ${theme.color('accent1', 10)};
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  .${genName('copy-2')}, .${genName('copy-2')} a {
-    font-size: ${pxToRem(17)};
-    font-style: normal;
-    font-weight: 400;
-    line-height: ${16 / 14}em;
-    margin-bottom: ${SPACING_AFTER_TEXT};
-  }
-  .${genName('p')}, p {
-    line-height: 1.8em;
+const TEXT_STYLES = unsafeCSS(`
+  :host {
     display: block;
-    margin-block-start: 0;
-    margin-block-end: 2em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    margin-bottom: ${SPACING_AFTER_TEXT};
   }
+
+  :host(:first-of-type) {
+    margin-top: 0;
+  }
+
+  * {
+    margin: 0;
+    margin-block: 0 0;
+    font-weight: inherit;
+    color: ${theme.colorPresets.text};
+  }
+
+  .${PARAGRAPH_CLASS} {
+    line-height: 1.8em;
+  }
+
   .${TRUNCATE_CLASS} {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -146,12 +72,16 @@ export const TEXT_STYLES = unsafeCSS(`
     margin: 0;
     padding: 0;
   }
-  .${TEXT_MUTED_CLASS} {
+  .${TEXT_MUTED_CLASS}, .${TEXT_MUTED_CLASS} * {
     color: ${theme.color('gray', 9)};
   }
   .${UPPERCASE_CLASS} {
     text-transform: uppercase;
     letter-spacing: 0.02em;
+  }
+
+  .${ITALIC_CLASS} {
+    font-style: italic;
   }
 `);
 
@@ -163,17 +93,19 @@ export class Text extends LitElement {
 
   @property({ type: String }) tag: GetArrayElementType<typeof htmlTags> = 'h1';
 
-  @property({ type: String }) variant: GetArrayElementType<typeof variants> =
-    'h1';
+  @property({ type: String }) size: GetArrayElementType<typeof sizes> = 'md';
 
   @property({ type: String }) uppercase: 'true' | 'false' = 'false';
 
-  render() {
-    const classes = {
-      [genName(this.variant)]: true,
-      [UPPERCASE_CLASS]: this.uppercase !== 'false',
-    };
+  @property({ type: String }) heading: 'true' | 'false' = 'false';
 
+  @property({ type: String }) paragraph: 'true' | 'false' = 'false';
+
+  @property({ type: String }) muted: 'true' | 'false' = 'false';
+
+  @property({ type: String }) italic: 'true' | 'false' = 'false';
+
+  getElement(classes: Record<string, any>) {
     switch (this.tag) {
       case 'h1':
         return html`<h1 class=${classMap(classes)}><slot></slot></h1>`;
@@ -198,5 +130,48 @@ export class Text extends LitElement {
       default:
         return html`<span class=${classMap(classes)}><slot></slot></span>`;
     }
+  }
+
+  getSize() {
+    switch (this.size) {
+      case 'sm':
+        return '1em';
+      case 'md':
+        return '1.2em';
+      case 'lg':
+        return '1.4em';
+      default:
+        return '1em';
+    }
+  }
+
+  render() {
+    const isHeading = String(this.heading) !== 'false';
+    const isParagraph = String(this.paragraph) !== 'false';
+    const muted = String(this.muted) !== 'false';
+    const italic = String(this.italic) !== 'false';
+    const uppercase = String(this.uppercase) !== 'false';
+
+    const classes = {
+      [TEXT_MUTED_CLASS]: muted,
+      [PARAGRAPH_CLASS]: isParagraph,
+      [ITALIC_CLASS]: italic,
+      [UPPERCASE_CLASS]: uppercase,
+    };
+
+    return html`
+      <style>
+        :host {
+          font-size: ${isHeading ? 'min(calc(1rem + 1vw), 1.5rem)' : '1rem'};
+          font-weight: ${isHeading ? '900' : 'normal'};
+          margin-top: ${isHeading || isParagraph ? '1.35em' : '0.65em'};
+        }
+
+        * {
+          font-size: ${this.getSize()};
+        }
+      </style>
+      ${this.getElement(classes)}
+    `;
   }
 }

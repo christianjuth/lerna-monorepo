@@ -2,6 +2,7 @@ import { Theme } from "@christianjuth/ui";
 import { DocsContainer } from "@storybook/addon-docs/blocks";
 import { useDarkMode } from "storybook-dark-mode";
 import { theme } from "../src/config/theme";
+import { Theme as LitTheme } from "@christianjuth/react-is-lit";
 
 export function StoryWrapper({ children }: { children: any }) {
   const darkMode = useDarkMode();
@@ -15,6 +16,22 @@ export function StoryWrapper({ children }: { children: any }) {
     >
       {children}
     </Theme>
+  );
+}
+
+export function LitProvider({ children }: { children: any }) {
+  const darkMode = useDarkMode();
+
+  return (
+    <LitTheme
+      theme={{
+        ...theme,
+        useDarkTheme: darkMode,
+        roundness: 6
+      }}
+    >
+      {children}
+    </LitTheme>
   );
 }
 

@@ -1,5 +1,4 @@
-import { Theme } from '@christianjuth/react-is-lit'
-import { DocsWrapper, StoryWrapper } from './Providers'
+import { DocsWrapper, StoryWrapper, LitProvider } from './Providers'
 
 const LIT_HIDDEN_PROPS = [
   'renderOptions',
@@ -39,9 +38,9 @@ export const parameters = {
 
 export const decorators = [
   (Story, info) => info.title.indexOf('Lit') === 0 ? (
-    <Theme>
+    <LitProvider>
       <Story />
-    </Theme>
+    </LitProvider>
   ) : (
     <StoryWrapper>
       <Story />

@@ -13,7 +13,11 @@ export class Grid extends LitElement {
 
   @property({ type: Number }) spacing = 0;
 
-  @property({ type: String }) cols: string | number = '1fr 1fr 1fr';
+  @property({ type: Number }) rowSpacing?: number;
+
+  @property({ type: Number }) colSpacing?: number;
+
+  @property({ type: String }) cols: string | number = '1fr';
 
   render() {
     const cols = /^[0-9]$/.test(String(this.cols))
@@ -23,7 +27,8 @@ export class Grid extends LitElement {
     return html`
       <style>
         :host {
-          grid-gap: ${theme.spacing(this.spacing)};
+          grid-column-gap: ${theme.spacing(this.colSpacing ?? this.spacing)};
+          grid-row-gap: ${theme.spacing(this.rowSpacing ?? this.spacing)};
           grid-template-columns: ${cols};
         }
       </style>

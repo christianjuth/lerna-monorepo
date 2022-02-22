@@ -101,7 +101,7 @@ export function remap(
 }
 
 function remapL(l: number) {
-  return [0, 3, 7, 9, 12, 15, 18, 21, 26, 31, 39, 52, 59, 68, 85, 100][l];
+  return [0, 3, 7, 9, 12, 15, 18, 21, 26, 31, 39, 52, 59, 72, 85, 100][l];
 }
 
 export function getAdjustedColor([h, s, l, a]: HSLColor): HSLColor {
@@ -119,7 +119,7 @@ export function getAdjustedColor([h, s, l, a]: HSLColor): HSLColor {
 
 function varName(...parts: (string | number | undefined)[]) {
   parts = parts.filter(v => (v ?? false) !== false);
-  return `--${parts.join('-')}`;
+  return `--gl-${parts.join('-')}`;
 }
 
 export declare namespace Theme {
@@ -216,6 +216,7 @@ export const VARIABLE_NAMES = {
   BUTTON_FONT_STYLE: '--button-font-style',
   BUTTON_DEFAULT_VARIANT: '--button-default-variant',
   MAIN_GUTTERS_BASE_WIDTH: '--main-gutters-baseWidth',
+  OUTLINE: '--outline',
 };
 
 const roundness = (...multipliers: number[]) => {
@@ -248,3 +249,15 @@ export const theme = {
   colorPresets,
   spacing,
 };
+
+// export const createTheme = ({
+//   baseTheme,
+//   darkTheme,
+//   useDarkTheme
+// }: {
+//   baseTheme: Theme.Config;
+//   darkTheme?: Partial<Theme.Config>;
+//   useDarkTheme?: boolean;
+// }) => ({
+
+// })

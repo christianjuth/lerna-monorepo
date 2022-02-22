@@ -11,7 +11,7 @@ const BORDER_WIDTH = 1;
 export class Button extends LitElement {
   static styles = css`
     :host {
-      display: block;
+      display: inline-block;
     }
 
     button {
@@ -30,6 +30,7 @@ export class Button extends LitElement {
       height: fit-content;
       border: 1px solid transparent;
       text-decoration: none;
+      width: 100%;
     }
 
     .sm {
@@ -82,8 +83,8 @@ export class Button extends LitElement {
       <button
         class=${classMap({ [this.size]: true, [this.variant]: true })}
         style=${styleMap({
-          '--background-color': theme.color(this.themeColor as any, 9) as any,
-          '--color': theme.color(this.themeColor as any, 9, 'text') as any,
+          '--background-color': theme.color(this.themeColor, 9) as any,
+          '--color': theme.color(this.themeColor, 9, 'text') as any,
         })}
       >
         <slot></slot>

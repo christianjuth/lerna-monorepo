@@ -1773,13 +1773,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@christianjuth/get-lit@workspace:*, @christianjuth/get-lit@workspace:internal-packages/get-lit":
+"@christianjuth/get-lit@workspace:*, @christianjuth/get-lit@workspace:packages/get-lit":
   version: 0.0.0-use.local
-  resolution: "@christianjuth/get-lit@workspace:internal-packages/get-lit"
+  resolution: "@christianjuth/get-lit@workspace:packages/get-lit"
   dependencies:
     "@custom-elements-manifest/analyzer": ^0.4.17
     "@open-wc/eslint-config": ^4.3.0
     "@open-wc/testing": next
+    "@spectrum-web-components/shared": ^0.13.3
     "@typescript-eslint/eslint-plugin": ^4.33.0
     "@typescript-eslint/parser": ^4.33.0
     "@web/dev-server": ^0.1.28
@@ -4789,6 +4790,27 @@ __metadata:
   dependencies:
     "@sinonjs/commons": ^1.7.0
   checksum: 09b5a158ce013a6c37613258bad79ca4efeb99b1f59c41c73cca36cac00b258aefcf46eeea970fccf06b989414d86fe9f54c1102272c0c3bdd51a313cea80949
+  languageName: node
+  linkType: hard
+
+"@spectrum-web-components/base@npm:^0.5.1":
+  version: 0.5.1
+  resolution: "@spectrum-web-components/base@npm:0.5.1"
+  dependencies:
+    lit: ^2.0.0
+    tslib: ^2.0.0
+  checksum: 77dd4b94bd2a34b43d197d81690fb98048dbf01c623e7c29d51b0d1db05c1e3ae0169124ac10c17ea9830a8277ffc96a5cfc5768ce4464de463d8d40e3915805
+  languageName: node
+  linkType: hard
+
+"@spectrum-web-components/shared@npm:^0.13.3":
+  version: 0.13.3
+  resolution: "@spectrum-web-components/shared@npm:0.13.3"
+  dependencies:
+    "@spectrum-web-components/base": ^0.5.1
+    focus-visible: ^5.1.0
+    tslib: ^2.0.0
+  checksum: 6b0be5b922f581c7cf90268b13f188582052af0b0348d5bf6f85a0b46b2f215cd0d31f1ee55dfbd5bd0554828f61ff4f62f405bc7b43b9568c32ecbbcf2009c3
   languageName: node
   linkType: hard
 
@@ -15552,6 +15574,13 @@ __metadata:
     inherits: ^2.0.3
     readable-stream: ^2.3.6
   checksum: 42e07747f83bcd4e799da802e621d6039787749ffd41f5517f8c4f786ee967e31ba32b09f8b28a9c6f67bd4f5346772e604202df350e8d99f4141771bae31279
+  languageName: node
+  linkType: hard
+
+"focus-visible@npm:^5.1.0":
+  version: 5.2.0
+  resolution: "focus-visible@npm:5.2.0"
+  checksum: 876f646ef453680d3d34e9f9b23961527ffd5ccaed8690f423d4fbfa37ff023d98a490972bc1387850e37ec2e44958c81f6096ef95b67462e5c4b5404cf1dbb9
   languageName: node
   linkType: hard
 

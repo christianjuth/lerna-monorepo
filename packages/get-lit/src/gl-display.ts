@@ -70,8 +70,6 @@ export class Display extends LitElement {
       xxl: xxl === '' ? undefined : Boolean(xxl),
     });
 
-    console.log(computeBreakpoints);
-
     return html`
       <style>
         :host {

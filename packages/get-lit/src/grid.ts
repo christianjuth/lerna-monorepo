@@ -37,11 +37,11 @@ export function mediaQuery(lower?: Breakpoint, upper?: Breakpoint) {
   let query = 'only screen';
 
   if (lower) {
-    query += ` and (min-width: ${breakpoints[lower]} px)`;
+    query += ` and (min-width: ${breakpoints[lower]}px)`;
   }
 
   if (upper) {
-    query += ` and (max-width: ${breakpoints[upper]} px)`;
+    query += ` and (max-width: ${breakpoints[upper]}px)`;
   }
 
   return unsafeCSS(query);

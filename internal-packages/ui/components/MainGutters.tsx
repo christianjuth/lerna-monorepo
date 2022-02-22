@@ -160,4 +160,42 @@ export function MainGutters({
 }
 MainGutters.padding = MAIN_GUTTERS_PADDING;
 
+export function useGuttersWidth(
+  baseWidth = `var(${theme.VARIABLE_NAMES.MAIN_GUTTERS_BASE_WIDTH})`
+) {
+  const [pageWidth, setPageWidth] = React.useState(0);
+  const [gutterWidth, setGutterWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    const body = document.getElementsByTagName("body")[0];
+    const div = document.createElement("div");
+    body.append(div);
+
+    const responsiveWidth = `calc(${
+      typeof baseWidth === "number" ? `${baseWidth}px` : baseWidth
+    } + 22vw - (2 * (1vw + 8px)))`;
+
+    div.style.width = responsiveWidth;
+    div.style.maxWidth = `calc(100vw - (2 * (1vw + 8px)))`;
+
+    function measure() {
+      const pageWidth = document.body.offsetWidth;
+      const content = div.offsetWidth;
+      const gutters = pageWidth - content;
+      setGutterWidth(gutters / 2);
+      setPageWidth(pageWidth);
+    }
+    measure()
+
+    window.addEventListener('resize', measure)
+
+    return () => {
+      window.removeEventListener('resize', measure)
+      div.remove()
+    }
+  }, [baseWidth]);
+
+  return [gutterWidth, pageWidth, gutterWidth] as const;
+}
+
 export default MainGutters;

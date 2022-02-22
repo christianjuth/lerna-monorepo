@@ -1,0 +1,150 @@
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
+import {
+  FormItem,
+  Checkbox,
+  Input,
+  TextArea,
+  Divider,
+  Text,
+  Grid,
+  GridItem,
+  Button
+} from "@christianjuth/react-is-lit";
+import { Box } from "../components/Box";
+
+<Meta title="Lit/Forms" />
+
+<Canvas>
+  <Story name="Form items">
+    <form>
+      <Grid cols={2} rowSpacing={6} colSpacing={3}>
+        <FormItem xs={2}>
+          <Checkbox />
+          <label>Test</label>
+          <Text size="sm" muted>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Text>
+        </FormItem>
+        <FormItem xs={2}>
+          <Checkbox />
+          <label>Test</label>
+          <Text size="sm" muted>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Text>
+        </FormItem>
+        <FormItem xs={1}>
+          <label>Username</label>
+          <Input placeholder="person@example.com" />
+        </FormItem>
+        <FormItem xs={1}>
+          <label>Password</label>
+          <Input type="password" />
+        </FormItem>
+        <FormItem xs={2}>
+          <label>TextArea</label>
+          <TextArea />
+        </FormItem>
+      </Grid>
+    </form>
+  </Story>
+</Canvas>
+
+# Checkout example
+
+<Canvas>
+  <Story name="Checkout example">
+    <form style={{maxWidth: 500, margin: '0 auto'}}>
+      <Grid cols={6} rowSpacing={4} colSpacing={3}>
+        <GridItem xs={6}>
+          <Text size="sm" heading>
+            <Text size="xs" muted>
+              01
+            </Text>
+            Personal details
+          </Text>
+        </GridItem>
+        <FormItem xs={3}>
+          <label>First name</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={3}>
+          <label>Last name</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={3}>
+          <label>Email address</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={3}>
+          <label>Phone number</label>
+          <Input />
+        </FormItem>
+        <GridItem xs={6}>
+          <Divider/>
+        </GridItem>
+        <GridItem xs={6}>
+          <Text size="sm" heading>
+            <Text size="xs" muted>
+              02
+            </Text>
+            Shipping details
+          </Text>
+        </GridItem>
+        <FormItem xs={6}>
+          <label>Street address</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={2}>
+          <label>Zip code</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={2}>
+          <label>City</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={2}>
+          <label>Country</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={6}>
+          <Checkbox />
+          <label>Send shipping updates via text</label>
+          <Text size="sm" muted italic>
+            Carrier rates may apply
+          </Text>
+        </FormItem>
+        <GridItem xs={6}>
+          <Divider/>
+        </GridItem>
+        <GridItem xs={6}>
+          <Text size="sm" heading>
+            <Text size="xs" muted>
+              03
+            </Text>
+            Payment method
+          </Text>
+        </GridItem>
+        <FormItem xs={6} md={2}>
+          <label>Card number</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={3} md={2}>
+          <label>Expiry date</label>
+          <Input />
+        </FormItem>
+        <FormItem xs={3} md={2}>
+          <label>CVC/CVV</label>
+          <Input />
+        </FormItem>
+        <GridItem xs={6}>
+          <Divider/>
+        </GridItem>
+        <GridItem xs={6}>
+          <Button style={{display: 'block'}}>Confirm</Button>
+        </GridItem>
+      </Grid>
+    </form>
+  </Story>
+</Canvas>

@@ -3,6 +3,7 @@ import {
   Button,
   Carousel,
   MainGutters,
+  useGuttersWidth,
   Navbar,
   SC,
   Text,
@@ -196,15 +197,17 @@ function Video({
       href="#"
       tabIndex={disableFocus ? -1 : undefined}
       onMouseEnter={() => {
-        callbackRef.current = window.setTimeout(() => {
-          setVisible(true);
-        }, 500);
+        if (!disableFocus) {
+          callbackRef.current = window.setTimeout(() => {
+            setVisible(true);
+          }, 500);
+        }
       }}
       onMouseLeave={() => {
         window.clearTimeout(callbackRef.current);
         setVisible(false);
       }}
-      $enableHover={true}
+      $enableHover={!disableFocus}
     >
       {visible ? (
         <>
@@ -258,6 +261,7 @@ function Logo({ style }: { style?: CSSProperties }) {
 export function Netflix() {
   const transparentNavbar = useTransparentNavbar();
   const isDesktop = useBreakPoint("md");
+  const [gutter, content] = useGuttersWidth();
 
   return (
     <Theme
@@ -352,15 +356,17 @@ export function Netflix() {
         </SC.FlexCol>
       </MainGutters>
 
-      <MainGutters
+      <div
         style={{ position: "relative", paddingBottom: 50 }}
-        innerStyle={{ overflow: "hidden" }}
+        // innerStyle={{ overflow: "hidden" }}
       >
         {CATEGORIES.map((category, i) => (
           <Fragment key={i}>
-            <Text variant="h6" style={{ marginTop: 50 }}>
-              {category}
-            </Text>
+            <MainGutters>
+              <Text variant="h6" style={{ marginTop: 50 }}>
+                {category}
+              </Text>
+            </MainGutters>
             <Carousel
               style={{ width: "100%" }}
               scrollBy="row"
@@ -373,9 +379,11 @@ export function Netflix() {
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
               overflowAmount={100}
+              gutterWidth={gutter}
               renderItem={({ index, isVisible }) => (
                 <AspectRatioBox
                   aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
+                  style={{ opacity: isVisible ? 1 : 0.5 }}
                 >
                   <Video disableFocus={!isVisible}>{index + 1}</Video>
                 </AspectRatioBox>
@@ -384,9 +392,11 @@ export function Netflix() {
           </Fragment>
         ))}
 
-        <Text variant="h6" style={{ marginTop: 50 }}>
-          Top Picks
-        </Text>
+        <MainGutters>
+          <Text variant="h6" style={{ marginTop: 50 }}>
+            Top Picks
+          </Text>
+        </MainGutters>
         <Carousel
           style={{ width: "100%" }}
           scrollBy="row"
@@ -399,6 +409,7 @@ export function Netflix() {
           rightButtonIcon={CAROUSEL_RIGHT_ICON}
           leftButtonIcon={CAROUSEL_LEFT_ICON}
           overflowAmount={100}
+          gutterWidth={gutter}
           renderItem={({ index, isVisible, width }) => (
             <AspectRatioBox
               aspectRatioByBreakpoint={{ xs: (11 / 16) * (3 / 2), md: 16 / 9 }}
@@ -450,9 +461,11 @@ export function Netflix() {
 
         {MORE_CATEGORIES.map((category, i) => (
           <Fragment key={i}>
-            <Text variant="h6" style={{ marginTop: 50 }}>
-              {category}
-            </Text>
+            <MainGutters>
+              <Text variant="h6" style={{ marginTop: 50 }}>
+                {category}
+              </Text>
+            </MainGutters>
             <Carousel
               style={{ width: "100%" }}
               scrollBy="row"
@@ -465,9 +478,11 @@ export function Netflix() {
               rightButtonIcon={CAROUSEL_RIGHT_ICON}
               leftButtonIcon={CAROUSEL_LEFT_ICON}
               overflowAmount={100}
+              gutterWidth={gutter}
               renderItem={({ index, isVisible }) => (
                 <AspectRatioBox
                   aspectRatioByBreakpoint={{ xs: 11 / 16, md: 16 / 9 }}
+                  style={{ opacity: isVisible ? 1 : 0.5 }}
                 >
                   <Video disableFocus={!isVisible}>{index + 1}</Video>
                 </AspectRatioBox>
@@ -475,7 +490,7 @@ export function Netflix() {
             />
           </Fragment>
         ))}
-      </MainGutters>
+      </div>
     </Theme>
   );
 }
