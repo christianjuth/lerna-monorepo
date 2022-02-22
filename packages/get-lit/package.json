@@ -7,6 +7,10 @@
   "main": "dist/src/index.js",
   "module": "dist/src/index.js",
   "types": "src/index.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
+  },
   "scripts": {
     "analyze": "cem analyze --litelement",
     "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wds\"",
