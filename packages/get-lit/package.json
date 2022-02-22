@@ -3,7 +3,7 @@
   "description": "Webcomponent test-test following open-wc recommendations",
   "license": "MIT",
   "author": "test-test",
-  "version": "0.0.0-alpha.1",
+  "version": "0.0.0-alpha.2",
   "main": "dist/src/index.js",
   "module": "dist/src/index.js",
   "types": "src/index.ts",
