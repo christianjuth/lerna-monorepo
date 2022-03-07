@@ -12,19 +12,19 @@ function createPixi({ container }: { container: HTMLElement }) {
   container.replaceChildren(app.view);
 
   let shader = new PIXI.Filter(undefined, undefined, {
-    time: 0.0,
+    timeMs: 0.0,
   });
 
   app.stage.filters = [shader];
   app.stage.filterArea = app.screen;
 
   app.ticker.add((delta) => {
-    shader.uniforms.time += delta / 100;
+    shader.uniforms.timeMs += delta;
   });
 
   return (fragShader: string) => {
     shader = new PIXI.Filter(undefined, fragShader, {
-      time: 0.0,
+      timeMs: 0.0,
     });
     app.stage.filters = [shader];
     app.stage.filterArea = app.screen;

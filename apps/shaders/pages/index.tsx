@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { TabPane, Tabs } from "../components/Tabs";
 
 const Shader = dynamic(() => import("../components/Shader"), { ssr: false });
 const Editor = dynamic(() => import("../components/Editor"), { ssr: false });
@@ -29,6 +30,11 @@ const Panel = styled.div`
   flex-direction: column;
 `;
 
+const Controls = styled.div`
+  flex: 1;
+  background-color: #272a36;
+`
+
 // const Button = styled.button`
 //   background-color: #272a36;
 //   color: white;
@@ -41,8 +47,12 @@ const Panel = styled.div`
 // `;
 
 const defaultFragShader = dedent`
+  // vTextureCoord.x and vTextureCoord.y represent
+  // the (x, y) coordinate within the container.
+  // Both x and y are in the range of [0-1].
   varying vec2 vTextureCoord;
-  uniform float time;
+  // Time in milliseconds.
+  uniform float timeMs;
 
   // takes any float as input and
   // ossolates smoothly between 0 and 1
@@ -51,9 +61,10 @@ const defaultFragShader = dedent`
   }
 
   void main() {
-    float red = oscillate(vTextureCoord.x + time);
-    float green = oscillate(vTextureCoord.y + time);
-    float blue = oscillate(time);
+    float slowedTime = timeMs / 100.0;
+    float red = oscillate(vTextureCoord.x + slowedTime);
+    float green = oscillate(vTextureCoord.y + slowedTime);
+    float blue = oscillate(slowedTime);
     gl_FragColor = vec4(red, green, blue, 1.0);
   }
 `;
@@ -81,15 +92,23 @@ const Home: NextPage = () => {
         <Shader fragShader={fragShader} />
       </Panel>
       <Panel>
-        <Editor
-          value={fragShader}
-          onChange={(newValue) => {
-            if (newValue !== fragShader) {
-              setFragShader(newValue);
-            }
-          }}
-        />
-        {/* <Button onClick={share}>Share</Button> */}
+        <Tabs>
+          <TabPane id="fragShader" title="FragmentShader">
+            <Editor
+              value={fragShader}
+              onChange={(newValue) => {
+                if (newValue !== fragShader) {
+                  setFragShader(newValue);
+                }
+              }}
+            />
+          </TabPane>
+          <TabPane id="controls" title="Controls">
+            <Controls>
+              Coming soon...
+            </Controls>
+          </TabPane>
+        </Tabs>
       </Panel>
     </Grid>
   );
