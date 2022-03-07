@@ -1,9 +1,12 @@
 import dedent from "dedent";
 import type { NextPage } from "next";
+import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
+import qs from "querystring";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { SEOProps } from "../components/SEO";
 import { TabPane, Tabs } from "../components/Tabs";
 
 const Shader = dynamic(() => import("../components/Shader"), { ssr: false });
@@ -33,7 +36,7 @@ const Panel = styled.div`
 const Controls = styled.div`
   flex: 1;
   background-color: #272a36;
-`
+`;
 
 // const Button = styled.button`
 //   background-color: #272a36;
@@ -104,9 +107,7 @@ const Home: NextPage = () => {
             />
           </TabPane>
           <TabPane id="controls" title="Controls">
-            <Controls>
-              Coming soon...
-            </Controls>
+            <Controls>Coming soon...</Controls>
           </TabPane>
         </Tabs>
       </Panel>
@@ -115,3 +116,18 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const secure = ctx.req.headers.host?.indexOf("localhost") === -1;
+  const host = `http${secure ? "s" : ""}://${ctx.req.headers.host}`;
+
+  let seo: SEOProps = {
+    imageSrc: `${host}/api/render.png?${qs.stringify(ctx.query)}`,
+  };
+
+  return {
+    props: {
+      seo,
+    },
+  };
+};
