@@ -1,9 +1,9 @@
+import dedent from "dedent";
 import type { NextPage } from "next";
 import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import dedent from "dedent";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const Shader = dynamic(() => import("../components/Shader"), { ssr: false });
 const Editor = dynamic(() => import("../components/Editor"), { ssr: false });
@@ -15,6 +15,11 @@ const Grid = styled.div`
   height: 100vh;
   grid-gap: 8px;
   padding: 8px;
+
+  @media only screen and (max-width: 600px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
 `;
 
 const Panel = styled.div`
@@ -24,16 +29,16 @@ const Panel = styled.div`
   flex-direction: column;
 `;
 
-const Button = styled.button`
-  background-color: #272a36;
-  color: white;
-  border-radius: 0;
-  border: none;
-  padding: 10px;
-  font-size: 1.1rem;
-  margin-top: 8px;
-  cursor: pointer;
-`;
+// const Button = styled.button`
+//   background-color: #272a36;
+//   color: white;
+//   border-radius: 0;
+//   border: none;
+//   padding: 10px;
+//   font-size: 1.1rem;
+//   margin-top: 8px;
+//   cursor: pointer;
+// `;
 
 const defaultFragShader = dedent`
   varying vec2 vTextureCoord;
@@ -72,6 +77,9 @@ const Home: NextPage = () => {
 
   return (
     <Grid>
+      <Panel style={{ overflow: "hidden" }}>
+        <Shader fragShader={fragShader} />
+      </Panel>
       <Panel>
         <Editor
           value={fragShader}
@@ -82,9 +90,6 @@ const Home: NextPage = () => {
           }}
         />
         {/* <Button onClick={share}>Share</Button> */}
-      </Panel>
-      <Panel style={{ overflow: "hidden" }}>
-        <Shader fragShader={fragShader} />
       </Panel>
     </Grid>
   );
