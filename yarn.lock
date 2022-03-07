@@ -1797,6 +1797,7 @@ __metadata:
     prettier: ^2.4.1
     tslib: ^2.3.1
     typescript: ^4.5.2
+    wc-context: ^0.10.0
   languageName: unknown
   linkType: soft
 
@@ -31495,6 +31496,13 @@ __metadata:
   dependencies:
     minimalistic-assert: ^1.0.0
   checksum: 2abc306c96930b757972a1c4650eb6b25b5d99f24088714957f88629e137db569368c5de0e57986c89ea70db2f1df9bba11a87cb6d0c8694b6f53a0159fab3bf
+  languageName: node
+  linkType: hard
+
+"wc-context@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "wc-context@npm:0.10.0"
+  checksum: 5484faf357cbdfb91639849b126e4d62789da444933e942ddda6fb3f93c59500c246ee8a54f2aa4586f2cc0b8940b0796c85b690002b509685167d34139ee29c
   languageName: node
   linkType: hard
 

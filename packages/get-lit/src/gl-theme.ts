@@ -48,6 +48,11 @@ function serializeTheme(obj: Record<string, string | number>) {
 
 @customElement('gl-theme')
 export class Theme extends LitElement {
+  constructor() {
+    super();
+    this.handleLinkClick = this.handleLinkClick.bind(this);
+  }
+
   @property({ type: String }) addBodyStyles: 'true' | 'false' = 'false';
 
   @property({ type: Boolean, state: true }) hideOutline = false;
@@ -57,6 +62,10 @@ export class Theme extends LitElement {
     darkTheme?: Partial<ThemeType.Config>;
     useDarkTheme?: boolean;
     roundness?: number;
+  } = {};
+
+  @property({ type: Object }) link?: {
+    onClick?: () => any;
   } = {};
 
   handleKeyDown = (e: KeyboardEvent) => {
@@ -71,6 +80,10 @@ export class Theme extends LitElement {
     this.requestUpdate();
   };
 
+  private handleLinkClick() {
+    this.link?.onClick?.();
+  }
+
   connectedCallback(): void {
     super.connectedCallback?.();
     this.disableOutline.bind(this);
@@ -78,6 +91,7 @@ export class Theme extends LitElement {
     window.addEventListener('mousedown', this.disableOutline);
     window.addEventListener('touchstart', this.disableOutline);
     window.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('link-click', this.handleLinkClick);
 
     // global mode
     this.elementChildren = Array.from(this.childNodes);
@@ -87,6 +101,7 @@ export class Theme extends LitElement {
     window.removeEventListener('mousedown', this.disableOutline);
     window.removeEventListener('touchstart', this.disableOutline);
     window.removeEventListener('keydown', this.handleKeyDown);
+    window.removeEventListener('link-click', this.handleLinkClick);
     super.disconnectedCallback?.();
   }
 

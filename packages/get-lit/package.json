@@ -26,7 +26,8 @@
   "dependencies": {
     "@spectrum-web-components/shared": "^0.13.3",
     "lit": "^2.0.2",
-    "lit-html": "^2.1.3"
+    "lit-html": "^2.1.3",
+    "wc-context": "^0.10.0"
   },
   "devDependencies": {
     "@custom-elements-manifest/analyzer": "^0.4.17",

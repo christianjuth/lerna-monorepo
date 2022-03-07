@@ -100,6 +100,7 @@ export class Select<T extends string | number> extends InputBase {
           @keydown=${this.handleKeyDown}
           @change=${this.handleClose}
           class=${(this.valuePlaceholder?.length ?? 0) > 0 ? 'has-value' : ''}
+          autocomplete="off"
         />
         ${downArrow}
         <datalist id="browsers">

@@ -6,6 +6,7 @@ export * from './gl-form.js';
 export * from './gl-grid.js';
 export * from './gl-gutters.js';
 export * from './gl-input.js';
+export * from './gl-link.js';
 export * from './gl-masonry-grid.js';
 export * from './gl-paper.js';
 export * from './gl-segmented-control.js';

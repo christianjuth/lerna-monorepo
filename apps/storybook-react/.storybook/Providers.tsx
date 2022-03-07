@@ -29,6 +29,9 @@ export function LitProvider({ children }: { children: any }) {
         useDarkTheme: darkMode,
         roundness: 6
       }}
+      link={{
+        onClick: () => window.location.href = "//google.com"
+      }}
     >
       {children}
     </LitTheme>
