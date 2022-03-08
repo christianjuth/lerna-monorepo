@@ -84,6 +84,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   const urlFragShader = String(router.query.fragShader || defaultFragShader);
   const [fragShader, setFragShader] = useState(urlFragShader);
+  const [loadingPreview, setLoadingPreview] = useState(true);
 
   useEffect(() => {
     setFragShader(urlFragShader);
@@ -97,6 +98,7 @@ const Home: NextPage = () => {
         fragShader: minifyShader(minifiedShader),
       },
     });
+    setLoadingPreview(true);
   }, [minifiedShader]);
 
   return (
@@ -121,15 +123,22 @@ const Home: NextPage = () => {
           </TabPane>
           <TabPane id="share" title="Share">
             <Controls>
-              <h4>Preview image (might take a second to load)</h4>
-              <img 
-                src={`/api/render.png?${qs.stringify(router.query)}`} 
+              <h4>Preview image</h4>
+              <img
+                src={`/api/render.png?${qs.stringify(router.query)}`}
                 style={{
-                  maxWidth: 400
+                  maxWidth: 400,
                 }}
+                onLoad={() => setLoadingPreview(false)}
               />
-              <h4>Share</h4>
-              <ShareButton />
+              {loadingPreview ? (
+                <span>Loading... (this might take a second)</span>
+              ) : (
+                <>
+                  <h4>Share</h4>
+                  <ShareButton />
+                </>
+              )}
             </Controls>
           </TabPane>
         </Tabs>
