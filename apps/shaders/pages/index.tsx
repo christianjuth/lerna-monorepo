@@ -4,13 +4,18 @@ import { GetServerSideProps } from "next";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import qs from "querystring";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { SEOProps } from "../components/SEO";
 import { TabPane, Tabs } from "../components/Tabs";
+import { ShareButton } from "../components/ShareButton";
 
 const Shader = dynamic(() => import("../components/Shader"), { ssr: false });
 const Editor = dynamic(() => import("../components/Editor"), { ssr: false });
+
+function minifyShader(shaderCode: string) {
+  return shaderCode.replace(/\n{3,}/g, "\n\n").trim();
+}
 
 const Grid = styled.div`
   display: grid;
@@ -36,6 +41,9 @@ const Panel = styled.div`
 const Controls = styled.div`
   flex: 1;
   background-color: #272a36;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
 `;
 
 // const Button = styled.button`
@@ -81,13 +89,15 @@ const Home: NextPage = () => {
     setFragShader(urlFragShader);
   }, [router.isReady]);
 
+  const minifiedShader = useMemo(() => minifyShader(fragShader), [fragShader]);
+
   useEffect(() => {
     router.replace({
       query: {
-        fragShader,
+        fragShader: minifyShader(minifiedShader),
       },
     });
-  }, [fragShader]);
+  }, [minifiedShader]);
 
   return (
     <Grid>
@@ -108,6 +118,19 @@ const Home: NextPage = () => {
           </TabPane>
           <TabPane id="controls" title="Controls">
             <Controls>Coming soon...</Controls>
+          </TabPane>
+          <TabPane id="share" title="Share">
+            <Controls>
+              <h4>Preview image (might take a second to load)</h4>
+              <img 
+                src={`/api/render.png?${qs.stringify(router.query)}`} 
+                style={{
+                  maxWidth: 400
+                }}
+              />
+              <h4>Share</h4>
+              <ShareButton />
+            </Controls>
           </TabPane>
         </Tabs>
       </Panel>

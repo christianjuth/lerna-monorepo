@@ -8,7 +8,10 @@ import {
 } from "react";
 import styled from "styled-components";
 
-const Header = styled.div``;
+const Header = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const TabTitle = styled.button<{ active: boolean }>`
   cursor: pointer;
@@ -21,7 +24,7 @@ const TabTitle = styled.button<{ active: boolean }>`
   font-weight: 400;
   color: white;
   background-color: #272a36;
-  padding: 8px 10px;
+  padding: 8px 12px;
   margin-right: 5px;
   opacity: 0.5;
 
