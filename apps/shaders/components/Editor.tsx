@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { Suspense } from "react";
+import { useEffect } from "react";
 
 const AceEditor = dynamic(
   async () => {
@@ -22,8 +22,6 @@ const AceEditor = dynamic(
   }
 );
 
-// const AceEditor = dynamic(() => import("react-ace"), { ssr: false });
-
 export function Editor({
   value,
   onChange,
@@ -31,6 +29,15 @@ export function Editor({
   value: string;
   onChange: (val: string) => any;
 }) {
+  useEffect(() => {
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+      return () => {
+        history.scrollRestoration = "auto";
+      };
+    }
+  }, []);
+
   return (
     <AceEditor
       mode="glsl"
@@ -39,8 +46,9 @@ export function Editor({
       onChange={onChange}
       style={{
         width: "100%",
-        flex: 1
+        flex: 1,
       }}
+      editorProps={{ $blockScrolling: true }}
     />
   );
 }

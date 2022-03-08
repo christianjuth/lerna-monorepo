@@ -25,6 +25,7 @@ const TabTitle = styled.button<{ active: boolean }>`
   color: white;
   background-color: #272a36;
   padding: 8px 12px;
+  margin: 0;
   margin-right: 5px;
   opacity: 0.5;
 
