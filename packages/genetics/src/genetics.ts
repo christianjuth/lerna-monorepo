@@ -180,6 +180,7 @@ export function evolve<T>({
   );
 
   return {
+    optimalGenes: optimalSolution.genes!,
     result: mostFit,
     generations: generation,
     fitness: getFitness(mostFit),
