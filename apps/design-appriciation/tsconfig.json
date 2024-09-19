@@ -1,5 +1,0 @@
-{
-  "extends": "@christianjuth/tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.js", "../../react/ui/Divider.tsx", "../../react/ui/Switch.tsx"],
-  "exclude": ["node_modules"]
-}

@@ -8013,15 +8013,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-typist@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "@types/react-typist@npm:2.0.3"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/584d50ea787d2157742a0bbadba1be9bcdd080eb86fe99094c205f6a7d0e1ad85e69eb7161dff0175c1238d624ef294f2a03f65112abe4b54749ee2aa9945543
-  languageName: node
-  linkType: hard
-
 "@types/react@npm:*, @types/react@npm:^17.0.38, @types/react@npm:~17.0.21":
   version: 17.0.38
   resolution: "@types/react@npm:17.0.38"
@@ -13810,31 +13801,6 @@ __metadata:
   checksum: 10/f8eed334f85228d0cd985e3299c9e65ab70f6b82852f4dfb3eb2614ec7927ece262fed172daca02b57899388477046739225663739e54185d90cc5e5c10b4e11
   languageName: node
   linkType: hard
-
-"design-appriciation@workspace:apps/design-appriciation":
-  version: 0.0.0-use.local
-  resolution: "design-appriciation@workspace:apps/design-appriciation"
-  dependencies:
-    "@christianjuth/tsconfig": "workspace:*"
-    "@christianjuth/ui": "workspace:*"
-    "@types/node": "npm:*"
-    "@types/react": "npm:17.0.37"
-    "@types/react-syntax-highlighter": "npm:^13.5.2"
-    "@types/react-typist": "npm:^2.0.3"
-    "@types/styled-components": "npm:^5.1.15"
-    next: "npm:12.0.8"
-    next-transpile-modules: "npm:^9.0.0"
-    react: "npm:17.0.2"
-    react-div-100vh: "npm:^0.7.0"
-    react-dom: "npm:17.0.2"
-    react-icons: "npm:^4.3.1"
-    react-markdown: "npm:^7.1.0"
-    react-syntax-highlighter: "npm:^15.4.5"
-    react-typist: "npm:^2.0.5"
-    styled-components: "npm:^5.3.3"
-    typescript: "npm:4.x"
-  languageName: unknown
-  linkType: soft
 
 "destroy@npm:^1.0.4":
   version: 1.1.0
@@ -27421,18 +27387,6 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: 10/b185b2753651059c76391e9b190b91db4f0a9d809a5bd2faca29fdecbd55a2db21610eb2132801b8e8de5ee25e253ccbcff836b8757b37e17b95008d5dadfda6
-  languageName: node
-  linkType: hard
-
-"react-typist@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "react-typist@npm:2.0.5"
-  dependencies:
-    prop-types: "npm:^15.5.10"
-  peerDependencies:
-    react: ^0.14 || ^15.0 || ^16.0
-    react-dom: "*"
-  checksum: 10/1b190d9df2349ac7a156cf4dfcb7dd7e0c318067445140a2235238590186ccd4df99990a2785155c732c9186b9c9825eb28a603b20ff5bd5f55eba75c4fa04be
   languageName: node
   linkType: hard
 

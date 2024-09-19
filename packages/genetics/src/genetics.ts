@@ -1,6 +1,7 @@
 type GeneRange = [number, number][];
 type Genes = number[];
 
+
 function randomNumber(min: number, max: number, forceInt = false) {
   const num = Math.round(Math.random() * (max - min) + min);
   return forceInt ? Math.round(num) : num;
